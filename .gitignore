@@ -12,6 +12,8 @@ gen
 
 # Gradle files
 target/
+.gradle
+run
 
 # Maven files
 build/

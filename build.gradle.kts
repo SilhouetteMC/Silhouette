@@ -5,6 +5,7 @@ plugins {
 
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("xyz.jpenilla.run-paper") version "2.2.2"
 }
 
 group = "com.github.uwubans"
@@ -26,6 +27,10 @@ java {
 
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.runServer {
+    minecraftVersion("1.20.4")
 }
 
 bukkit {
