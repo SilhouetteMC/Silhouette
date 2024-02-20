@@ -1,0 +1,17 @@
+### bae's template
+# Generic
+.env
+!.env.example
+.attach_pid*
+
+# IntelliJ Project Files
+.idea
+*.iml
+out
+gen
+
+# Gradle files
+target/
+
+# Maven files
+build/
