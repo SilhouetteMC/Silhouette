@@ -1,6 +1,6 @@
-package com.github.uwubans.plugin.actor.player
+package com.github.silhouettemc.plugin.actor.player
 
-import com.github.uwubans.plugin.actor.Actor
+import com.github.silhouettemc.plugin.actor.Actor
 import java.util.UUID
 
 open class Player(val uuid: UUID): Actor(uuid) {

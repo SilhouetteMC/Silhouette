@@ -1,9 +1,9 @@
-package com.github.uwubans.plugin
+package com.github.silhouettemc.plugin
 
-import com.github.uwubans.plugin.database.DatabaseManager
+import com.github.silhouettemc.plugin.database.DatabaseManager
 import org.bukkit.plugin.java.JavaPlugin
 
-class UwUBans : JavaPlugin() {
+class Silhouette : JavaPlugin() {
     private lateinit var databaseManager: DatabaseManager
 
     override fun onEnable() {
@@ -15,8 +15,8 @@ class UwUBans : JavaPlugin() {
     }
 
     companion object {
-        fun getInstance(): UwUBans {
-            return getPlugin(UwUBans::class.java)
+        fun getInstance(): Silhouette {
+            return getPlugin(Silhouette::class.java)
         }
     }
 }

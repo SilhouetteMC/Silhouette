@@ -1,4 +1,4 @@
-package com.github.uwubans.plugin.actor.player
+package com.github.silhouettemc.plugin.actor.player
 
 import java.util.UUID
 

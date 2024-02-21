@@ -1,6 +1,6 @@
-package com.github.uwubans.plugin.actor
+package com.github.silhouettemc.plugin.actor
 
-import com.github.uwubans.plugin.actor.player.Player
+import com.github.silhouettemc.plugin.actor.player.Player
 import java.util.UUID
 
 val CONSOLE_ID = UUID(0, 0)

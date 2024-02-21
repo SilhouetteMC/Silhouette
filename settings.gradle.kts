@@ -1,1 +1,1 @@
-rootProject.name = "UwUBans"
+rootProject.name = "Silhouette"

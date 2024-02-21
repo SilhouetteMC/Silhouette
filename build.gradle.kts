@@ -1,5 +1,3 @@
-import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
-
 plugins {
     kotlin("jvm") version "1.9.21"
 
@@ -8,7 +6,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.2.2"
 }
 
-group = "com.github.uwubans"
+group = "com.github.silhouettemc"
 version = "1.0"
 
 repositories {
@@ -34,9 +32,9 @@ tasks.runServer {
 }
 
 bukkit {
-    name = "UwUBans"
+    name = "Silhouette"
     version = "${project.version}"
     authors = listOf("Aroze", "Eva")
-    main = "com.github.uwubans.plugin.UwUBans"
+    main = "com.github.silhouettemc.plugin.Silhouette"
     apiVersion = "1.20"
 }

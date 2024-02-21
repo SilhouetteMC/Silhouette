@@ -1,4 +1,4 @@
-package com.github.uwubans.plugin.punishment
+package com.github.silhouettemc.plugin.punishment
 
 enum class PunishmentType(val actionName: String, val displayName: String = actionName, val punishedName: String) {
     BAN("Ban", punishedName = "Banned"),
