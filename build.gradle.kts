@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("com.j256.ormlite:ormlite-jdbc:6.1")
 }
 
 java {
@@ -37,4 +38,5 @@ bukkit {
     authors = listOf("Aroze", "Eva")
     main = "com.github.silhouettemc.Silhouette"
     apiVersion = "1.20"
+    libraries = listOf("com.h2database:h2:2.2.224")
 }
