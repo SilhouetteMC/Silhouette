@@ -15,7 +15,7 @@ class Silhouette : JavaPlugin() {
 
     override fun onEnable() {
         database = H2DatabaseImpl() // TODO: configuration when we have multiple databases
-        database.initialize(this)
+//        database.initialize(this)
 
         mm = MiniMessage.miniMessage()
 
