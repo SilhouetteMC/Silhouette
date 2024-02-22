@@ -35,6 +35,6 @@ bukkit {
     name = "Silhouette"
     version = "${project.version}"
     authors = listOf("Aroze", "Eva")
-    main = "com.github.silhouettemc.plugin.Silhouette"
+    main = "com.github.silhouettemc.Silhouette"
     apiVersion = "1.20"
 }

@@ -1,7 +1,7 @@
-package com.github.silhouettemc.plugin.punishment
+package com.github.silhouettemc.punishment
 
-import com.github.silhouettemc.plugin.actor.Actor
-import com.github.silhouettemc.plugin.actor.player.DataPlayer
+import com.github.silhouettemc.actor.Actor
+import com.github.silhouettemc.actor.player.DataPlayer
 import java.time.Instant
 import java.util.Date
 

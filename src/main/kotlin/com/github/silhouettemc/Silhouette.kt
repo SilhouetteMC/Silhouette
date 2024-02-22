@@ -1,6 +1,6 @@
-package com.github.silhouettemc.plugin
+package com.github.silhouettemc
 
-import com.github.silhouettemc.plugin.database.DatabaseManager
+import com.github.silhouettemc.database.DatabaseManager
 import org.bukkit.plugin.java.JavaPlugin
 
 class Silhouette : JavaPlugin() {

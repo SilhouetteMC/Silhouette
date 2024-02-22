@@ -1,4 +1,4 @@
-package com.github.silhouettemc.plugin.actor.player
+package com.github.silhouettemc.actor.player
 
 import java.util.UUID
 

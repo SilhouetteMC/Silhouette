@@ -1,6 +1,6 @@
-package com.github.silhouettemc.plugin.actor.player
+package com.github.silhouettemc.actor.player
 
-import com.github.silhouettemc.plugin.actor.Actor
+import com.github.silhouettemc.actor.Actor
 import java.util.UUID
 
 open class Player(val uuid: UUID): Actor(uuid) {
