@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    compileOnly("com.j256.ormlite:ormlite-jdbc:6.1")
+    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
 }
 

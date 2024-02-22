@@ -16,4 +16,4 @@ class LastingPunishment (
     val expiration: Instant? = null,
     val revoker: Actor? = null,
     val revokeReason: String? = null,
-) : Punishment(id, player, punisher, reason, type, punishedOn)
+) : Punishment(player, punisher, reason, type, id, punishedOn)
