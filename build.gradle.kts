@@ -13,11 +13,13 @@ repositories {
     mavenCentral()
 
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.aikar.co/content/groups/aikar/")
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly("com.j256.ormlite:ormlite-jdbc:6.1")
+    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
 }
 
 java {
