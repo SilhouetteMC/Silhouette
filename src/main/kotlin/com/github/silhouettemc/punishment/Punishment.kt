@@ -1,14 +1,18 @@
 package com.github.silhouettemc.punishment
 
 import com.github.silhouettemc.actor.Actor
-import com.github.silhouettemc.actor.player.DataPlayer
-import java.time.Instant
-import java.util.Date
+import java.util.*
 
-data class Punishment(
-    val player: DataPlayer,
-    val actor: Actor,
+open class Punishment(
+    val player: UUID,
+    val punisher: Actor,
+    val reason: String? = null,
     val type: PunishmentType,
-    val expiration: Instant? = null,
     val punishedOn: Date = Date()
-)
+) {
+
+    fun process() {
+        TODO()
+    }
+
+}
