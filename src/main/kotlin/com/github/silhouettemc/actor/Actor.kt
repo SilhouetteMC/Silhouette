@@ -1,7 +1,7 @@
 package com.github.silhouettemc.actor
 
 import com.github.silhouettemc.actor.player.Player
-import java.util.UUID
+import java.util.*
 
 val CONSOLE_ID = UUID(0, 0)
 open class Actor(val id: UUID = CONSOLE_ID) {

@@ -1,12 +1,9 @@
 package com.github.silhouettemc.command
 
 import co.aikar.commands.BaseCommand
-import co.aikar.commands.annotation.CommandAlias
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Default
-import co.aikar.commands.annotation.Description
-import co.aikar.commands.annotation.Optional
+import co.aikar.commands.annotation.*
 import com.github.silhouettemc.util.sendError
+import com.github.silhouettemc.util.sendTranslated
 import com.github.silhouettemc.util.translate
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -33,19 +30,16 @@ object MuteChatCommand : BaseCommand() {
 
         isMuted = newMuted
         val muter = if (sender is Player) sender.name else "Console"
-
         val immunityLabel = if (isMuted) ", but you can still talk!" else ""
-        val playerMessage = translate("<#ffd4e3>The chat has been <#ffb5cf>$mutedLabel")
-        val staffMessage = translate("<#ffd4e3>Chat has been <#ffb5cf>$mutedLabel</#ffb5cf> by <#ffb5cf>$muter</#ffb5cf>$immunityLabel")
 
         for (player in Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("silhouettemc.command.mutechat")) {
                 if (player == sender) player.sendMessage(translate("<#ffd4e3>You've <#ffb5cf>$mutedLabel</#ffb5cf> the chat$immunityLabel"))
-                else player.sendMessage(staffMessage)
+                else player.sendTranslated("<#ffd4e3>Chat has been <#ffb5cf>$mutedLabel</#ffb5cf> by <#ffb5cf>$muter</#ffb5cf>$immunityLabel")
                 continue
             }
 
-            player.sendMessage(playerMessage)
+            player.sendTranslated("<#ffd4e3>The chat has been <#ffb5cf>$mutedLabel")
         }
 
         Bukkit.getLogger().info("Chat has been $mutedLabel by $muter")

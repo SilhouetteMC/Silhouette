@@ -1,8 +1,8 @@
 package com.github.silhouettemc.punishment
 
 import com.github.silhouettemc.Silhouette
-import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.Silhouette.Companion.mm
+import com.github.silhouettemc.actor.Actor
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable

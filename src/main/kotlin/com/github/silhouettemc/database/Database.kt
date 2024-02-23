@@ -2,7 +2,7 @@ package com.github.silhouettemc.database
 
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.punishment.Punishment
-import java.util.UUID
+import java.util.*
 
 interface Database {
     fun initialize(plugin: Silhouette)

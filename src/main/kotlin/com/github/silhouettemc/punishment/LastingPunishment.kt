@@ -2,8 +2,7 @@ package com.github.silhouettemc.punishment
 
 import com.github.silhouettemc.actor.Actor
 import java.time.Instant
-import java.util.Date
-import java.util.UUID
+import java.util.*
 
 class LastingPunishment (
     id: UUID,

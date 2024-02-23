@@ -8,9 +8,7 @@ import co.aikar.commands.annotation.Description
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import java.util.*
 
 @CommandAlias("kick")
 @Description("Kicks a player")
