@@ -18,8 +18,15 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    implementation("com.github.jershell:kbson:0.5.0")
+
+    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
+    implementation("org.mongodb:mongodb-driver-kotlin-sync:4.11.0")
+
 }
 
 java {

@@ -6,9 +6,11 @@ import com.github.silhouettemc.command.MuteChatCommand
 import com.github.silhouettemc.command.punish.KickCommand
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.database.impl.h2.H2DatabaseImpl
+import com.github.silhouettemc.database.impl.mongo.MongoDatabaseImpl
 import com.github.silhouettemc.listener.player.PlayerChatListener
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
+import kotlinx.serialization.json.Json
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -17,8 +19,8 @@ class Silhouette : JavaPlugin() {
     lateinit var mm: MiniMessage
 
     override fun onEnable() {
-        database = H2DatabaseImpl() // TODO: configuration when we have multiple databases
-//        database.initialize(this)
+        database = MongoDatabaseImpl() // TODO: configuration when we have multiple databases
+        database.initialize(this)
 
         mm = MiniMessage.miniMessage()
 
@@ -28,6 +30,9 @@ class Silhouette : JavaPlugin() {
 
     override fun onDisable() {
         // Plugin shutdown logic
+
+//        todo: disconnect from database on disable, ie:
+//        database.disconnect()
     }
 
     private fun registerCommands() {
