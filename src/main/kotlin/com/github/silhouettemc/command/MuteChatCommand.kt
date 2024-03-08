@@ -34,12 +34,12 @@ object MuteChatCommand : BaseCommand() {
 
         for (player in Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("silhouettemc.command.mutechat")) {
-                if (player == sender) player.sendMessage(translate("<#ffd4e3>You've <#ffb5cf>$mutedLabel</#ffb5cf> the chat$immunityLabel"))
-                else player.sendTranslated("<#ffd4e3>Chat has been <#ffb5cf>$mutedLabel</#ffb5cf> by <#ffb5cf>$muter</#ffb5cf>$immunityLabel")
+                if (player == sender) player.sendMessage(translate("<p>You've <s>$mutedLabel</s> the chat$immunityLabel"))
+                else player.sendTranslated("<p>Chat has been <s>$mutedLabel</s> by <s>$muter</s>$immunityLabel")
                 continue
             }
 
-            player.sendTranslated("<#ffd4e3>The chat has been <#ffb5cf>$mutedLabel")
+            player.sendTranslated("<p>The chat has been <s>$mutedLabel")
         }
 
         Bukkit.getLogger().info("Chat has been $mutedLabel by $muter")

@@ -21,12 +21,12 @@ object ClearChatCommand : BaseCommand() {
     ) {
 
         val clearer = if (sender is Player) sender.name else "Console"
-        val clearMessage = "\n".repeat(100) + "<#ffd4e3>The chat has been <#ffb5cf>cleared"
+        val clearMessage = "\n".repeat(100) + "<p>The chat has been <s>cleared"
 
         for (player in Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("silhouettemc.command.clearchat")) {
-                if (player == sender) player.sendTranslated("<#ffd4e3>You've cleared the chat for others, but you're immune!")
-                else player.sendTranslated("<#ffd4e3>The chat has been cleared by <#ffb5cf>$clearer</#ffb5cf>, but you're immune!")
+                if (player == sender) player.sendTranslated("<p>You've cleared the chat for others, but you're immune!")
+                else player.sendTranslated("<p>The chat has been cleared by <s>$clearer</s>, but you're immune!")
                 continue
             }
 
