@@ -41,6 +41,10 @@ tasks.runServer {
     minecraftVersion("1.20.4")
 }
 
+tasks.compileKotlin {
+    kotlinOptions.javaParameters = true
+}
+
 bukkit {
     name = "Silhouette"
     version = "${project.version}"
