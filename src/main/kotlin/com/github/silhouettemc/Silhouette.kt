@@ -4,15 +4,18 @@ import co.aikar.commands.ACFUtil
 import co.aikar.commands.PaperCommandManager
 import com.github.silhouettemc.command.ClearChatCommand
 import com.github.silhouettemc.command.MuteChatCommand
+import com.github.silhouettemc.command.punish.BanCommand
 import com.github.silhouettemc.command.punish.KickCommand
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.database.impl.mongo.MongoDatabaseImpl
 import com.github.silhouettemc.listener.player.PlayerChatListener
+import com.github.silhouettemc.listener.player.PlayerLoginListener
 import com.github.silhouettemc.util.type.CustomMiniMessage
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
 import com.github.silhouettemc.util.type.ReasonContext
 import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.plugin.java.JavaPlugin
 
 
@@ -42,9 +45,8 @@ class Silhouette : JavaPlugin() {
         commandManager.enableUnstableAPI("brigadier");
         commandManager.registerContexts()
         commandManager.registerBaseCommands(
-            ClearChatCommand,
-            MuteChatCommand,
-            KickCommand
+            BanCommand, KickCommand,
+            ClearChatCommand, MuteChatCommand
         )
     }
 
@@ -54,7 +56,8 @@ class Silhouette : JavaPlugin() {
 
     private fun registerListeners() {
         server.pluginManager.registerEvents(this,
-            PlayerChatListener
+            PlayerChatListener,
+            PlayerLoginListener,
         )
     }
 

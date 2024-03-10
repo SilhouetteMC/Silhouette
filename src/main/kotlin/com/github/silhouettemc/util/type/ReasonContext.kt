@@ -1,7 +1,7 @@
 package com.github.silhouettemc.util.type
 
 class ReasonContext(
-    unparsed: String,
+    unparsed: String?,
 ) {
 
     // in the future, we might want to add more things to this, like notes? or an explicit -p for public, if we make an option to silent by default
@@ -13,10 +13,12 @@ class ReasonContext(
         private set
 
     init {
-        isSilent = unparsed.startsWith("-s ", true) || unparsed.endsWith(" -s", true)
-        reason = unparsed
-            .removePrefix("-s ")
-            .removeSuffix(" -s")
+        if (unparsed != null) {
+            isSilent = unparsed.startsWith("-s ", true) || unparsed.endsWith(" -s", true)
+            reason = unparsed
+                .removePrefix("-s ")
+                .removeSuffix(" -s")
+        }
     }
 
 }

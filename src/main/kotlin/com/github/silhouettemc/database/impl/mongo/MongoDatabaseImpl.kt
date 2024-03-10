@@ -3,11 +3,14 @@ package com.github.silhouettemc.database.impl.mongo
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.punishment.Punishment
+import com.github.silhouettemc.punishment.PunishmentType
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
+import com.mongodb.client.model.Filters
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
+import org.bson.Document
 import org.bson.codecs.configuration.CodecRegistries.fromProviders
 import org.bson.codecs.configuration.CodecRegistries.fromRegistries
 import org.bson.codecs.configuration.CodecRegistry
@@ -58,5 +61,21 @@ class MongoDatabaseImpl: Database {
         TODO("Not yet implemented")
     }
 
-    // todo: disconnect fun -> client.close()
+    override fun getLatestActivePunishment(player: UUID): Punishment? {
+        val doc = punishmentsCollection.find(
+            Filters.and(
+                Filters.eq("type", PunishmentType.BAN),
+                Filters.or(
+                    Filters.not(Filters.exists("expiration")),
+                    Filters.gt("expiration", Date())
+                )
+            )
+        ).sort(Document("punishedOn", -1)).firstOrNull()
+
+        println(doc)
+        println(doc?.punishedOn)
+
+        return doc
+    }
+
 }

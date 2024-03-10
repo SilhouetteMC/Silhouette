@@ -12,11 +12,13 @@ import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.type.ReasonContext
 import org.bukkit.entity.Player
+import java.time.Instant
+import java.util.Date
 
-@CommandAlias("kick")
-@Description("Kicks a player")
-@CommandPermission("silhouettemc.punish.kick")
-object KickCommand : BaseCommand() {
+@CommandAlias("ban")
+@Description("Bans a player")
+@CommandPermission("silhouettemc.punish.ban")
+object BanCommand : BaseCommand() {
 
     @Default
     fun onCommand(
@@ -31,7 +33,7 @@ object KickCommand : BaseCommand() {
             player.uniqueId,
             Actor(sender.uniqueId),
             reasonContext.reason,
-            PunishmentType.KICK,
+            PunishmentType.BAN,
         ).process(reasonContext)
 
     }

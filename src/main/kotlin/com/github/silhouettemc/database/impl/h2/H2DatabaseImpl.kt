@@ -46,4 +46,8 @@ class H2DatabaseImpl: Database {
     override fun listPunishments(player: UUID): List<Punishment> {
         return punishmentsTable.dao.filter { it.player == player }
     }
+
+    override fun getLatestActivePunishment(player: UUID): Punishment? {
+        TODO("Not yet implemented")
+    }
 }

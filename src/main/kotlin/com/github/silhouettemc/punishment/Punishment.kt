@@ -8,11 +8,14 @@ import com.github.silhouettemc.util.type.ReasonContext
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
+import org.bson.codecs.pojo.annotations.BsonCreator
+import org.bson.codecs.pojo.annotations.BsonIgnore
 import org.bukkit.Bukkit
+import java.time.Instant
 import java.util.*
 
 @DatabaseTable(tableName = "punishments")
-open class Punishment(
+data class Punishment(
     @DatabaseField(canBeNull = false)
     val player: UUID,
     @DatabaseField(canBeNull = false, dataType = DataType.SERIALIZABLE)
@@ -21,6 +24,10 @@ open class Punishment(
     val reason: String? = null,
     @DatabaseField(canBeNull = false)
     val type: PunishmentType,
+
+    val expiration: Instant? = null,
+    val revoker: Actor? = null,
+    val revokeReason: String? = null,
 
     @DatabaseField(canBeNull = false)
     val id: UUID = UUID.randomUUID(),
@@ -61,5 +68,9 @@ open class Punishment(
             """.trimIndent()
         ))
     }
+
+    @get:BsonIgnore
+    val isExpired
+        get() = expiration?.isBefore(Instant.now()) ?: false
 
 }
