@@ -64,6 +64,7 @@ class MongoDatabaseImpl: Database {
     override fun getLatestActivePunishment(player: UUID): Punishment? {
         val doc = punishmentsCollection.find(
             Filters.and(
+                Filters.eq("player", player),
                 Filters.eq("type", PunishmentType.BAN),
                 Filters.or(
                     Filters.not(Filters.exists("expiration")),
