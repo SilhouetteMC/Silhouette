@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.21"
+    kotlin("plugin.serialization") version "1.9.21"
 
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -27,6 +28,7 @@ dependencies {
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
     implementation("org.mongodb:mongodb-driver-kotlin-sync:4.11.0")
 
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
 
 java {

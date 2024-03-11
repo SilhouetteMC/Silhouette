@@ -13,8 +13,10 @@ import com.github.silhouettemc.listener.player.PlayerLoginListener
 import com.github.silhouettemc.util.type.CustomMiniMessage
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
+import com.github.silhouettemc.util.type.PlayerProfileRetriever
 import com.github.silhouettemc.util.type.ReasonContext
 import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.OfflinePlayer
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -44,6 +46,7 @@ class Silhouette : JavaPlugin() {
         val commandManager = PaperCommandManager(this)
         commandManager.enableUnstableAPI("brigadier");
         commandManager.registerContexts()
+        commandManager.registerCommandCompletions()
         commandManager.registerBaseCommands(
             BanCommand, KickCommand,
             ClearChatCommand, MuteChatCommand
@@ -51,7 +54,13 @@ class Silhouette : JavaPlugin() {
     }
 
     private fun PaperCommandManager.registerContexts() {
-        // soon:tm:
+        this.getCommandContexts().registerContext(PlayerProfileRetriever::class.java) { context ->
+            PlayerProfileRetriever(context.popFirstArg())
+        }
+    }
+
+    private fun PaperCommandManager.registerCommandCompletions() {
+        this.commandCompletions.setDefaultCompletion("players", OfflinePlayer::class.java, PlayerProfileRetriever::class.java)
     }
 
     private fun registerListeners() {
