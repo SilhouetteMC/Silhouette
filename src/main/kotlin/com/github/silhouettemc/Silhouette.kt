@@ -1,6 +1,5 @@
 package com.github.silhouettemc
 
-import co.aikar.commands.ACFUtil
 import co.aikar.commands.PaperCommandManager
 import com.github.silhouettemc.command.ClearChatCommand
 import com.github.silhouettemc.command.MuteChatCommand
@@ -14,10 +13,8 @@ import com.github.silhouettemc.util.type.CustomMiniMessage
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
 import com.github.silhouettemc.util.type.PlayerProfileRetriever
-import com.github.silhouettemc.util.type.ReasonContext
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.plugin.java.JavaPlugin
 
 

@@ -11,12 +11,9 @@ import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.sendError
-import com.github.silhouettemc.util.sendTranslated
 import com.github.silhouettemc.util.type.PlayerProfileRetriever
-import com.github.silhouettemc.util.type.ReasonContext
+import com.github.silhouettemc.util.type.PunishArgumentParser
 import org.bukkit.entity.Player
-import java.time.Instant
-import java.util.Date
 
 @CommandAlias("ban")
 @Description("Bans a player")
@@ -27,20 +24,20 @@ object BanCommand : BaseCommand() {
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
-        @Optional reason: String?,
+        @Optional unparsed: String?,
     ) {
 
         val player = retriever.fetchOfflinePlayerProfile()
             ?: return sender.sendError("Couldn't find a player called ${retriever.name} ;c")
 
-        val reasonContext = ReasonContext(reason)
+        val args = PunishArgumentParser(unparsed)
 
         Punishment(
             player.id!!,
             Actor(sender.uniqueId),
-            reasonContext.reason,
+            args.reason,
             PunishmentType.BAN,
-        ).process(reasonContext)
+        ).process(args)
 
     }
 }

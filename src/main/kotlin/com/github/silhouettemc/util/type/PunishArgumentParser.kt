@@ -1,6 +1,6 @@
 package com.github.silhouettemc.util.type
 
-class ReasonContext(
+class PunishArgumentParser(
     unparsed: String?,
 ) {
 

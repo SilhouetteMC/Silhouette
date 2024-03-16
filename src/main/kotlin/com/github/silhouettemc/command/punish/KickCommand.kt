@@ -10,7 +10,7 @@ import co.aikar.commands.annotation.Optional
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
-import com.github.silhouettemc.util.type.ReasonContext
+import com.github.silhouettemc.util.type.PunishArgumentParser
 import org.bukkit.entity.Player
 
 @CommandAlias("kick")
@@ -22,17 +22,17 @@ object KickCommand : BaseCommand() {
     fun onCommand(
         sender: Player,
         @Flags("other") player: Player,
-        @Optional reason: String?,
+        @Optional unparsed: String?,
     ) {
 
-        val reasonContext = ReasonContext(reason)
+        val args = PunishArgumentParser(unparsed)
 
         Punishment(
             player.uniqueId,
             Actor(sender.uniqueId),
-            reasonContext.reason,
+            args.reason,
             PunishmentType.KICK,
-        ).process(reasonContext)
+        ).process(args)
 
     }
 }

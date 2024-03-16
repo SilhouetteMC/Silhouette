@@ -4,11 +4,10 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.util.translate
-import com.github.silhouettemc.util.type.ReasonContext
+import com.github.silhouettemc.util.type.PunishArgumentParser
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
-import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonIgnore
 import org.bukkit.Bukkit
 import java.time.Instant
@@ -36,11 +35,11 @@ data class Punishment(
     val punishedOn: Date = Date()
 ) {
 
-    fun process(reason: ReasonContext) {
+    fun process(args: PunishArgumentParser) {
         Silhouette.getInstance().database.addPunishment(this) // todo: async
 
         if (type.shouldDisconnect) handleDisconnect()
-        if (!reason.isSilent) broadcastPunishment()
+        if (!args.isSilent) broadcastPunishment()
     }
 
     private fun handleDisconnect() {
