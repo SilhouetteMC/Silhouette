@@ -32,13 +32,14 @@ object BanCommand : BaseCommand() {
             ?: return sender.sendError("Couldn't find a player called ${retriever.name} ;c")
 
         val args = PunishArgumentParser(unparsed)
+        val expirey = args.duration?.let { Instant.now().plus(it) }
 
         Punishment(
             player.id!!,
             Actor(sender.uniqueId),
             args.reason,
             PunishmentType.BAN,
-            Instant.now().plus(args.duration)
+            expirey
         ).process(args)
 
     }

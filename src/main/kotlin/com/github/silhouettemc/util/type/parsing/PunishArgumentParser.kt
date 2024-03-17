@@ -70,10 +70,10 @@ class PunishArgumentParser(
 
     private fun String.removeEndings(ending: String): String {
         return this
+            .trim()
             .removePrefix(ending)
-            .removePrefix(" ")
-            .removeSuffix(" ")
             .removeSuffix(ending)
+            .trim()
     }
 
 }
