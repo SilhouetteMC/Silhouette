@@ -1,2 +1,4 @@
-primaryColour = "#ffd4e3"
-secondaryColour = "#ffb5cf"
+[colors]
+primary = "#ffd4e3"
+secondary = "#ffb5cf"
+
