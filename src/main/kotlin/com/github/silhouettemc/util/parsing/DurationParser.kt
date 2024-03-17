@@ -8,6 +8,7 @@ object DurationParser {
 
     var durationMap = mapOf(
         listOf("ns", "nano", "nanos", "nanosecond", "nanoseconds") to ChronoUnit.NANOS,
+        listOf("micro", "micros", "microsecond", "microseconds") to ChronoUnit.MICROS,
         listOf("ms", "milli", "millis", "millisecond", "milliseconds") to ChronoUnit.MILLIS,
         listOf("s", "sec", "secs", "second", "seconds") to ChronoUnit.SECONDS,
         listOf("m", "min", "mins", "minute", "minutes") to ChronoUnit.MINUTES,
