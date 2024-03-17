@@ -2,3 +2,25 @@
 primary = "#ffd4e3"
 secondary = "#ffb5cf"
 
+[messages]
+broadcast = """
+    <p>{player} was <s>{action}</s> by <s>{punisher}</s>
+"""
+banScreen = """
+    You have been banned!
+    Reason: {reason}
+"""
+kickScreen = """
+    You have been kicked!
+    Reason: {reason}
+"""
+muted = """
+     You are muted
+     Reason: {reason}
+     Expires: {expiry}
+"""
+
+[commands.clearchat]
+alertAll = "<p>The chat has been <s>cleared"
+alertSelf = "<p>You've cleared the chat for others, but you're immune!"
+alertStaff = "<p>The chat has been cleared by <s>{clearer}</s>, but you're immune!"

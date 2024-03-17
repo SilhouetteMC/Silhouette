@@ -2,6 +2,7 @@ package com.github.silhouettemc.listener.player
 
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.punishment.PunishmentType
+import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.translate
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -15,18 +16,18 @@ object PlayerLoginListener: Listener {
         val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(uniqueId, PunishmentType.BAN)
             ?: return
 
-        val type = existingPunishment.type
         val expiration = existingPunishment.expiration
+
+        val placeholders = mapOf(
+            "punisher" to existingPunishment.punisher.getReadableName(),
+            "reason" to (existingPunishment.reason ?: "No reason specified"),
+            "expiry" to (expiration?.toString() ?: "Never")
+        )
+        val msg = ConfigUtil.getMessage("banScreen", placeholders)
 
         disallow(
             AsyncPlayerPreLoginEvent.Result.KICK_BANNED,
-            translate("""
-                You are ${type.punishedName}
-                Reason: ${existingPunishment.reason}
-                Expires: ${expiration?.toString() ?: "Never"}
-            """.trimIndent())
+            translate(msg)
         )
-
     }
-
 }

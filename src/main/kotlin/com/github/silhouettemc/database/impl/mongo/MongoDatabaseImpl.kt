@@ -76,9 +76,6 @@ class MongoDatabaseImpl: Database {
             )
         ).sort(Document("punishedOn", -1)).firstOrNull()
 
-        println(doc)
-        println(doc?.punishedOn)
-
         return doc
     }
 

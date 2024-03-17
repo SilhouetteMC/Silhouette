@@ -36,3 +36,11 @@ fun String.insertUUIDDashes(): String {
         .append(substring(20))
         .toString()
 }
+
+fun String.replacePlaceholders(map: Map<String, String>, parenthesis: String = "{}", ignoreCase: Boolean = false) : String {
+    var placeholded = this
+    for (value in map) {
+        placeholded = placeholded.replace("${parenthesis[0]}${value.key}${parenthesis[1]}", value.value, ignoreCase)
+    }
+    return placeholded
+}

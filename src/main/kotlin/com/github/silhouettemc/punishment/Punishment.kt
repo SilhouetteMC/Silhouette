@@ -3,6 +3,7 @@ package com.github.silhouettemc.punishment
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.actor.Actor
+import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.translate
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.j256.ormlite.field.DataType
@@ -45,29 +46,25 @@ data class Punishment(
     private fun handleDisconnect() {
         val player = Bukkit.getPlayer(player) ?: return
 
-        if (reason == null) {
-            player.kick(mm.deserialize("You have been ${type.punishedName}"))
-            return
-        }
-
-        player.kick(
-            mm.deserialize(
-                """
-                    You have been ${type.punishedName}
-                    Reason: $reason
-                """.trimIndent()
-            )
+        val placeholders = mapOf(
+            "player" to player.toString(),
+            "punisher" to punisher.getReadableName(),
+            "reason" to (reason ?: "No reason specified"),
+            "action" to type.punishedName
         )
+
+        val msg = ConfigUtil.getMessage("${type.actionName.lowercase()}Screen", placeholders)
+
+        player.kick(translate(msg))
     }
 
     private fun broadcastPunishment() {
-        Bukkit.broadcast(
-            translate(
-            """
-                <p>$player was <s>${type.punishedName}</s> by <s>${punisher.getReadableName()}</s>
-            """.trimIndent()
-        )
-        )
+        val broadcast = ConfigUtil.getMessage("broadcast", mapOf(
+            "player" to player.toString(),
+            "action" to type.punishedName,
+            "punisher" to punisher.getReadableName()
+        ))
+        Bukkit.broadcast(translate(broadcast))
     }
 
     @get:BsonIgnore

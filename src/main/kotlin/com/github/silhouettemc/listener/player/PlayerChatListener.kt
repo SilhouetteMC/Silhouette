@@ -3,6 +3,7 @@ package com.github.silhouettemc.listener.player
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.command.chat.MuteChatCommand
 import com.github.silhouettemc.punishment.PunishmentType
+import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.sendError
 import com.github.silhouettemc.util.text.sendTranslated
 import io.papermc.paper.event.player.AsyncChatEvent
@@ -22,11 +23,13 @@ object PlayerChatListener : Listener {
             ?: return
 
         isCancelled = true
-        player.sendTranslated("""
-                You are ${existingPunishment.type.punishedName}
-                Reason: ${existingPunishment.reason}
-                Expires: ${existingPunishment.expiration?.toString() ?: "Never"}
-        """.trimIndent())
+
+        val formattedMsg = ConfigUtil.getMessage("muted", mapOf(
+            "reason" to (existingPunishment.reason ?: "No reason specified"),
+            "expiry" to (existingPunishment.expiration?.toString() ?: "Never")
+        ))
+
+        player.sendTranslated(formattedMsg)
     }
 
     private fun AsyncChatEvent.handleMutedChat() {

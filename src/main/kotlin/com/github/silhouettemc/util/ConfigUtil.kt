@@ -2,6 +2,7 @@ package com.github.silhouettemc.util
 
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.util.text.CustomMiniMessage
+import com.github.silhouettemc.util.text.replacePlaceholders
 import com.moandjiezana.toml.Toml
 import org.bukkit.Bukkit
 import java.nio.file.Files
@@ -37,5 +38,15 @@ object ConfigUtil {
 
         // Rebuilds MiniMessage to update it
         Silhouette.mm = CustomMiniMessage().build()
+    }
+
+    fun getMessage(key: String): String {
+        val msg = messages.getString("messages.$key") ?: return key
+        return msg.trimIndent()
+    }
+
+    fun getMessage(key: String, placeholders: Map<String, String>): String {
+        val msg = messages.getString("messages.$key") ?: return key
+        return msg.trimIndent().replacePlaceholders(placeholders)
     }
 }
