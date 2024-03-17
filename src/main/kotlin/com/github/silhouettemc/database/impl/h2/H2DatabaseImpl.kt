@@ -3,6 +3,7 @@ package com.github.silhouettemc.database.impl.h2
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.punishment.Punishment
+import com.github.silhouettemc.punishment.PunishmentType
 import com.j256.ormlite.dao.DaoManager
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource
 import com.j256.ormlite.table.TableUtils
@@ -47,7 +48,7 @@ class H2DatabaseImpl: Database {
         return punishmentsTable.dao.filter { it.player == player }
     }
 
-    override fun getLatestActivePunishment(player: UUID): Punishment? {
+    override fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment? {
         TODO("Not yet implemented")
     }
 }
