@@ -12,11 +12,20 @@ object PunishArgumentTabCompleter {
 
     private val allowedDurationTags = DurationParser.durationMap.keys.flatten()
 
-    fun getCompletions(context: BukkitCommandCompletionContext): List<String> {
+    fun getFlagCompletions(context: BukkitCommandCompletionContext): List<String> {
         val input = context.input
 
         if (input.isEmpty()) return emptyList()
-        if (input.startsWith("-")) return tags
+        if (input.startsWith("-")) return tags.filter { it.startsWith(input) }
+
+        return emptyList()
+    }
+
+    fun getDurationAndFlagCompletions(context: BukkitCommandCompletionContext): List<String> {
+        val input = context.input
+
+        if (input.isEmpty()) return emptyList()
+        if (input.startsWith("-")) return tags.filter { it.startsWith(input) }
 
         val durationTags = input.split(numberRegex)
         val inputDurations = input.split(alphabetRegex)
