@@ -14,6 +14,7 @@ import com.github.silhouettemc.util.text.CustomMiniMessage
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
 import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
+import com.github.silhouettemc.util.parsing.PunishArgumentTabCompleter
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
 import org.bukkit.plugin.java.JavaPlugin
@@ -59,6 +60,8 @@ class Silhouette : JavaPlugin() {
 
     private fun PaperCommandManager.registerCommandCompletions() {
         this.commandCompletions.setDefaultCompletion("players", OfflinePlayer::class.java, PlayerProfileRetriever::class.java)
+        this.commandCompletions.registerCompletion("punish_args") { context -> PunishArgumentTabCompleter.getDurationAndFlagCompletions(context) }
+        this.commandCompletions.registerCompletion("punish_flags") { context -> PunishArgumentTabCompleter.getFlagCompletions(context) }
     }
 
     private fun registerListeners() {

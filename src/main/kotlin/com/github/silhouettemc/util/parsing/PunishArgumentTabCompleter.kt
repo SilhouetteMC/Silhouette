@@ -1,0 +1,53 @@
+package com.github.silhouettemc.util.parsing
+
+import co.aikar.commands.BukkitCommandCompletionContext
+
+object PunishArgumentTabCompleter {
+
+    private val primaryDurations = listOf("seconds", "minutes", "hours", "days", "weeks", "months", "years")
+    private val tags = listOf("-s")
+
+    private val alphabetRegex = Regex("[a-zA-Z]")
+    private val numberRegex = Regex("\\d*\\.?\\d+")
+
+    private val allowedDurationTags = DurationParser.durationMap.keys.flatten()
+
+    fun getFlagCompletions(context: BukkitCommandCompletionContext): List<String> {
+        val input = context.input
+
+        if (input.isEmpty()) return emptyList()
+        if (input.startsWith("-")) return tags.filter { it.startsWith(input) }
+
+        return emptyList()
+    }
+
+    fun getDurationAndFlagCompletions(context: BukkitCommandCompletionContext): List<String> {
+        val input = context.input
+
+        if (input.isEmpty()) return emptyList()
+        if (input.startsWith("-")) return tags.filter { it.startsWith(input) }
+
+        val durationTags = input.split(numberRegex)
+        val inputDurations = input.split(alphabetRegex)
+
+        val establishedDurationTags = durationTags.dropLast(1)
+        for (durationTag in establishedDurationTags) {
+            if (durationTag.isEmpty()) continue
+            if (!allowedDurationTags.contains(durationTag)) return emptyList()
+        }
+
+        val endNumber = inputDurations.last().toDoubleOrNull()
+        if (endNumber != null) {
+            return primaryDurations.map { "$input$it" }
+        }
+
+        val strippedInput = input.removeSuffix(durationTags.last())
+
+        val matchingDurations = allowedDurationTags.filter { it.startsWith(durationTags.last()) }
+        if (matchingDurations.isNotEmpty()) return matchingDurations.map { "$strippedInput$it" }
+
+        return emptyList()
+    }
+
+
+}

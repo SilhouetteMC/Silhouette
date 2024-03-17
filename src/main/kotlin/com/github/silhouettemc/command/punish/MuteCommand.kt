@@ -2,6 +2,7 @@ package com.github.silhouettemc.command.punish
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
+import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Description
@@ -20,7 +21,9 @@ import java.time.Instant
 @Description("Mutes a player")
 @CommandPermission("silhouettemc.punish.mute")
 object MuteCommand : BaseCommand() {
+
     @Default
+    @CommandCompletion("@players @punish_args")
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
