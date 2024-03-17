@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit
 
 object DurationParser {
 
-    private val durationMap = mapOf(
+    var durationMap = mapOf(
         listOf("ns", "nano", "nanos", "nanosecond", "nanoseconds") to ChronoUnit.NANOS,
         listOf("ms", "milli", "millis", "millisecond", "milliseconds") to ChronoUnit.MILLIS,
         listOf("s", "sec", "secs", "second", "seconds") to ChronoUnit.SECONDS,
@@ -22,6 +22,7 @@ object DurationParser {
         listOf("mil", "mils", "millennium", "millennia") to ChronoUnit.MILLENNIA,
         listOf("era", "eras") to ChronoUnit.ERAS
     )
+        private set
 
     private val durationSectionRegex = Regex("(\\d*\\.?\\d+)([a-zA-Z]+)", RegexOption.IGNORE_CASE)
 
