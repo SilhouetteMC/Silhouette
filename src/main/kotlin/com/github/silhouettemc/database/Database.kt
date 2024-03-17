@@ -2,6 +2,7 @@ package com.github.silhouettemc.database
 
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.punishment.Punishment
+import com.github.silhouettemc.punishment.PunishmentType
 import java.util.*
 
 interface Database {
@@ -15,7 +16,7 @@ interface Database {
 
     fun listPunishments(player: UUID): List<Punishment>
 
-    fun getLatestActivePunishment(player: UUID): Punishment?
+    fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment?
 
     // todo: disconnect()?
 }

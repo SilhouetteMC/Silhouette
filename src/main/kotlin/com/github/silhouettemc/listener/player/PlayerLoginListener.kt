@@ -1,6 +1,7 @@
 package com.github.silhouettemc.listener.player
 
 import com.github.silhouettemc.Silhouette
+import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.text.translate
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -10,9 +11,8 @@ object PlayerLoginListener: Listener {
 
     @EventHandler
     fun AsyncPlayerPreLoginEvent.onPreLogin() {
-
         // todo: async
-        val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(uniqueId)
+        val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(uniqueId, PunishmentType.BAN)
             ?: return
 
         val type = existingPunishment.type

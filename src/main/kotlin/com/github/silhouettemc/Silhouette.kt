@@ -5,6 +5,7 @@ import com.github.silhouettemc.command.chat.ClearChatCommand
 import com.github.silhouettemc.command.chat.MuteChatCommand
 import com.github.silhouettemc.command.punish.BanCommand
 import com.github.silhouettemc.command.punish.KickCommand
+import com.github.silhouettemc.command.punish.MuteCommand
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.database.impl.mongo.MongoDatabaseImpl
 import com.github.silhouettemc.listener.player.PlayerChatListener
@@ -45,8 +46,8 @@ class Silhouette : JavaPlugin() {
         commandManager.registerContexts()
         commandManager.registerCommandCompletions()
         commandManager.registerBaseCommands(
-            BanCommand, KickCommand,
-            com.github.silhouettemc.command.chat.ClearChatCommand, MuteChatCommand
+            BanCommand, KickCommand, MuteCommand,
+            ClearChatCommand, MuteChatCommand
         )
     }
 

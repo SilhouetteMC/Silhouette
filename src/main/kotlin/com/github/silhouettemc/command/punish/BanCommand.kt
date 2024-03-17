@@ -20,27 +20,24 @@ import java.time.Instant
 @Description("Bans a player")
 @CommandPermission("silhouettemc.punish.ban")
 object BanCommand : BaseCommand() {
-
     @Default
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
         @Optional unparsed: String?,
     ) {
-
         val player = retriever.fetchOfflinePlayerProfile()
             ?: return sender.sendError("Couldn't find a player called ${retriever.name} ;c")
 
         val args = PunishArgumentParser(unparsed)
-        val expirey = args.duration?.let { Instant.now().plus(it) }
+        val expiry = args.duration?.let { Instant.now().plus(it) }
 
         Punishment(
             player.id!!,
             Actor(sender.uniqueId),
             args.reason,
             PunishmentType.BAN,
-            expirey
+            expiry
         ).process(args)
-
     }
 }
