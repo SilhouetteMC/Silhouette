@@ -1,7 +1,7 @@
-package com.github.silhouettemc.util.type.parsing
+package com.github.silhouettemc.util.parsing
 
 import com.destroystokyo.paper.profile.PlayerProfile
-import com.github.silhouettemc.util.toUUID
+import com.github.silhouettemc.util.text.toUUID
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient

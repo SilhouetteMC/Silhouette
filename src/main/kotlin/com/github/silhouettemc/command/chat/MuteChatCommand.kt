@@ -1,10 +1,10 @@
-package com.github.silhouettemc.command
+package com.github.silhouettemc.command.chat
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
-import com.github.silhouettemc.util.sendError
-import com.github.silhouettemc.util.sendTranslated
-import com.github.silhouettemc.util.translate
+import com.github.silhouettemc.util.text.sendError
+import com.github.silhouettemc.util.text.sendTranslated
+import com.github.silhouettemc.util.text.translate
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

@@ -1,4 +1,4 @@
-package com.github.silhouettemc.util.type.parsing
+package com.github.silhouettemc.util.parsing
 
 import com.github.silhouettemc.util.plus
 import java.time.Duration

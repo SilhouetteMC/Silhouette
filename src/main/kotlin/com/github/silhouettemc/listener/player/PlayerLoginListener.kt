@@ -1,7 +1,7 @@
 package com.github.silhouettemc.listener.player
 
 import com.github.silhouettemc.Silhouette
-import com.github.silhouettemc.util.translate
+import com.github.silhouettemc.util.text.translate
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent

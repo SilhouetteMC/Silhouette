@@ -3,8 +3,8 @@ package com.github.silhouettemc.punishment
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.actor.Actor
-import com.github.silhouettemc.util.translate
-import com.github.silhouettemc.util.type.parsing.PunishArgumentParser
+import com.github.silhouettemc.util.text.translate
+import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
@@ -61,11 +61,13 @@ data class Punishment(
     }
 
     private fun broadcastPunishment() {
-        Bukkit.broadcast(translate(
+        Bukkit.broadcast(
+            translate(
             """
                 <p>$player was <s>${type.punishedName}</s> by <s>${punisher.getReadableName()}</s>
             """.trimIndent()
-        ))
+        )
+        )
     }
 
     @get:BsonIgnore

@@ -10,9 +10,9 @@ import co.aikar.commands.annotation.Optional
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
-import com.github.silhouettemc.util.sendError
-import com.github.silhouettemc.util.type.parsing.PlayerProfileRetriever
-import com.github.silhouettemc.util.type.parsing.PunishArgumentParser
+import com.github.silhouettemc.util.text.sendError
+import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
+import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import org.bukkit.entity.Player
 import java.time.Instant
 

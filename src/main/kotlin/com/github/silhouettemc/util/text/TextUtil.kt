@@ -1,4 +1,4 @@
-package com.github.silhouettemc.util
+package com.github.silhouettemc.util.text
 
 import com.github.silhouettemc.Silhouette.Companion.mm
 import org.bukkit.command.CommandSender

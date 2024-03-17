@@ -1,11 +1,11 @@
-package com.github.silhouettemc.command
+package com.github.silhouettemc.command.chat
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Description
-import com.github.silhouettemc.util.sendTranslated
+import com.github.silhouettemc.util.text.sendTranslated
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

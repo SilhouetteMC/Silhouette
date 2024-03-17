@@ -1,4 +1,4 @@
-package com.github.silhouettemc.util.type
+package com.github.silhouettemc.util.text
 
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
