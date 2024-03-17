@@ -4,6 +4,7 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
+import com.github.silhouettemc.util.ConfigUtil
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.model.Filters
@@ -24,8 +25,10 @@ class MongoDatabaseImpl: Database {
     private lateinit var client: MongoClient
     private lateinit var punishmentsCollection: MongoCollection<Punishment>
     override fun initialize(plugin: Silhouette) {
+        val databaseURI = ConfigUtil.config.getString("databaseURI")
+            ?: "mongodb://localhost:27017"
 
-        val connectionString = ConnectionString("mongodb://localhost:27017") // todo: configgy
+        val connectionString = ConnectionString(databaseURI)
         val pojoCodecRegistry: CodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build())
         val codecRegistry: CodecRegistry = fromRegistries(
             MongoClientSettings.getDefaultCodecRegistry(),
