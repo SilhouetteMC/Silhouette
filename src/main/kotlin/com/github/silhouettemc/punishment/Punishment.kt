@@ -4,7 +4,7 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.util.translate
-import com.github.silhouettemc.util.type.PunishArgumentParser
+import com.github.silhouettemc.util.type.parsing.PunishArgumentParser
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable

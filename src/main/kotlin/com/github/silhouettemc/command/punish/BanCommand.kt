@@ -11,9 +11,10 @@ import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.sendError
-import com.github.silhouettemc.util.type.PlayerProfileRetriever
-import com.github.silhouettemc.util.type.PunishArgumentParser
+import com.github.silhouettemc.util.type.parsing.PlayerProfileRetriever
+import com.github.silhouettemc.util.type.parsing.PunishArgumentParser
 import org.bukkit.entity.Player
+import java.time.Instant
 
 @CommandAlias("ban")
 @Description("Bans a player")
@@ -37,6 +38,7 @@ object BanCommand : BaseCommand() {
             Actor(sender.uniqueId),
             args.reason,
             PunishmentType.BAN,
+            Instant.now().plus(args.duration)
         ).process(args)
 
     }

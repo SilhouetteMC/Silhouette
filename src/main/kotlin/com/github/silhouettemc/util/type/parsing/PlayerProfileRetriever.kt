@@ -1,16 +1,12 @@
-package com.github.silhouettemc.util.type
+package com.github.silhouettemc.util.type.parsing
 
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.github.silhouettemc.util.toUUID
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.bukkit.Bukkit
-import java.util.UUID
 
 class PlayerProfileRetriever(val name: String) {
 

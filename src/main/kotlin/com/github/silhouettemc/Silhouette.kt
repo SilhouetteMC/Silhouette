@@ -12,7 +12,7 @@ import com.github.silhouettemc.listener.player.PlayerLoginListener
 import com.github.silhouettemc.util.type.CustomMiniMessage
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
-import com.github.silhouettemc.util.type.PlayerProfileRetriever
+import com.github.silhouettemc.util.type.parsing.PlayerProfileRetriever
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
 import org.bukkit.plugin.java.JavaPlugin
