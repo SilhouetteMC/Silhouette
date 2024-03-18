@@ -8,6 +8,7 @@ import com.github.silhouettemc.util.ConfigUtil
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
@@ -16,7 +17,9 @@ import org.bson.codecs.configuration.CodecRegistries.fromProviders
 import org.bson.codecs.configuration.CodecRegistries.fromRegistries
 import org.bson.codecs.configuration.CodecRegistry
 import org.bson.codecs.pojo.PojoCodecProvider
+import org.bson.conversions.Bson
 import java.util.*
+import java.util.logging.Filter
 
 
 class MongoDatabaseImpl: Database {
@@ -52,8 +55,11 @@ class MongoDatabaseImpl: Database {
         punishmentsCollection.insertOne(punishment)
     }
 
-    override fun updatePunishment(punishment: Punishment) {
-        TODO("Not yet implemented")
+    override fun updatePunishment(punishment: Punishment, vararg updates: Bson) {
+        val filter = Filters.eq("id", punishment.id)
+        updates.forEach {
+            punishmentsCollection.updateOne(filter, it)
+        }
     }
 
     override fun removePunishment(punishment: Punishment) {
@@ -69,6 +75,7 @@ class MongoDatabaseImpl: Database {
             Filters.and(
                 Filters.eq("player", player),
                 Filters.eq("type", type),
+                Filters.not(Filters.exists("revoker")),
                 Filters.or(
                     Filters.not(Filters.exists("expiration")),
                     Filters.gt("expiration", Date())

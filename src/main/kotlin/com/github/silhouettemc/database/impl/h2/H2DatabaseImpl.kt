@@ -7,6 +7,7 @@ import com.github.silhouettemc.punishment.PunishmentType
 import com.j256.ormlite.dao.DaoManager
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource
 import com.j256.ormlite.table.TableUtils
+import org.bson.conversions.Bson
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
@@ -36,7 +37,7 @@ class H2DatabaseImpl: Database {
         punishmentsTable.create(punishment)
     }
 
-    override fun updatePunishment(punishment: Punishment) {
+    override fun updatePunishment(punishment: Punishment, vararg updates: Bson) {
         punishmentsTable.update(punishment)
     }
 
