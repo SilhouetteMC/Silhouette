@@ -15,7 +15,7 @@ import org.bukkit.entity.Player
 @CommandPermission("silhouette.punish.unban")
 object UnbanCommand : BaseCommand() {
     @Default
-    @CommandCompletion("@players")
+    @CommandCompletion("@players @punish_args")
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
