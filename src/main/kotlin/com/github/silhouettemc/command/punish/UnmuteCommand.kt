@@ -14,8 +14,9 @@ import org.bukkit.entity.Player
 @Description("Unmute a player")
 @CommandPermission("silhouette.punish.unmute")
 object UnmuteCommand : BaseCommand() {
+
     @Default
-    @CommandCompletion("@players @punish_args")
+    @CommandCompletion("@players @punish_flags")
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
