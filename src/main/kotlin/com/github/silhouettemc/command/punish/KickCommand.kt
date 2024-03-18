@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 
 @CommandAlias("kick")
 @Description("Kicks a player")
-@CommandPermission("silhouettemc.punish.kick")
+@CommandPermission("silhouette.punish.kick")
 object KickCommand : BaseCommand() {
 
     @Default

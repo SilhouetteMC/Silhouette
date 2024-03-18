@@ -13,7 +13,7 @@ import java.time.Instant
 
 @CommandAlias("ban")
 @Description("Bans a player")
-@CommandPermission("silhouettemc.punish.ban")
+@CommandPermission("silhouette.punish.ban")
 object BanCommand : BaseCommand() {
 
     @Default

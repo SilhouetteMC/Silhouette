@@ -14,7 +14,7 @@ import org.bukkit.entity.Player
 
 @CommandAlias("clearchat")
 @Description("Clears the chat")
-@CommandPermission("silhouettemc.command.clearchat")
+@CommandPermission("silhouette.command.clearchat")
 object ClearChatCommand : BaseCommand() {
 
     @Default

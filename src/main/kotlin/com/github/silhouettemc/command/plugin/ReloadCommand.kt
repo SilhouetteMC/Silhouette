@@ -26,7 +26,7 @@ object ReloadCommand : BaseCommand() {
     }
 
     @Subcommand("reload")
-    @CommandPermission("silhouettemc.command.reload")
+    @CommandPermission("silhouette.command.reload")
     fun reload(sender: CommandSender) {
         ConfigUtil.load()
         sender.send("reloadConfig")
