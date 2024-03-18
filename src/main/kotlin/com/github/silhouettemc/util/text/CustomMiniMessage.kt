@@ -13,6 +13,15 @@ class CustomMiniMessage {
         val format = mutableListOf<TagResolver>()
 
         val colors = ConfigUtil.messages.getTable("colors").toMap()
+
+        // Add default formatting
+        if(!colors.keys.contains("p")) {
+            format.add(createBasicColorResolver("p", "#ffd4e3"))
+        }
+        if(!colors.keys.contains("s")) {
+            format.add(createBasicColorResolver("s", "#ffb5cf"))
+        }
+
         colors.keys.forEach {
            format.add(createBasicColorResolver(it, colors[it].toString()))
         }
