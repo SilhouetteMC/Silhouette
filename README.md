@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="https://avatars.githubusercontent.com/u/160654017?s=250&v=4">
+  <img src="https://github.com/SilhouetteMC/Silhouette/assets/68871455/dd5226ac-7ae0-4704-9644-7ab8adcbd7be">
+
   <h3>Silhouette;</h1>
   <p>A <u>modern</u> Minecraft punishments system</p>
 </div>
