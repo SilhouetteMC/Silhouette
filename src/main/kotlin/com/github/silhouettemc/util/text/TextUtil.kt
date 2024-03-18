@@ -7,18 +7,8 @@ import java.util.*
 
 fun translate(input: String) = mm.deserialize(input)
 
-private val errorPrefix = ConfigUtil.messages.getString("errorPrefix")
-    ?: "<#ff6e6e>⚠<#ff7f6e>"
-
-fun warning(input: String) = translate("$errorPrefix $input")
-
-fun CommandSender.sendError(error: String) {
-    this.sendMessage(warning(error))
-}
-
-fun CommandSender.sendTranslated(message: String) {
-    this.sendMessage(translate(message))
-}
+fun CommandSender.sendError(error: String) = this.send(error)
+fun CommandSender.sendTranslated(message: String) = this.sendMessage(translate(message))
 
 fun CommandSender.send(key: String) {
     val message = ConfigUtil.getMessage(key)
@@ -53,8 +43,16 @@ fun String.insertUUIDDashes(): String {
 }
 
 fun String.replacePlaceholders(map: Map<String, String>, parenthesis: String = "{}", ignoreCase: Boolean = false) : String {
+    val totalPlaceholders = mutableMapOf<String, String>()
+    val customPlaceholders = ConfigUtil.messages.getTable("custom_placeholders").toMap()
+
+    customPlaceholders.forEach {
+        totalPlaceholders[it.key] = it.value.toString()
+    }
+    totalPlaceholders.putAll(map)
+
     var placeholded = this
-    for (value in map) {
+    for (value in totalPlaceholders) {
         placeholded = placeholded.replace("${parenthesis[0]}${value.key}${parenthesis[1]}", value.value, ignoreCase)
     }
     return placeholded
