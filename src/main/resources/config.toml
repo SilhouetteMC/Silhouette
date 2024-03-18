@@ -1,1 +1,1 @@
-databaseType = "h2"
+databaseType = "mongo"
