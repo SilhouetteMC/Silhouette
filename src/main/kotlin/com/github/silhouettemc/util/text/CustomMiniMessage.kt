@@ -10,15 +10,16 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 class CustomMiniMessage {
 
     fun build(): MiniMessage {
-        val primary = ConfigUtil.messages.getString("colors.primary")
-            ?: "#ffd4e3"
-        val secondary = ConfigUtil.messages.getString("colors.secondary")
-            ?: "#ffb5cf"
+        val format = mutableListOf<TagResolver>()
+
+        val colors = ConfigUtil.messages.getTable("colors").toMap()
+        colors.keys.forEach {
+           format.add(createBasicColorResolver(it, colors[it].toString()))
+        }
 
         val resolvers = TagResolver.resolver(
             StandardTags.defaults(),
-            createBasicColorResolver("p", primary),
-            createBasicColorResolver("s", secondary)
+            *format.toTypedArray()
         )
 
         val builder = MiniMessage.builder()

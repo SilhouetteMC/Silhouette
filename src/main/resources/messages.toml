@@ -1,6 +1,6 @@
 [colors]
-primary = "#ffd4e3"
-secondary = "#ffb5cf"
+p = "#ffd4e3"
+s = "#ffb5cf"
 
 [messages]
 broadcast = """
