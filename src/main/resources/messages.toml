@@ -1,0 +1,45 @@
+[colors]
+p = "#ffd4e3"
+s = "#ffb5cf"
+
+[custom_placeholders]
+error = "<#ff6e6e>⚠<#ff7f6e>"
+
+[messages]
+broadcast = """
+    <p>{player} was <s>{action}</s> by <s>{punisher}</s>
+"""
+banScreen = """
+    You have been banned!
+    Reason: {reason}
+"""
+kickScreen = """
+    You have been kicked!
+    Reason: {reason}
+"""
+muted = """
+     You are muted
+     Reason: {reason}
+     Expires: {expiry}
+"""
+reloadConfig = "<p>Silhouette has been reloaded!"
+
+[messages.errors]
+noPlayerFound = "{error} Couldn't find a player called {player} ;c"
+chatMuted = "{error} The chat is currently muted ;c"
+
+[messages.clearchat]
+alertAll = "<p>The chat has been <s>cleared"
+alertSelf = "<p>You've cleared the chat for others, but you're immune!"
+alertStaff = "<p>The chat has been cleared by <s>{player}</s>, but you're immune!"
+
+[messages.mutechat]
+invalidAction = "{error} Chat is already {state}"
+alertAll = "<p>The chat has been <s>{state}"
+
+mutedAlertSelf = "<p>You've <s>muted</s> the chat, but you can still talk!"
+mutedAlertStaff = "<p>Chat has been <s>muted</s> by <s>{player}</s>, but you can still talk!"
+
+unmutedAlertSelf = "<p>You've <s>unmuted</s> the chat"
+unmutedAlertStaff = "<p>Chat has been <s>unmuted</s> by <s>{player}</s>"
+

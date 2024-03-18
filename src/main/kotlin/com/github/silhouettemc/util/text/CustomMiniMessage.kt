@@ -1,5 +1,6 @@
 package com.github.silhouettemc.util.text
 
+import com.github.silhouettemc.util.ConfigUtil
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
@@ -9,10 +10,16 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 class CustomMiniMessage {
 
     fun build(): MiniMessage {
+        val format = mutableListOf<TagResolver>()
+
+        val colors = ConfigUtil.messages.getTable("colors").toMap()
+        colors.keys.forEach {
+           format.add(createBasicColorResolver(it, colors[it].toString()))
+        }
+
         val resolvers = TagResolver.resolver(
             StandardTags.defaults(),
-            createBasicColorResolver("p", "#ffd4e3"),
-            createBasicColorResolver("s", "#ffb5cf"),
+            *format.toTypedArray()
         )
 
         val builder = MiniMessage.builder()
