@@ -4,10 +4,15 @@ import java.time.Duration
 
 
 class PunishArgumentParser(
-    private val unparsed: String?,
+    unparsed: String?,
+    private val parseDurations: Boolean = true,
+    vararg parsableFlags: PunishFlag
 ) {
 
-    var reason: String? = null
+    private val parsableFlags =
+        if (parsableFlags.isEmpty()) PunishFlag.entries.toTypedArray() else parsableFlags
+
+    var reason: String? = unparsed
         private set
 
     var isSilent: Boolean = false
@@ -17,53 +22,61 @@ class PunishArgumentParser(
         private set
 
     init {
-        if (unparsed != null) attemptToParse(unparsed)
+        reason?.let { attemptToParse() }
     }
 
     /**
      * Recursively attempts to parse the endings of the input for flags/etc and removes them, until there are no more to parse.
      */
-    private fun attemptToParse(input: String) {
-        val endings = getEndings(input)
-        if (checkForSilentEndings(input, endings)) return attemptToParse(reason!!)
-        if (checkForDuration(input, endings)) return attemptToParse(reason!!)
-        checkForNulledReason(input)
+    private fun attemptToParse() {
+        val endings = getEndings()
+
+        if (checkForFlag(PunishFlag.SILENT, endings)) {
+            isSilent = true
+            return attemptToParse()
+        }
+
+        if (checkForDuration(endings)) return attemptToParse()
+
+        checkForNulledReason()
     }
 
-    private fun checkForSilentEndings(input: String, endings: Pair<String, String>): Boolean {
-        val hasSilentFlags = endings.first.equals("-s", true) || endings.second.equals("-s", true)
-        if (hasSilentFlags) isSilent = true
-        reason = input.removeEndings("-s")
+    private fun checkForFlag(flag: PunishFlag, endings: Pair<String, String>): Boolean {
+        if (!parsableFlags.contains(flag)) return false
 
-        return hasSilentFlags
+        val hasFlag = endings.first.equals(flag.flag, true) || endings.second.equals(flag.flag, true)
+        reason = reason!!.removeEndings(flag.flag)
+
+        return hasFlag
     }
 
-    private fun checkForDuration(input: String, endings: Pair<String, String>): Boolean {
+    private fun checkForDuration(endings: Pair<String, String>): Boolean {
+        if (!parseDurations) return false
         if (duration != null) return false
 
         DurationParser.parse(endings.first).let {
             if (it == null) return@let
             duration = it
-            reason = input.removeEndings(endings.first)
+            reason = reason!!.removeEndings(endings.first)
             return true
         }
 
         DurationParser.parse(endings.second).let {
             if (it == null) return@let
             duration = it
-            reason = input.removeEndings(endings.second)
+            reason = reason!!.removeEndings(endings.second)
             return true
         }
 
         return false
     }
 
-    private fun checkForNulledReason(input: String) {
-        if (input.isEmpty()) reason = null
+    private fun checkForNulledReason() {
+        if (reason!!.isEmpty()) reason = null
     }
 
-    private fun getEndings(input: String): Pair<String, String> {
-        val args = input.split(" ")
+    private fun getEndings(): Pair<String, String> {
+        val args = reason!!.split(" ")
         return args.first() to args.last()
     }
 

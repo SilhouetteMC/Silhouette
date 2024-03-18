@@ -1,4 +1,4 @@
-package com.github.silhouettemc.command.punish
+package com.github.silhouettemc.command.punish.revert
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
@@ -33,7 +33,7 @@ object UnbanCommand : BaseCommand() {
         val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(player.id!!, PunishmentType.BAN)
             ?: return sender.send("errors.noExistingPunishment", placeholders)
 
-        val args = PunishArgumentParser(unparsed)
+        val args = PunishArgumentParser(unparsed, false)
         existingPunishment.revert(Actor(sender.uniqueId), args)
     }
 }
