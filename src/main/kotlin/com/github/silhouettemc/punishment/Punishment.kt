@@ -9,6 +9,7 @@ import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
+import com.mongodb.client.model.Updates
 import org.bson.codecs.pojo.annotations.BsonIgnore
 import org.bukkit.Bukkit
 import java.time.Instant
@@ -28,6 +29,7 @@ data class Punishment(
     val expiration: Instant? = null,
     val revoker: Actor? = null,
     val revokeReason: String? = null,
+    val revokedAt: Date? = null,
 
     @DatabaseField(canBeNull = false)
     val id: UUID = UUID.randomUUID(),
@@ -41,6 +43,23 @@ data class Punishment(
 
         if (type.shouldDisconnect) handleDisconnect()
         if (!args.isSilent) broadcastPunishment()
+    }
+
+    fun revert(revoker: Actor, args: PunishArgumentParser) {
+        Silhouette.getInstance().database.updatePunishment(
+            this,
+            Updates.set(Punishment::revoker.name, revoker),
+            Updates.set(Punishment::revokeReason.name, args.reason),
+            Updates.set(Punishment::revokedAt.name, Date())
+        )
+
+        val type = when(type) {
+            PunishmentType.BAN -> PunishmentType.UNBAN
+            PunishmentType.MUTE -> PunishmentType.UNMUTE
+            else -> PunishmentType.UNBAN
+        }
+
+        if (!args.isSilent) broadcastPunishment(revoker, type)
     }
 
     private fun handleDisconnect() {
@@ -58,14 +77,16 @@ data class Punishment(
         player.kick(translate(msg))
     }
 
-    private fun broadcastPunishment() {
+    private fun broadcastPunishment(actor: Actor, type: PunishmentType) {
         val broadcast = ConfigUtil.getMessage("broadcast", mapOf(
             "player" to player.toString(),
             "action" to type.punishedName,
-            "punisher" to punisher.getReadableName()
+            "punisher" to actor.getReadableName()
         ))
         Bukkit.broadcast(translate(broadcast))
     }
+
+    private fun broadcastPunishment() = broadcastPunishment(punisher, type)
 
     @get:BsonIgnore
     val isExpired

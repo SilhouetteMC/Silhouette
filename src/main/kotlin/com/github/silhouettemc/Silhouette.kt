@@ -1,12 +1,9 @@
 package com.github.silhouettemc
 
 import co.aikar.commands.PaperCommandManager
-import com.github.silhouettemc.command.chat.ClearChatCommand
-import com.github.silhouettemc.command.chat.MuteChatCommand
-import com.github.silhouettemc.command.plugin.ReloadCommand
-import com.github.silhouettemc.command.punish.BanCommand
-import com.github.silhouettemc.command.punish.KickCommand
-import com.github.silhouettemc.command.punish.MuteCommand
+import com.github.silhouettemc.command.chat.*
+import com.github.silhouettemc.command.plugin.*
+import com.github.silhouettemc.command.punish.*
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.database.impl.h2.H2DatabaseImpl
 import com.github.silhouettemc.database.impl.mongo.MongoDatabaseImpl
@@ -57,6 +54,7 @@ class Silhouette : JavaPlugin() {
         commandManager.registerCommandCompletions()
         commandManager.registerBaseCommands(
             BanCommand, KickCommand, MuteCommand,
+            UnbanCommand, UnmuteCommand,
             ClearChatCommand, MuteChatCommand,
             ReloadCommand
         )
