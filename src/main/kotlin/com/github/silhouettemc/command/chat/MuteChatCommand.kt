@@ -9,7 +9,7 @@ import org.bukkit.entity.Player
 
 @CommandAlias("mutechat")
 @Description("Mutes the chat")
-@CommandPermission("silhouettemc.command.mutechat")
+@CommandPermission("silhouette.command.mutechat")
 object MuteChatCommand : BaseCommand() {
 
     // todo: this should be stored persistently

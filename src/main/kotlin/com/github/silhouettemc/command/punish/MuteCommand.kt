@@ -20,7 +20,7 @@ import java.time.Instant
 
 @CommandAlias("mute")
 @Description("Mutes a player")
-@CommandPermission("silhouettemc.punish.mute")
+@CommandPermission("silhouette.punish.mute")
 object MuteCommand : BaseCommand() {
 
     @Default
