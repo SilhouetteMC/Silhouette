@@ -25,7 +25,6 @@ class PunishArgumentParser(
      */
     private fun attemptToParse(input: String) {
         val endings = getEndings(input)
-        println(input)
         if (checkForSilentEndings(input, endings)) return attemptToParse(reason!!)
         if (checkForDuration(input, endings)) return attemptToParse(reason!!)
         checkForNulledReason(input)
