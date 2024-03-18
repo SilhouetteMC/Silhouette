@@ -1,11 +1,11 @@
 package com.github.silhouettemc.util.parsing
 
 import co.aikar.commands.BukkitCommandCompletionContext
+import org.bukkit.Bukkit
 
 object PunishArgumentTabCompleter {
 
     private val primaryDurations = listOf("seconds", "minutes", "hours", "days", "weeks", "months", "years")
-    private val tags = listOf("-s")
 
     private val alphabetRegex = Regex("[a-zA-Z]")
     private val numberRegex = Regex("\\d*\\.?\\d+")
@@ -15,8 +15,8 @@ object PunishArgumentTabCompleter {
     fun getFlagCompletions(context: BukkitCommandCompletionContext): List<String> {
         val input = context.input
 
-        if (input.isEmpty()) return emptyList()
-        if (input.startsWith("-")) return tags.filter { it.startsWith(input) }
+        if (input.isBlank()) return emptyList()
+        if (input.startsWith("-")) return PunishFlag.entries.filter { it.flag.startsWith(input) }.map { it.flag }
 
         return emptyList()
     }
@@ -24,8 +24,8 @@ object PunishArgumentTabCompleter {
     fun getDurationAndFlagCompletions(context: BukkitCommandCompletionContext): List<String> {
         val input = context.input
 
-        if (input.isEmpty()) return emptyList()
-        if (input.startsWith("-")) return tags.filter { it.startsWith(input) }
+        if (input.isBlank()) return emptyList()
+        if (input.startsWith("-")) return PunishFlag.entries.filter { it.flag.startsWith(input) }.map { it.flag }
 
         val durationTags = input.split(numberRegex)
         val inputDurations = input.split(alphabetRegex)
@@ -42,6 +42,7 @@ object PunishArgumentTabCompleter {
         }
 
         val strippedInput = input.removeSuffix(durationTags.last())
+        if (strippedInput.isBlank()) return emptyList()
 
         val matchingDurations = allowedDurationTags.filter { it.startsWith(durationTags.last()) }
         if (matchingDurations.isNotEmpty()) return matchingDurations.map { "$strippedInput$it" }

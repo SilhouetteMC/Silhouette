@@ -4,6 +4,8 @@ import co.aikar.commands.PaperCommandManager
 import com.github.silhouettemc.command.chat.*
 import com.github.silhouettemc.command.plugin.*
 import com.github.silhouettemc.command.punish.*
+import com.github.silhouettemc.command.punish.revert.UnbanCommand
+import com.github.silhouettemc.command.punish.revert.UnmuteCommand
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.database.impl.h2.H2DatabaseImpl
 import com.github.silhouettemc.database.impl.mongo.MongoDatabaseImpl

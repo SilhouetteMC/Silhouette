@@ -1,4 +1,4 @@
-package com.github.silhouettemc.command.punish
+package com.github.silhouettemc.command.punish.revert
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
@@ -10,12 +10,13 @@ import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.github.silhouettemc.util.text.send
 import org.bukkit.entity.Player
 
-@CommandAlias("unmute")
-@Description("Unmute a player")
-@CommandPermission("silhouette.punish.unmute")
-object UnmuteCommand : BaseCommand() {
+@CommandAlias("unban")
+@Description("Unbans a player")
+@CommandPermission("silhouette.punish.unban")
+object UnbanCommand : BaseCommand() {
+
     @Default
-    @CommandCompletion("@players @punish_args")
+    @CommandCompletion("@players @punish_flags")
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
@@ -23,16 +24,16 @@ object UnmuteCommand : BaseCommand() {
     ) {
         val placeholders = mutableMapOf(
             "player" to retriever.name,
-            "existing-action" to PunishmentType.MUTE.punishedName.lowercase()
+            "existing-action" to PunishmentType.BAN.punishedName.lowercase()
         )
 
         val player = retriever.fetchOfflinePlayerProfile()
             ?: return sender.send("errors.noPlayerFound", placeholders)
 
-        val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(player.id!!, PunishmentType.MUTE)
+        val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(player.id!!, PunishmentType.BAN)
             ?: return sender.send("errors.noExistingPunishment", placeholders)
 
-        val args = PunishArgumentParser(unparsed)
+        val args = PunishArgumentParser(unparsed, false)
         existingPunishment.revert(Actor(sender.uniqueId), args)
     }
 }
