@@ -5,10 +5,9 @@ import co.aikar.commands.annotation.*
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
-import com.github.silhouettemc.util.ConfigUtil
-import com.github.silhouettemc.util.text.sendError
 import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
+import com.github.silhouettemc.util.text.send
 import org.bukkit.entity.Player
 import java.time.Instant
 
@@ -29,7 +28,7 @@ object BanCommand : BaseCommand() {
         )
 
         val player = retriever.fetchOfflinePlayerProfile()
-            ?: return sender.sendError(ConfigUtil.getMessage("errors.noPlayerFound", placeholders))
+            ?: return sender.send("errors.noPlayerFound", placeholders)
 
         val args = PunishArgumentParser(unparsed)
         val expiry = args.duration?.let { Instant.now().plus(it) }

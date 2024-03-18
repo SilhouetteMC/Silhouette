@@ -2,11 +2,7 @@ package com.github.silhouettemc.command.chat
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
-import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.send
-import com.github.silhouettemc.util.text.sendError
-import com.github.silhouettemc.util.text.sendTranslated
-import com.github.silhouettemc.util.text.translate
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -34,7 +30,7 @@ object MuteChatCommand : BaseCommand() {
         )
 
         if (isMuted == newMuted) {
-            return sender.sendError(ConfigUtil.getMessage("mutechat.invalidAction"))
+            return sender.send("mutechat.invalidAction")
         }
 
         isMuted = newMuted
