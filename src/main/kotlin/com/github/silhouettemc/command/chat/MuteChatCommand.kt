@@ -3,6 +3,7 @@ package com.github.silhouettemc.command.chat
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
 import com.github.silhouettemc.util.ConfigUtil
+import com.github.silhouettemc.util.text.send
 import com.github.silhouettemc.util.text.sendError
 import com.github.silhouettemc.util.text.sendTranslated
 import com.github.silhouettemc.util.text.translate
@@ -38,18 +39,14 @@ object MuteChatCommand : BaseCommand() {
 
         isMuted = newMuted
 
-        val alertSelf = ConfigUtil.getMessage("mutechat.${mutedLabel}AlertSelf", placeholders)
-        val alertStaff = ConfigUtil.getMessage("mutechat.${mutedLabel}AlertStaff", placeholders)
-
         for (player in Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("silhouettemc.command.mutechat")) {
-                if (player == sender) player.sendMessage(translate(alertSelf))
-                else player.sendTranslated(alertStaff)
+                if (player == sender) player.send("mutechat.${mutedLabel}AlertSelf", placeholders)
+                else player.send("mutechat.${mutedLabel}AlertStaff", placeholders)
                 continue
             }
 
-            val msg = ConfigUtil.getMessage("mutechat.alertAll", placeholders)
-            player.sendTranslated(msg)
+            player.send("mutechat.alertAll", placeholders)
         }
 
         Bukkit.getLogger().info("Chat has been $mutedLabel by $muter")

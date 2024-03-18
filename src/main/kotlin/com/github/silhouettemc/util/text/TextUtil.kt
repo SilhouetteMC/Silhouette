@@ -20,6 +20,16 @@ fun CommandSender.sendTranslated(message: String) {
     this.sendMessage(translate(message))
 }
 
+fun CommandSender.send(key: String) {
+    val message = ConfigUtil.getMessage(key)
+    this.sendMessage(translate(message))
+}
+
+fun CommandSender.send(key: String, placeholders: Map<String, String>) {
+    val message = ConfigUtil.getMessage(key, placeholders)
+    this.sendMessage(translate(message))
+}
+
 fun UUID.withoutDashes() = this.toString().replace("-", "")
 fun String.toUUID(): UUID = UUID.fromString(this.insertUUIDDashes())
 

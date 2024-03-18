@@ -29,7 +29,7 @@ object BanCommand : BaseCommand() {
         )
 
         val player = retriever.fetchOfflinePlayerProfile()
-            ?: return sender.sendError(ConfigUtil.getMessage("general.noPlayerFound", placeholders))
+            ?: return sender.sendError(ConfigUtil.getMessage("errors.noPlayerFound", placeholders))
 
         val args = PunishArgumentParser(unparsed)
         val expiry = args.duration?.let { Instant.now().plus(it) }

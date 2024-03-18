@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Description
 import com.github.silhouettemc.util.ConfigUtil
+import com.github.silhouettemc.util.text.send
 import com.github.silhouettemc.util.text.sendTranslated
 import org.bukkit.command.CommandSender
 
@@ -20,7 +21,7 @@ object ReloadCommand : BaseCommand() {
     ) {
 
         ConfigUtil.load()
-        sender.sendTranslated(ConfigUtil.getMessage("general.reloadConfig"))
+        sender.send("reloadConfig")
 
     }
 

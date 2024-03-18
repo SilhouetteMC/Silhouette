@@ -46,7 +46,6 @@ object ConfigUtil {
     }
 
     fun getMessage(key: String, placeholders: Map<String, String>): String {
-        val msg = messages.getString("messages.$key") ?: return key
-        return msg.trimIndent().replacePlaceholders(placeholders)
+        return getMessage(key).replacePlaceholders(placeholders)
     }
 }

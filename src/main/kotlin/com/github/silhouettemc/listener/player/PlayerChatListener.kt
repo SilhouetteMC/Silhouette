@@ -37,7 +37,7 @@ object PlayerChatListener : Listener {
         if (player.hasPermission("silhouettemc.command.mutechat")) return
 
         isCancelled = true
-        player.sendError(ConfigUtil.getMessage("general.chatMuted"))
+        player.sendError(ConfigUtil.getMessage("errors.chatMuted"))
     }
 
 }

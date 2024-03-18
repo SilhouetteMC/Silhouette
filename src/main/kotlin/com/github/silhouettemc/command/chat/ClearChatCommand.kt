@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Description
 import com.github.silhouettemc.util.ConfigUtil
+import com.github.silhouettemc.util.text.send
 import com.github.silhouettemc.util.text.sendTranslated
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -27,15 +28,13 @@ object ClearChatCommand : BaseCommand() {
         )
 
         val alertAll = ConfigUtil.getMessage("clearchat.alertAll", placeholders)
-        val alertSelf = ConfigUtil.getMessage("clearchat.alertSelf", placeholders)
-        val alertStaff = ConfigUtil.getMessage("clearchat.alertStaff", placeholders)
 
         val clearMessage = "\n".repeat(100) + alertAll
 
         for (player in Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("silhouettemc.command.clearchat")) {
-                if (player == sender) player.sendTranslated(alertSelf)
-                else player.sendTranslated(alertStaff)
+                if (player == sender) player.send("clearchat.alertSelf", placeholders)
+                else player.send("clearchat.alertStaff", placeholders)
                 continue
             }
 
