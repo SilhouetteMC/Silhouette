@@ -28,13 +28,12 @@ object MuteChatCommand : BaseCommand() {
         val muter = if (sender is Player) sender.name else "Console"
 
         val placeholders = mapOf(
-            "action" to mutedLabel,
+            "state" to mutedLabel,
             "player" to muter
         )
 
         if (isMuted == newMuted) {
-            val msg = ConfigUtil.getMessage("mutechat.invalidAction")
-            return sender.sendError(msg)
+            return sender.sendError(ConfigUtil.getMessage("mutechat.invalidAction"))
         }
 
         isMuted = newMuted
@@ -49,7 +48,7 @@ object MuteChatCommand : BaseCommand() {
                 continue
             }
 
-            val msg = ConfigUtil.getMessage("mutechat.alertAll")
+            val msg = ConfigUtil.getMessage("mutechat.alertAll", placeholders)
             player.sendTranslated(msg)
         }
 

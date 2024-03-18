@@ -20,7 +20,7 @@ object ReloadCommand : BaseCommand() {
     ) {
 
         ConfigUtil.load()
-        sender.sendTranslated("<p>Silhouette has been reloaded!")
+        sender.sendTranslated(ConfigUtil.getMessage("general.reloadConfig"))
 
     }
 

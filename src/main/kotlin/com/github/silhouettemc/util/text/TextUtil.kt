@@ -1,11 +1,16 @@
 package com.github.silhouettemc.util.text
 
 import com.github.silhouettemc.Silhouette.Companion.mm
+import com.github.silhouettemc.util.ConfigUtil
 import org.bukkit.command.CommandSender
 import java.util.*
 
 fun translate(input: String) = mm.deserialize(input)
-fun warning(input: String) = translate("<#ff6e6e>⚠ <#ff7f6e>$input") // todo: configurable error format
+
+private val errorPrefix = ConfigUtil.messages.getString("errorPrefix")
+    ?: "<#ff6e6e>⚠<#ff7f6e>"
+
+fun warning(input: String) = translate("$errorPrefix $input")
 
 fun CommandSender.sendError(error: String) {
     this.sendMessage(warning(error))

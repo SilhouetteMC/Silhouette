@@ -35,3 +35,8 @@ mutedAlertStaff = "<p>Chat has been <s>muted</s> by <s>{player}</s>, but you can
 unmutedAlertSelf = "<p>You've <s>unmuted</s> the chat"
 unmutedAlertStaff = "<p>Chat has been <s>unmuted</s> by <s>{player}</s>"
 
+[messages.general]
+errorPrefix = "<#ff6e6e>⚠<#ff7f6e>"
+reloadConfig = "<p>Silhouette has been reloaded!"
+noPlayerFound = "Couldn't find a player called {player} ;c"
+chatMuted = "The chat is currently muted ;c"
