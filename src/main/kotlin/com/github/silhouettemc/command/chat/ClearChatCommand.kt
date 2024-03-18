@@ -23,12 +23,12 @@ object ClearChatCommand : BaseCommand() {
         val clearer = if (sender is Player) sender.name else "Console"
 
         val placeholders = mapOf(
-            "clearer" to clearer
+            "player" to clearer
         )
 
-        val alertAll = ConfigUtil.getMessage("commands.clearchat.alertAll", placeholders)
-        val alertSelf = ConfigUtil.getMessage("commands.clearchat.alertSelf", placeholders)
-        val alertStaff = ConfigUtil.getMessage("commands.clearchat.alertStaff", placeholders)
+        val alertAll = ConfigUtil.getMessage("clearchat.alertAll", placeholders)
+        val alertSelf = ConfigUtil.getMessage("clearchat.alertSelf", placeholders)
+        val alertStaff = ConfigUtil.getMessage("clearchat.alertStaff", placeholders)
 
         val clearMessage = "\n".repeat(100) + alertAll
 

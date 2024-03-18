@@ -2,6 +2,7 @@ package com.github.silhouettemc.command.chat
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
+import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.sendError
 import com.github.silhouettemc.util.text.sendTranslated
 import com.github.silhouettemc.util.text.translate
@@ -24,22 +25,32 @@ object MuteChatCommand : BaseCommand() {
     ) {
         val newMuted = muted ?: !isMuted
         val mutedLabel = if (newMuted) "muted" else "unmuted"
+        val muter = if (sender is Player) sender.name else "Console"
 
-        if (isMuted == newMuted)
-            return sender.sendError("Chat is already $mutedLabel")
+        val placeholders = mapOf(
+            "action" to mutedLabel,
+            "player" to muter
+        )
+
+        if (isMuted == newMuted) {
+            val msg = ConfigUtil.getMessage("mutechat.invalidAction")
+            return sender.sendError(msg)
+        }
 
         isMuted = newMuted
-        val muter = if (sender is Player) sender.name else "Console"
-        val immunityLabel = if (isMuted) ", but you can still talk!" else ""
+
+        val alertSelf = ConfigUtil.getMessage("mutechat.${mutedLabel}AlertSelf", placeholders)
+        val alertStaff = ConfigUtil.getMessage("mutechat.${mutedLabel}AlertStaff", placeholders)
 
         for (player in Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("silhouettemc.command.mutechat")) {
-                if (player == sender) player.sendMessage(translate("<p>You've <s>$mutedLabel</s> the chat$immunityLabel"))
-                else player.sendTranslated("<p>Chat has been <s>$mutedLabel</s> by <s>$muter</s>$immunityLabel")
+                if (player == sender) player.sendMessage(translate(alertSelf))
+                else player.sendTranslated(alertStaff)
                 continue
             }
 
-            player.sendTranslated("<p>The chat has been <s>$mutedLabel")
+            val msg = ConfigUtil.getMessage("mutechat.alertAll")
+            player.sendTranslated(msg)
         }
 
         Bukkit.getLogger().info("Chat has been $mutedLabel by $muter")

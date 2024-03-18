@@ -20,7 +20,18 @@ muted = """
      Expires: {expiry}
 """
 
-[commands.clearchat]
+[messages.clearchat]
 alertAll = "<p>The chat has been <s>cleared"
 alertSelf = "<p>You've cleared the chat for others, but you're immune!"
-alertStaff = "<p>The chat has been cleared by <s>{clearer}</s>, but you're immune!"
+alertStaff = "<p>The chat has been cleared by <s>{player}</s>, but you're immune!"
+
+[messages.mutechat]
+invalidAction = "Chat is already {state}"
+alertAll = "<p>The chat has been <s>{state}"
+
+mutedAlertSelf = "<p>You've <s>muted</s> the chat, but you can still talk!"
+mutedAlertStaff = "<p>Chat has been <s>muted</s> by <s>{player}</s>, but you can still talk!"
+
+unmutedAlertSelf = "<p>You've <s>unmuted</s> the chat"
+unmutedAlertStaff = "<p>Chat has been <s>unmuted</s> by <s>{player}</s>"
+
