@@ -6,7 +6,7 @@
 </div>
 
 <p align="center">
-  <a href="youtube.com/watch?v=dqw4w9wgxcq">Download</a>
+  <a href="https://youtu.be/dQw4w9WgXcQ?si=eWDpaIechBhr0xJF">Download</a>
   &nbsp•&nbsp
   <a href="#overview">Overview</a>
   &nbsp•&nbsp
