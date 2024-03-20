@@ -28,7 +28,7 @@ class Silhouette : JavaPlugin() {
     override fun onEnable() {
         ConfigUtil.load()
 
-        when(val dbType = ConfigUtil.config.getString("databaseType")) {
+        when(val dbType = ConfigUtil.config.getString("database.type")) {
            "mongo" -> database = MongoDatabaseImpl()
            "h2" -> database = H2DatabaseImpl()
            else ->  this.logger.warning("The database type of $dbType is something we don't support for Silhouette! Accepted types are: mongo, h2.")

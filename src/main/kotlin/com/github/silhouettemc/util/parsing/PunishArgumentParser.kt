@@ -1,5 +1,6 @@
 package com.github.silhouettemc.util.parsing
 
+import com.github.silhouettemc.util.ConfigUtil
 import java.time.Duration
 
 
@@ -15,7 +16,7 @@ class PunishArgumentParser(
     var reason: String? = unparsed
         private set
 
-    var isSilent: Boolean = false
+    var isSilent: Boolean = ConfigUtil.config.getBoolean("punishments.defaultSilent") ?: false
         private set
 
     var duration: Duration? = null

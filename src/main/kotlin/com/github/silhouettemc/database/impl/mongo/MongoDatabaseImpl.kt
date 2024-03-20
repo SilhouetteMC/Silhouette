@@ -8,7 +8,6 @@ import com.github.silhouettemc.util.ConfigUtil
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.model.Filters
-import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
@@ -19,7 +18,6 @@ import org.bson.codecs.configuration.CodecRegistry
 import org.bson.codecs.pojo.PojoCodecProvider
 import org.bson.conversions.Bson
 import java.util.*
-import java.util.logging.Filter
 
 
 class MongoDatabaseImpl: Database {
@@ -28,7 +26,7 @@ class MongoDatabaseImpl: Database {
     private lateinit var client: MongoClient
     private lateinit var punishmentsCollection: MongoCollection<Punishment>
     override fun initialize(plugin: Silhouette) {
-        val databaseURI = ConfigUtil.config.getString("databaseURI")
+        val databaseURI = ConfigUtil.config.getString("database.uri")
             ?: "mongodb://localhost:27017"
 
         val connectionString = ConnectionString(databaseURI)
