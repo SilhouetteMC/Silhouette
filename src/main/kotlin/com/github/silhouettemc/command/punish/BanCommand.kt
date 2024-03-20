@@ -26,7 +26,8 @@ object BanCommand : BaseCommand() {
         @Optional unparsed: String?,
     ) {
         val placeholders = mapOf(
-            "player" to retriever.name
+            "player" to retriever.name,
+            "existing-action" to PunishmentType.BAN.actionName.lowercase()
         )
 
         val player = retriever.fetchOfflinePlayerProfile()

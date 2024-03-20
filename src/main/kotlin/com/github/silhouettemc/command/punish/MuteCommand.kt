@@ -33,7 +33,8 @@ object MuteCommand : BaseCommand() {
         @Optional unparsed: String?,
     ) {
         val placeholders = mapOf(
-            "player" to retriever.name
+            "player" to retriever.name,
+            "existing-action" to PunishmentType.MUTE.actionName.lowercase()
         )
 
         val player = retriever.fetchOfflinePlayerProfile()
@@ -43,7 +44,7 @@ object MuteCommand : BaseCommand() {
         val args = PunishArgumentParser(unparsed)
 
         if(!args.overwrite) {
-            val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(playerUUID, PunishmentType.BAN)
+            val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(playerUUID, PunishmentType.MUTE)
             if(existingPunishment !== null) {
                 return sender.sendError("error.cantOverwrite")
             }
