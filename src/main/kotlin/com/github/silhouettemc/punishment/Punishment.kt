@@ -43,7 +43,7 @@ data class Punishment(
 
         if(args.replace) {
             val currentPunishment = plugin.database.getLatestActivePunishment(this.player, this.type)
-            if(currentPunishment !== null) plugin.database.removePunishment(currentPunishment)
+            if(currentPunishment !== null) currentPunishment.revert(this.punisher, args)
             // TODO: likely send a warning if there was nothing to replace?
         }
 
