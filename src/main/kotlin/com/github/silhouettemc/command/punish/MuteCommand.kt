@@ -45,7 +45,7 @@ object MuteCommand : BaseCommand() {
         if(!args.override) {
             val existingPunishment = Silhouette.getInstance().database.hasActivePunishment(playerUUID, PunishmentType.MUTE)
             if(existingPunishment) {
-                return sender.sendError("errors.existingPunishment")
+                return sender.send("errors.existingPunishment", placeholders)
             }
         }
 

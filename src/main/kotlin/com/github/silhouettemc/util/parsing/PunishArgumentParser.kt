@@ -22,6 +22,9 @@ class PunishArgumentParser(
     var override: Boolean = false
         private set
 
+    var replace: Boolean = false
+        private set
+
     var duration: Duration? = null
         private set
 
@@ -42,6 +45,11 @@ class PunishArgumentParser(
 
         if (checkForFlag(PunishFlag.OVERRIDE, endings)) {
             override = true
+            return attemptToParse()
+        }
+
+        if (checkForFlag(PunishFlag.REPLACE, endings)) {
+            replace = true
             return attemptToParse()
         }
 

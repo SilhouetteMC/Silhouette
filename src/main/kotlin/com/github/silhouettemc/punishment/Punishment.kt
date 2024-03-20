@@ -39,7 +39,15 @@ data class Punishment(
 ) {
 
     fun process(args: PunishArgumentParser) {
-        Silhouette.getInstance().database.addPunishment(this) // todo: async
+        val plugin = Silhouette.getInstance()
+
+        if(args.replace) {
+            val currentPunishment = plugin.database.getLatestActivePunishment(this.player, this.type)
+            if(currentPunishment !== null) plugin.database.removePunishment(currentPunishment)
+            // TODO: likely send a warning if there was nothing to replace?
+        }
+
+        plugin.database.addPunishment(this) // todo: async
 
         if (type.shouldDisconnect) handleDisconnect()
         if (!args.isSilent) broadcastPunishment()
