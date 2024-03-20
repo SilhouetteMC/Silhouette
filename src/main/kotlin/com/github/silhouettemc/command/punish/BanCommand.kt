@@ -2,12 +2,14 @@ package com.github.silhouettemc.command.punish
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
+import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.github.silhouettemc.util.text.send
+import com.github.silhouettemc.util.text.sendError
 import org.bukkit.entity.Player
 import java.time.Instant
 
@@ -29,12 +31,20 @@ object BanCommand : BaseCommand() {
 
         val player = retriever.fetchOfflinePlayerProfile()
             ?: return sender.send("errors.noPlayerFound", placeholders)
+        val playerUUID = player.id!!
 
         val args = PunishArgumentParser(unparsed)
+        if(!args.overwrite) {
+            val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(playerUUID, PunishmentType.BAN)
+            if(existingPunishment !== null) {
+                return sender.sendError("error.cantOverwrite")
+            }
+        }
+
         val expiry = args.duration?.let { Instant.now().plus(it) }
 
         Punishment(
-            player.id!!,
+            playerUUID,
             Actor(sender.uniqueId),
             args.reason,
             PunishmentType.BAN,

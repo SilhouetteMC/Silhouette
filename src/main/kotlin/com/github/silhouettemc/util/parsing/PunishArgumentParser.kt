@@ -19,6 +19,9 @@ class PunishArgumentParser(
     var isSilent: Boolean = ConfigUtil.config.getBoolean("punishments.defaultSilent") ?: false
         private set
 
+    var overwrite: Boolean = false
+        private set
+
     var duration: Duration? = null
         private set
 
@@ -34,6 +37,11 @@ class PunishArgumentParser(
 
         if (checkForFlag(PunishFlag.SILENT, endings)) {
             isSilent = true
+            return attemptToParse()
+        }
+
+        if (checkForFlag(PunishFlag.OVERWRITE, endings)) {
+            overwrite = true
             return attemptToParse()
         }
 
