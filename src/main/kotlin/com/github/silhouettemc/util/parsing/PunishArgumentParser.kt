@@ -16,7 +16,7 @@ class PunishArgumentParser(
     var reason: String? = unparsed
         private set
 
-    var isSilent: Boolean = false
+    var isSilent: Boolean = ConfigUtil.config.getBoolean("punishments.defaultSilent") ?: false
         private set
 
     var duration: Duration? = null
@@ -35,9 +35,6 @@ class PunishArgumentParser(
         if (checkForFlag(PunishFlag.SILENT, endings)) {
             isSilent = true
             return attemptToParse()
-        } else if(!isSilent) {
-            val defaultSilent = ConfigUtil.config.getBoolean("punishments.defaultSilent") ?: false
-            isSilent = defaultSilent
         }
 
         if (checkForDuration(endings)) return attemptToParse()
