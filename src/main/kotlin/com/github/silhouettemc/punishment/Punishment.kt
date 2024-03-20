@@ -1,7 +1,6 @@
 package com.github.silhouettemc.punishment
 
 import com.github.silhouettemc.Silhouette
-import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.translate
@@ -41,9 +40,9 @@ data class Punishment(
     fun process(args: PunishArgumentParser) {
         val plugin = Silhouette.getInstance()
 
-        if(args.replace) {
+        if(args.revert) {
             val currentPunishment = plugin.database.getLatestActivePunishment(this.player, this.type)
-            if(currentPunishment !== null) currentPunishment.revert(this.punisher, args)
+            if(currentPunishment !== null) currentPunishment.revert(this.punisher, args, "Reverted automatically")
             // TODO: likely send a warning if there was nothing to replace?
         }
 
@@ -53,11 +52,11 @@ data class Punishment(
         if (!args.isSilent) broadcastPunishment()
     }
 
-    fun revert(revoker: Actor, args: PunishArgumentParser) {
+    fun revert(revoker: Actor, args: PunishArgumentParser, reason: String? = null) {
         Silhouette.getInstance().database.updatePunishment(
             this,
             Updates.set(Punishment::revoker.name, revoker),
-            Updates.set(Punishment::revokeReason.name, args.reason),
+            Updates.set(Punishment::revokeReason.name, reason ?: args.reason),
             Updates.set(Punishment::revokedAt.name, Date())
         )
 

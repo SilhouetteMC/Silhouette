@@ -9,7 +9,6 @@ import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.github.silhouettemc.util.text.send
-import com.github.silhouettemc.util.text.sendError
 import org.bukkit.entity.Player
 import java.time.Instant
 
@@ -35,7 +34,7 @@ object BanCommand : BaseCommand() {
         val playerUUID = player.id!!
 
         val args = PunishArgumentParser(unparsed)
-        if(!args.override && !args.replace) {
+        if(!args.override && !args.revert) {
             val existingPunishment = Silhouette.getInstance().database.hasActivePunishment(playerUUID, PunishmentType.BAN)
             if(existingPunishment) {
                 return sender.send("errors.existingPunishment", placeholders)

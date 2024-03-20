@@ -22,7 +22,7 @@ class PunishArgumentParser(
     var override: Boolean = false
         private set
 
-    var replace: Boolean = false
+    var revert: Boolean = false
         private set
 
     var duration: Duration? = null
@@ -48,8 +48,8 @@ class PunishArgumentParser(
             return attemptToParse()
         }
 
-        if (checkForFlag(PunishFlag.REPLACE, endings)) {
-            replace = true
+        if (checkForFlag(PunishFlag.REVERT, endings)) {
+            revert = true
             return attemptToParse()
         }
 
