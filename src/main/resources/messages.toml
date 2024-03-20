@@ -28,7 +28,7 @@ reloadConfig = "<p>Silhouette has been reloaded!"
 noPlayerFound = "{error} Couldn't find a player called {player} ;c"
 noExistingPunishment = "{error} {player} is not currently {existing-action}! ;c"
 chatMuted = "{error} The chat is currently muted ;c"
-cantOverwrite = "{error} {player} already has an existing {existing-action}! ;c"
+cantOverride = "{error} {player} already has an existing {existing-action}! ;c"
 
 [messages.clearchat]
 alertAll = "<p>The chat has been <s>cleared"
