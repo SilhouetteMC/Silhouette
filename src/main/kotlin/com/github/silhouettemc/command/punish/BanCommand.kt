@@ -34,7 +34,7 @@ object BanCommand : BaseCommand() {
         val playerUUID = player.id!!
 
         val args = PunishArgumentParser(unparsed)
-        if(!args.override && !args.revert) {
+        if(!args.revert) {
             val existingPunishment = Silhouette.getInstance().database.hasActivePunishment(playerUUID, PunishmentType.BAN)
             if(existingPunishment) {
                 return sender.send("errors.existingPunishment", placeholders)
