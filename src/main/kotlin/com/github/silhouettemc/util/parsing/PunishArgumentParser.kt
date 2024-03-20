@@ -1,5 +1,6 @@
 package com.github.silhouettemc.util.parsing
 
+import com.github.silhouettemc.util.ConfigUtil
 import java.time.Duration
 
 
@@ -34,6 +35,9 @@ class PunishArgumentParser(
         if (checkForFlag(PunishFlag.SILENT, endings)) {
             isSilent = true
             return attemptToParse()
+        } else if(!isSilent) {
+            val defaultSilent = ConfigUtil.config.getBoolean("punishments.defaultSilent") ?: false
+            isSilent = defaultSilent
         }
 
         if (checkForDuration(endings)) return attemptToParse()

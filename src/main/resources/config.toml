@@ -1,1 +1,5 @@
-databaseType = "mongo"
+[database]
+type = "mongo"
+
+[punishments]
+defaultSilent = false
