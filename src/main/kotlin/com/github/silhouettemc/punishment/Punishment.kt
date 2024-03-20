@@ -35,11 +35,23 @@ data class Punishment(
     val id: UUID = UUID.randomUUID(),
 
     @DatabaseField(canBeNull = false)
-    val punishedOn: Date = Date()
+    var punishedOn: Date = Date()
 ) {
 
     fun process(args: PunishArgumentParser) {
-        Silhouette.getInstance().database.addPunishment(this) // todo: async
+        val plugin = Silhouette.getInstance()
+
+        if(args.override) {
+            val currentPunishment = plugin.database.getLatestActivePunishment(this.player, this.type)
+            // todo: add edits to history
+            if(currentPunishment !== null) {
+                plugin.database.removePunishment(currentPunishment)
+                // Keeps the date of the current punishment, rather than the time of the override
+                punishedOn = currentPunishment.punishedOn
+            }
+        }
+
+        plugin.database.addPunishment(this) // todo: async
 
         if (type.shouldDisconnect) handleDisconnect()
         if (!args.isSilent) broadcastPunishment()

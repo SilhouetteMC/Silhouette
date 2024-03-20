@@ -22,6 +22,9 @@ class PunishArgumentParser(
     var duration: Duration? = null
         private set
 
+    var override: Boolean = false
+        private set
+
     init {
         reason?.let { attemptToParse() }
     }
@@ -34,6 +37,11 @@ class PunishArgumentParser(
 
         if (checkForFlag(PunishFlag.SILENT, endings)) {
             isSilent = true
+            return attemptToParse()
+        }
+
+        if (checkForFlag(PunishFlag.OVERRIDE, endings)) {
+            override = true
             return attemptToParse()
         }
 

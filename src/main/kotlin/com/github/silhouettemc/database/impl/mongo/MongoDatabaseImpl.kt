@@ -61,7 +61,7 @@ class MongoDatabaseImpl: Database {
     }
 
     override fun removePunishment(punishment: Punishment) {
-        TODO("Not yet implemented")
+        punishmentsCollection.deleteOne(Filters.eq("id", punishment.id))
     }
 
     override fun listPunishments(player: UUID): List<Punishment> {
@@ -82,6 +82,11 @@ class MongoDatabaseImpl: Database {
         ).sort(Document("punishedOn", -1)).firstOrNull()
 
         return doc
+    }
+
+    override fun hasActivePunishment(player: UUID, type: PunishmentType): Boolean {
+        val latest = getLatestActivePunishment(player, type)
+        return latest !== null
     }
 
 }

@@ -8,6 +8,7 @@ import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Optional
+import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
@@ -31,17 +32,27 @@ object MuteCommand : BaseCommand() {
         @Optional unparsed: String?,
     ) {
         val placeholders = mapOf(
-            "player" to retriever.name
+            "player" to retriever.name,
+            "existing-action" to PunishmentType.MUTE.actionName.lowercase()
         )
 
         val player = retriever.fetchOfflinePlayerProfile()
             ?: return sender.send("errors.noPlayerFound", placeholders)
+        val playerUUID = player.id!!
 
         val args = PunishArgumentParser(unparsed)
+
+        if(!args.override) {
+            val existingPunishment = Silhouette.getInstance().database.hasActivePunishment(playerUUID, PunishmentType.MUTE)
+            if (existingPunishment) {
+                return sender.send("errors.existingPunishment", placeholders)
+            }
+        }
+
         val expiry = args.duration?.let { Instant.now().plus(it) }
 
         Punishment(
-            player.id!!,
+            playerUUID,
             Actor(sender.uniqueId),
             args.reason,
             PunishmentType.MUTE,
