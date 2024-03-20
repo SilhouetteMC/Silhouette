@@ -52,4 +52,8 @@ class H2DatabaseImpl: Database {
     override fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment? {
         TODO("Not yet implemented")
     }
+
+    override fun hasActivePunishment(player: UUID, type: PunishmentType): Boolean {
+        TODO("Not yet implemented")
+    }
 }

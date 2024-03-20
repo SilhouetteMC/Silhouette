@@ -17,6 +17,8 @@ interface Database {
 
     fun listPunishments(player: UUID): List<Punishment>
 
+    fun hasActivePunishment(player: UUID, type: PunishmentType): Boolean
+
     fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment?
 
     // todo: disconnect()?

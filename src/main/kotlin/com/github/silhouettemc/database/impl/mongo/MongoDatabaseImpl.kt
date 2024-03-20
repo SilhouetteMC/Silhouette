@@ -84,4 +84,8 @@ class MongoDatabaseImpl: Database {
         return doc
     }
 
+    override fun hasActivePunishment(player: UUID, type: PunishmentType): Boolean {
+        val latest = getLatestActivePunishment(player, type)
+        return latest !== null
+    }
 }
