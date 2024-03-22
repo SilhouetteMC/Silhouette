@@ -1,8 +1,9 @@
 package com.github.silhouettemc.punishment
 
 import com.github.silhouettemc.Silhouette
-import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.actor.Actor
+import com.github.silhouettemc.history.History
+import com.github.silhouettemc.history.Update
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.translate
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
@@ -22,7 +23,7 @@ data class Punishment(
     @DatabaseField(canBeNull = false, dataType = DataType.SERIALIZABLE)
     val punisher: Actor,
     @DatabaseField(canBeNull = true)
-    val reason: String? = null,
+    var reason: String? = null,
     @DatabaseField(canBeNull = false)
     val type: PunishmentType,
 
@@ -43,15 +44,18 @@ data class Punishment(
 
         if(args.override) {
             val currentPunishment = plugin.database.getLatestActivePunishment(this.player, this.type)
-            // todo: add edits to history
-            if(currentPunishment !== null) {
-                plugin.database.removePunishment(currentPunishment)
-                // Keeps the date of the current punishment, rather than the time of the override
-                punishedOn = currentPunishment.punishedOn
-            }
-        }
 
-        plugin.database.addPunishment(this) // todo: async
+            if(currentPunishment !== null) {
+                val reasonUpdate = Update( args.reason ?: "", currentPunishment.reason ?: "")
+
+                plugin.database.addHistory(History(
+                    currentPunishment.id,
+                    reason = reasonUpdate,
+                ))
+            }
+        } else {
+            plugin.database.addPunishment(this) // todo: async
+        }
 
         if (type.shouldDisconnect) handleDisconnect()
         if (!args.isSilent) broadcastPunishment()

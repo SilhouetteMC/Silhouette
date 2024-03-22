@@ -2,6 +2,7 @@ package com.github.silhouettemc.database.impl.mongo
 
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.database.Database
+import com.github.silhouettemc.history.History
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
@@ -25,6 +26,8 @@ class MongoDatabaseImpl: Database {
     private lateinit var database: MongoDatabase
     private lateinit var client: MongoClient
     private lateinit var punishmentsCollection: MongoCollection<Punishment>
+    private lateinit var historyCollection: MongoCollection<History>
+
     override fun initialize(plugin: Silhouette) {
         val databaseURI = ConfigUtil.config.getString("database.uri")
             ?: "mongodb://localhost:27017"
@@ -47,10 +50,15 @@ class MongoDatabaseImpl: Database {
         database = client.getDatabase("Silhouette")
 
         punishmentsCollection = database.getCollection("Punishments")
+        historyCollection = database.getCollection("History")
     }
 
     override fun addPunishment(punishment: Punishment) {
         punishmentsCollection.insertOne(punishment)
+    }
+
+    override fun addHistory(history: History) {
+        historyCollection.insertOne(history)
     }
 
     override fun updatePunishment(punishment: Punishment, vararg updates: Bson) {
@@ -80,6 +88,18 @@ class MongoDatabaseImpl: Database {
                 )
             )
         ).sort(Document("punishedOn", -1)).firstOrNull()
+
+        if (doc != null) {
+            val history = historyCollection.find(Filters.eq("punishmentId", doc.id))
+                .sort(Document("createdOn", -1))
+                .firstOrNull()
+
+            if(history == null) return doc
+
+            if (history.reason != null) {
+                doc.reason = history.reason.current
+            }
+        }
 
         return doc
     }
