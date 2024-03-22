@@ -1,5 +1,6 @@
 package com.github.silhouettemc.punishment
 
+import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.actor.Actor
@@ -10,6 +11,7 @@ import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import com.mongodb.client.model.Updates
+import kotlinx.coroutines.withContext
 import org.bson.codecs.pojo.annotations.BsonIgnore
 import org.bukkit.Bukkit
 import java.time.Instant
@@ -38,14 +40,14 @@ data class Punishment(
     val punishedOn: Date = Date()
 ) {
 
-    fun process(args: PunishArgumentParser) {
-        Silhouette.getInstance().database.addPunishment(this) // todo: async
+    suspend fun process(args: PunishArgumentParser) {
+        Silhouette.getInstance().database.addPunishment(this)
 
         if (type.shouldDisconnect) handleDisconnect()
         if (!args.isSilent) broadcastPunishment()
     }
 
-    fun revert(revoker: Actor, args: PunishArgumentParser) {
+    suspend fun revert(revoker: Actor, args: PunishArgumentParser) {
         Silhouette.getInstance().database.updatePunishment(
             this,
             Updates.set(Punishment::revoker.name, revoker),
@@ -62,7 +64,7 @@ data class Punishment(
         if (!args.isSilent) broadcastPunishment(revoker, type)
     }
 
-    private fun handleDisconnect() {
+    private suspend fun handleDisconnect() {
         val player = Bukkit.getPlayer(player) ?: return
 
         val placeholders = mapOf(
@@ -74,7 +76,9 @@ data class Punishment(
 
         val msg = ConfigUtil.getMessage("${type.actionName.lowercase()}Screen", placeholders)
 
-        player.kick(translate(msg))
+        withContext(Silhouette.getInstance().minecraftDispatcher) {
+            player.kick(translate(msg))
+        }
     }
 
     private fun broadcastPunishment(actor: Actor, type: PunishmentType) {

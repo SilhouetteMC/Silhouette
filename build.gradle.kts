@@ -21,6 +21,9 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
 
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.15.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.15.0")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
     implementation("com.github.jershell:kbson:0.5.0")

@@ -7,17 +7,17 @@ import org.bson.conversions.Bson
 import java.util.*
 
 interface Database {
-    fun initialize(plugin: Silhouette)
+    suspend fun initialize(plugin: Silhouette)
 
-    fun addPunishment(punishment: Punishment)
+    suspend fun addPunishment(punishment: Punishment)
 
-    fun updatePunishment(punishment: Punishment, vararg updates: Bson)
+    suspend fun updatePunishment(punishment: Punishment, vararg updates: Bson)
 
-    fun removePunishment(punishment: Punishment)
+    suspend fun removePunishment(punishment: Punishment)
 
-    fun listPunishments(player: UUID): List<Punishment>
+    suspend fun listPunishments(player: UUID): List<Punishment>
 
-    fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment?
+    suspend fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment?
 
     // todo: disconnect()?
 }
