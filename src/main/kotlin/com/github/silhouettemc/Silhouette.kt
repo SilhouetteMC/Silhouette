@@ -1,6 +1,7 @@
 package com.github.silhouettemc
 
 import co.aikar.commands.PaperCommandManager
+import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.silhouettemc.command.chat.*
 import com.github.silhouettemc.command.plugin.*
 import com.github.silhouettemc.command.punish.*
@@ -21,15 +22,15 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
 import org.bukkit.plugin.java.JavaPlugin
 
-class Silhouette : JavaPlugin() {
+class Silhouette : SuspendingJavaPlugin() {
     lateinit var database: Database
     lateinit var mm: MiniMessage
 
-    override fun onEnable() {
+    override suspend fun onEnableAsync() {
         ConfigUtil.load()
 
         when(val dbType = ConfigUtil.config.getString("database.type")) {
-           "mongo" -> database = MongoDatabaseImpl()
+           "mongo" -> database = MongoDatabaseImpl(this)
            "h2" -> database = H2DatabaseImpl()
            else ->  this.logger.warning("The database type of $dbType is something we don't support for Silhouette! Accepted types are: mongo, h2.")
         }
@@ -42,7 +43,7 @@ class Silhouette : JavaPlugin() {
         registerListeners()
     }
 
-    override fun onDisable() {
+    override suspend fun onDisableAsync() {
         // Plugin shutdown logic
 
 //        todo: disconnect from database on disable, ie:
@@ -76,8 +77,8 @@ class Silhouette : JavaPlugin() {
 
     private fun registerListeners() {
         server.pluginManager.registerEvents(this,
-            PlayerChatListener,
-            PlayerLoginListener,
+            PlayerChatListener(this),
+            PlayerLoginListener(this),
         )
     }
 

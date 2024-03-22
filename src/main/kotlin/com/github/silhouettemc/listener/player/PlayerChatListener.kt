@@ -1,5 +1,7 @@
 package com.github.silhouettemc.listener.player
 
+import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
+import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.command.chat.MuteChatCommand
 import com.github.silhouettemc.punishment.PunishmentType
@@ -7,10 +9,15 @@ import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.sendError
 import com.github.silhouettemc.util.text.sendTranslated
 import io.papermc.paper.event.player.AsyncChatEvent
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.runInterruptible
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 
-object PlayerChatListener : Listener {
+class PlayerChatListener(
+    private val plugin: Silhouette
+) : Listener {
 
     @EventHandler
     fun AsyncChatEvent.onChat() {
@@ -18,9 +25,10 @@ object PlayerChatListener : Listener {
         handleMutedPlayer()
     }
 
-    private fun AsyncChatEvent.handleMutedPlayer() {
-        val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(player.uniqueId, PunishmentType.MUTE)
-            ?: return
+    private fun AsyncChatEvent.handleMutedPlayer() = runBlocking {
+
+        val existingPunishment = plugin.database.getLatestActivePunishment(player.uniqueId, PunishmentType.MUTE)
+            ?: return@runBlocking
 
         isCancelled = true
 

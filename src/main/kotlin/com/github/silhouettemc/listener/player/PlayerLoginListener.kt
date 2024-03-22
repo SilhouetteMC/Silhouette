@@ -1,20 +1,25 @@
 package com.github.silhouettemc.listener.player
 
+import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
+import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.translate
+import kotlinx.coroutines.runBlocking
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 
-object PlayerLoginListener: Listener {
+class PlayerLoginListener(
+    private val plugin: Silhouette
+) : Listener {
 
     @EventHandler
-    fun AsyncPlayerPreLoginEvent.onPreLogin() {
-        // todo: async
-        val existingPunishment = Silhouette.getInstance().database.getLatestActivePunishment(uniqueId, PunishmentType.BAN)
-            ?: return
+    fun AsyncPlayerPreLoginEvent.onPreLogin() = runBlocking { // this is ran sync on purpose
+        val existingPunishment =
+            Silhouette.getInstance().database.getLatestActivePunishment(uniqueId, PunishmentType.BAN)
+                ?: return@runBlocking
 
         val expiration = existingPunishment.expiration
 

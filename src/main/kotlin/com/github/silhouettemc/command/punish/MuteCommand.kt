@@ -5,9 +5,13 @@ import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandCompletion
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
+import co.aikar.commands.annotation.Dependency
 import co.aikar.commands.annotation.Description
 import co.aikar.commands.annotation.Flags
 import co.aikar.commands.annotation.Optional
+import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
+import com.github.shynixn.mccoroutine.bukkit.launch
+import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
@@ -23,19 +27,23 @@ import java.time.Instant
 @CommandPermission("silhouette.punish.mute")
 object MuteCommand : BaseCommand() {
 
+    @Dependency
+    lateinit var plugin: Silhouette
+
     @Default
     @CommandCompletion("@players @punish_args")
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
         @Optional unparsed: String?,
-    ) {
+    ) = plugin.launch(plugin.asyncDispatcher) {
+
         val placeholders = mapOf(
             "player" to retriever.name
         )
 
         val player = retriever.fetchOfflinePlayerProfile()
-            ?: return sender.send("errors.noPlayerFound", placeholders)
+            ?: return@launch sender.send("errors.noPlayerFound", placeholders)
 
         val args = PunishArgumentParser(unparsed)
         val expiry = args.duration?.let { Instant.now().plus(it) }

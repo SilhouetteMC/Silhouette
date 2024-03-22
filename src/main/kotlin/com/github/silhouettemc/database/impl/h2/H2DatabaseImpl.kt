@@ -18,7 +18,7 @@ class H2DatabaseImpl: Database {
     private lateinit var conSource: JdbcPooledConnectionSource
     private lateinit var punishmentsTable: ManagedTable<Punishment, UUID>
 
-    override fun initialize(plugin: Silhouette) {
+    override suspend fun initialize(plugin: Silhouette) {
         try {
             conSource = JdbcPooledConnectionSource("jdbc:h2:" + File(plugin.dataFolder, "h2.db").path + "/storage")
             punishmentsTable = createTable(Punishment::class.java)
@@ -33,23 +33,23 @@ class H2DatabaseImpl: Database {
         return ManagedTable(DaoManager.createDao(conSource, clazz))
     }
 
-    override fun addPunishment(punishment: Punishment) {
+    override suspend fun addPunishment(punishment: Punishment) {
         punishmentsTable.create(punishment)
     }
 
-    override fun updatePunishment(punishment: Punishment, vararg updates: Bson) {
+    override suspend fun updatePunishment(punishment: Punishment, vararg updates: Bson) {
         punishmentsTable.update(punishment)
     }
 
-    override fun removePunishment(punishment: Punishment) {
+    override suspend fun removePunishment(punishment: Punishment) {
         punishmentsTable.delete(punishment.id)
     }
 
-    override fun listPunishments(player: UUID): List<Punishment> {
+    override suspend fun listPunishments(player: UUID): List<Punishment> {
         return punishmentsTable.dao.filter { it.player == player }
     }
 
-    override fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment? {
+    override suspend fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment? {
         TODO("Not yet implemented")
     }
 }
