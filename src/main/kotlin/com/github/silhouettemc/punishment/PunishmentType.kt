@@ -3,13 +3,16 @@ package com.github.silhouettemc.punishment
 enum class PunishmentType(
     val actionName: String,
     val punishedName: String,
+    val doingName: String,
     val displayName: String = actionName,
     val shouldDisconnect: Boolean = false
 ) {
-    BAN("Ban", "Banned", shouldDisconnect = true),
-    UNBAN("Unban", "Unbanned"),
-    KICK("Kick", "Kicked", shouldDisconnect = true),
-    MUTE("Mute", "Muted"),
-    UNMUTE("Unmute", "Unmuted"),
-    WARN("Warn", "Warned", "Warning")
+    BAN("Ban", "Banned", "Banning", shouldDisconnect = true),
+    KICK("Kick", "Kicked", "Kicking", shouldDisconnect = true),
+    MUTE("Mute", "Muted", "Muting"),
+    WARN("Warn", "Warned", "Warning", "Warning"),
+
+    UNBAN("Unban", "Unbanned", "Unbanning"),
+    UNMUTE("Unmute", "Unmuted", "Unmuting"),
+
 }
