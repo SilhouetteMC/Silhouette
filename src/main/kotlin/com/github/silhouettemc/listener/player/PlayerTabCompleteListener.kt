@@ -26,7 +26,7 @@ class PlayerTabCompleteListener: Listener {
         val splits = buffer.split(" ")
         val type = PunishmentType.valueOf(splits[0].removePrefix("/").uppercase())
 
-        if (splits[1].isEmpty()) return player.sendBar("punishment_preparse.noPlayer", mapOf("actioning" to type.doingName))
+        if (splits[1].isEmpty()) return player.sendBar("punishment_preparse.noPlayer", mapOf("action" to type.doingName))
 
         val target = Bukkit.getOfflinePlayerIfCached(splits[1])?.name ?: splits[1]
         val unparsed = splits.drop(2).joinToString(" ")
