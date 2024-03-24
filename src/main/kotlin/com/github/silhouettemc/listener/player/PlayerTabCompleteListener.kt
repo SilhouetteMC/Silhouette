@@ -43,7 +43,7 @@ class PlayerTabCompleteListener: Listener {
         val flags = joinFlags(parsed)
 
         val placeholders = mapOf(
-            "actioning" to type.doingName,
+            "action" to type.doingName,
             "duration" to duration,
             "flags" to flags,
             "reason" to reason,
@@ -64,7 +64,7 @@ class PlayerTabCompleteListener: Listener {
         val flags = joinFlags(parsed)
 
         val placeholders = mapOf(
-            "actioning" to type.doingName,
+            "action" to type.doingName,
             "reason" to reason,
             "target" to target,
             "flags" to flags,
