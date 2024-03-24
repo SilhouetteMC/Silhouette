@@ -10,15 +10,11 @@ fun translate(input: String) = mm.deserialize(input)
 fun CommandSender.sendError(error: String) = this.send(error)
 fun CommandSender.sendTranslated(message: String) = this.sendMessage(translate(message))
 
-fun CommandSender.send(key: String) {
-    val message = ConfigUtil.getMessage(key)
-    this.sendMessage(translate(message))
-}
+fun CommandSender.send(key: String, placeholders: Map<String, String>? = null)
+    = this.sendTranslated(ConfigUtil.getMessage(key, placeholders))
 
-fun CommandSender.send(key: String, placeholders: Map<String, String>) {
-    val message = ConfigUtil.getMessage(key, placeholders)
-    this.sendMessage(translate(message))
-}
+fun CommandSender.sendBar(key: String, placeholders: Map<String, String>? = null)
+    = this.sendActionBar(translate(ConfigUtil.getActionBar(key, placeholders)))
 
 fun UUID.withoutDashes() = this.toString().replace("-", "")
 fun String.toUUID(): UUID = UUID.fromString(this.insertUUIDDashes())

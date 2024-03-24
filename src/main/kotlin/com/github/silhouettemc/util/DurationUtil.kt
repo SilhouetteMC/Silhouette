@@ -1,6 +1,6 @@
 package com.github.silhouettemc.util
 
-import java.time.temporal.ChronoUnit
+import TimeUnit
 import java.time.Duration
 
 /**
@@ -9,8 +9,8 @@ import java.time.Duration
  * @param amount the amount to add
  * @param unit the unit of the amount
  */
-fun Duration.plus(amount: Double, unit: ChronoUnit): Duration {
+fun Duration.plus(amount: Double, unit: TimeUnit): Duration {
     // To avoid overflowing, we only keep nanosecond precision upto years, then we switch to seconds
-    return if (unit.duration.seconds * amount >= ChronoUnit.YEARS.duration.seconds) this.plusSeconds((amount * unit.duration.seconds).toLong())
+    return if (unit.duration.seconds * amount >= TimeUnit.YEARS.duration.seconds) this.plusSeconds((amount * unit.duration.seconds).toLong())
     else this.plusNanos((amount * unit.duration.toNanos()).toLong())
 }

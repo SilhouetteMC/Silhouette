@@ -26,7 +26,7 @@ object MuteChatCommand : BaseCommand() {
 
         val placeholders = mapOf(
             "state" to mutedLabel,
-            "player" to muter
+            "target" to muter
         )
 
         if (isMuted == newMuted) {

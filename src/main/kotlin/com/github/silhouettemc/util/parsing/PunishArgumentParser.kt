@@ -13,6 +13,8 @@ class PunishArgumentParser(
     private val parsableFlags =
         if (parsableFlags.isEmpty()) PunishFlag.entries.toTypedArray() else parsableFlags
 
+    val specifiedFlags = mutableSetOf<PunishFlag>()
+
     var reason: String? = unparsed
         private set
 
@@ -48,6 +50,7 @@ class PunishArgumentParser(
         val hasFlag = endings.first.equals(flag.flag, true) || endings.second.equals(flag.flag, true)
         reason = reason!!.removeEndings(flag.flag)
 
+        if (hasFlag) specifiedFlags.add(flag)
         return hasFlag
     }
 

@@ -2,9 +2,12 @@ package com.github.silhouettemc
 
 import co.aikar.commands.PaperCommandManager
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
-import com.github.silhouettemc.command.chat.*
-import com.github.silhouettemc.command.plugin.*
-import com.github.silhouettemc.command.punish.*
+import com.github.silhouettemc.command.chat.ClearChatCommand
+import com.github.silhouettemc.command.chat.MuteChatCommand
+import com.github.silhouettemc.command.plugin.ReloadCommand
+import com.github.silhouettemc.command.punish.BanCommand
+import com.github.silhouettemc.command.punish.KickCommand
+import com.github.silhouettemc.command.punish.MuteCommand
 import com.github.silhouettemc.command.punish.revert.UnbanCommand
 import com.github.silhouettemc.command.punish.revert.UnmuteCommand
 import com.github.silhouettemc.database.Database
@@ -12,15 +15,15 @@ import com.github.silhouettemc.database.impl.h2.H2DatabaseImpl
 import com.github.silhouettemc.database.impl.mongo.MongoDatabaseImpl
 import com.github.silhouettemc.listener.player.PlayerChatListener
 import com.github.silhouettemc.listener.player.PlayerLoginListener
+import com.github.silhouettemc.listener.player.PlayerTabCompleteListener
 import com.github.silhouettemc.util.ConfigUtil
-import com.github.silhouettemc.util.text.CustomMiniMessage
-import com.github.silhouettemc.util.registerBaseCommands
-import com.github.silhouettemc.util.registerEvents
 import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.util.parsing.PunishArgumentTabCompleter
+import com.github.silhouettemc.util.registerBaseCommands
+import com.github.silhouettemc.util.registerEvents
+import com.github.silhouettemc.util.text.CustomMiniMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
-import org.bukkit.plugin.java.JavaPlugin
 
 class Silhouette : SuspendingJavaPlugin() {
     lateinit var database: Database
@@ -79,6 +82,7 @@ class Silhouette : SuspendingJavaPlugin() {
         server.pluginManager.registerEvents(this,
             PlayerChatListener(this),
             PlayerLoginListener(this),
+            PlayerTabCompleteListener()
         )
     }
 
