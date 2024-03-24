@@ -3,12 +3,14 @@ package com.github.silhouettemc.listener.player
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
+import com.github.silhouettemc.util.parsing.TimeFormatter
 import com.github.silhouettemc.util.text.sendTranslated
 import com.github.silhouettemc.util.text.translate
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import java.util.concurrent.TimeUnit
 
 class PlayerTabCompleteListener: Listener {
 
@@ -19,6 +21,7 @@ class PlayerTabCompleteListener: Listener {
     fun AsyncTabCompleteEvent.onTabComplete() {
         if (sender !is Player) return
         val player = sender as Player
+
 
         val splits = buffer.split(" ")
         val type = PunishmentType.valueOf(splits[0].removePrefix("/").uppercase())
@@ -36,7 +39,7 @@ class PlayerTabCompleteListener: Listener {
         val parsed = PunishArgumentParser(unparsed)
 
         val reason= parsed.reason ?: "No reason"
-        val duration = parsed.duration ?: "Forever"
+        val duration = if (parsed.duration == null) "Forever" else TimeFormatter(parsed.duration!!).prettify()
 
         this.sendActionBar(translate("<p>${type.doingName} <s>$target</s> <b>|</b> Reason: <s>$reason</s> <b>|</b> Duration: <s>$duration</s>"))
     }

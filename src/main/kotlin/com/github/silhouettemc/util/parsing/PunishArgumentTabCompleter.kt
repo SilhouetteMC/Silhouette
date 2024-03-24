@@ -1,5 +1,6 @@
 package com.github.silhouettemc.util.parsing
 
+import TimeUnit
 import co.aikar.commands.BukkitCommandCompletionContext
 import org.bukkit.Bukkit
 
@@ -10,7 +11,7 @@ object PunishArgumentTabCompleter {
     private val alphabetRegex = Regex("[a-zA-Z]")
     private val numberRegex = Regex("\\d*\\.?\\d+")
 
-    private val allowedDurationTags = DurationParser.durationMap.keys.flatten()
+    private val allowedDurationTags = TimeUnit.entries.map { it.aliases }.flatten()
 
     fun getFlagCompletions(context: BukkitCommandCompletionContext): List<String> {
         val input = context.input
