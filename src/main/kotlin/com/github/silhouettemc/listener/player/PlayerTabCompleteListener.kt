@@ -59,7 +59,7 @@ class PlayerTabCompleteListener: Listener {
     }
 
     private fun String.addFlags(parsed: PunishArgumentParser): String {
-        val flags = parsed.specifiedFlags.joinToString(", ") { it.flag }
+        val flags = parsed.specifiedFlags.joinToString(", ") { it.name.lowercase() }
         return if (flags.isEmpty()) this else "$this <b>|</b> Flags: <s>$flags</s>"
     }
 
