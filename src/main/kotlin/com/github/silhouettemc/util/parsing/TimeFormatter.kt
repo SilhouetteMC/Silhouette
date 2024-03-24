@@ -37,8 +37,3 @@ class TimeFormatter(duration: Duration) {
     }
 
 }
-
-fun main() {
-    val duration = Duration.ofDays(35)
-    println(TimeFormatter(duration).prettify())
-}

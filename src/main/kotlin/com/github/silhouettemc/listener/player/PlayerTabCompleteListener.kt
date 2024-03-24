@@ -41,7 +41,10 @@ class PlayerTabCompleteListener: Listener {
         val reason= parsed.reason ?: "No reason"
         val duration = if (parsed.duration == null) "Forever" else TimeFormatter(parsed.duration!!).prettify()
 
-        this.sendActionBar(translate("<p>${type.doingName} <s>$target</s> <b>|</b> Reason: <s>$reason</s> <b>|</b> Duration: <s>$duration</s>"))
+        this.sendActionBar(translate(
+            "<p>${type.doingName} <s>$target</s> <b>|</b> Reason: <s>$reason</s> <b>|</b> Duration: <s>$duration</s>"
+                .addFlags(parsed)
+        ))
     }
 
     private fun Player.sendReasonActionBar(type: PunishmentType, target: String, unparsed: String) {
@@ -49,7 +52,15 @@ class PlayerTabCompleteListener: Listener {
 
         val reason = parsed.reason ?: "No reason"
 
-        this.sendActionBar(translate("<p>${type.doingName} <s>$target</s> <b>|</b> Reason: <s>$reason</s>"))
+        this.sendActionBar(translate(
+            "<p>${type.doingName} <s>$target</s> <b>|</b> Reason: <s>$reason</s>"
+                .addFlags(parsed)
+        ))
+    }
+
+    private fun String.addFlags(parsed: PunishArgumentParser): String {
+        val flags = parsed.specifiedFlags.joinToString(", ") { it.flag }
+        return if (flags.isEmpty()) this else "$this <b>|</b> Flags: <s>$flags</s>"
     }
 
 }

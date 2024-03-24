@@ -1,5 +1,12 @@
 import java.time.Duration
 
+/**
+ * Represents a unit of time, similar to [java.time.temporal.ChronoUnit] but with a
+ * less shitty representation of months, along with more helper values.
+ *
+ * If you are editing these, make sure to keep them ordered (smallest to largest)
+ * for [com.github.silhouettemc.util.parsing.TimeFormatter] to work correctly.
+ */
 enum class TimeUnit(
     val singular: String,
     val aliases: List<String>,

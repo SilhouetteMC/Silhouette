@@ -26,10 +26,4 @@ object DurationParser {
         return duration
     }
 
-    data class DurationEntry(
-        val unit: TimeUnit,
-        val name: String,
-        val aliases: List<String>
-    )
-
 }
