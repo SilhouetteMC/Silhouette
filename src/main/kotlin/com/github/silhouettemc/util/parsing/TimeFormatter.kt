@@ -13,6 +13,8 @@ class TimeFormatter(val duration: Duration) {
     val sb = StringBuilder()
 
     fun prettify(): String {
+        if (secondsLeft == 0L) return "0 seconds"
+
         for (unit in parsableUnits) {
             val removedUnits = attemptToRemove(unit, secondsLeft)
             if (removedUnits == 1L) sb.append("$removedUnits ${unit.singular.lowercase()}, ")
