@@ -1,5 +1,6 @@
 package com.github.silhouettemc
 
+import BstatsBuilder
 import co.aikar.commands.PaperCommandManager
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.silhouettemc.command.chat.*
@@ -28,6 +29,7 @@ class Silhouette : SuspendingJavaPlugin() {
 
     override suspend fun onEnableAsync() {
         ConfigUtil.load()
+        BstatsBuilder.build(this)
 
         when(val dbType = ConfigUtil.config.getString("database.type")) {
            "mongo" -> database = MongoDatabaseImpl(this)
