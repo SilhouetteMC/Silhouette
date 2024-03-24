@@ -2,8 +2,10 @@ package com.github.silhouettemc.listener.player
 
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
 import com.github.silhouettemc.punishment.PunishmentType
+import com.github.silhouettemc.util.ConfigUtil.getActionBar
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.github.silhouettemc.util.parsing.TimeFormatter
+import com.github.silhouettemc.util.text.sendBar
 import com.github.silhouettemc.util.text.translate
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -24,7 +26,7 @@ class PlayerTabCompleteListener: Listener {
         val splits = buffer.split(" ")
         val type = PunishmentType.valueOf(splits[0].removePrefix("/").uppercase())
 
-        if (splits[1].isEmpty()) return player.sendActionBar(translate("<p>${type.doingName} <b>|</b> <s>Specify a player!"))
+        if (splits[1].isEmpty()) return player.sendBar("punishment_preparse.noPlayer", mapOf("actioning" to type.doingName))
 
         val target = Bukkit.getOfflinePlayerIfCached(splits[1])?.name ?: splits[1]
         val unparsed = splits.drop(2).joinToString(" ")
@@ -38,27 +40,44 @@ class PlayerTabCompleteListener: Listener {
 
         val reason= parsed.reason ?: "No reason"
         val duration = if (parsed.duration == null) "Forever" else TimeFormatter(parsed.duration!!).prettify()
+        val flags = joinFlags(parsed)
 
-        this.sendActionBar(translate(
-            "<p>${type.doingName} <s>$target</s> <b>|</b> Reason: <s>$reason</s> <b>|</b> Duration: <s>$duration</s>"
-                .addFlags(parsed)
-        ))
+        val placeholders = mapOf(
+            "actioning" to type.doingName,
+            "duration" to duration,
+            "flags" to flags,
+            "reason" to reason,
+            "target" to target
+        )
+
+        val extraPlaceholders = mutableListOf("duration")
+        if (flags.isNotEmpty()) extraPlaceholders.add("flags")
+
+        val actionBar = getActionBar("punishment_preparse.base", placeholders, extraPlaceholders)
+        this.sendActionBar(translate(actionBar))
     }
 
     private fun Player.sendReasonActionBar(type: PunishmentType, target: String, unparsed: String) {
         val parsed = PunishArgumentParser(unparsed, parseDurations = false)
 
         val reason = parsed.reason ?: "No reason"
+        val flags = joinFlags(parsed)
 
-        this.sendActionBar(translate(
-            "<p>${type.doingName} <s>$target</s> <b>|</b> Reason: <s>$reason</s>"
-                .addFlags(parsed)
-        ))
+        val placeholders = mapOf(
+            "actioning" to type.doingName,
+            "reason" to reason,
+            "target" to target,
+            "flags" to flags,
+        )
+
+        val extraPlaceholders = mutableListOf<String>()
+        if (flags.isNotEmpty()) extraPlaceholders.add("flags")
+
+        val actionBar = getActionBar("punishment_preparse.base", placeholders, extraPlaceholders)
+        this.sendActionBar(translate(actionBar))
     }
 
-    private fun String.addFlags(parsed: PunishArgumentParser): String {
-        val flags = parsed.specifiedFlags.joinToString(", ") { it.name.lowercase() }
-        return if (flags.isEmpty()) this else "$this <b>|</b> Flags: <s>$flags</s>"
-    }
+    private fun joinFlags(parsed: PunishArgumentParser)
+        = parsed.specifiedFlags.joinToString(", ") { it.name.lowercase() }
 
 }

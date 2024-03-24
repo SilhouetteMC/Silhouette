@@ -44,3 +44,10 @@ mutedAlertStaff = "<p>Chat has been <s>muted</s> by <s>{player}</s>, but you can
 unmutedAlertSelf = "<p>You've <s>unmuted</s> the chat"
 unmutedAlertStaff = "<p>Chat has been <s>unmuted</s> by <s>{player}</s>"
 
+# As a punishment is being typed, eg: "/kick UwUAroze 7d KillAur-", the player, duration, reason, and flags will be pre-parsed and displayed in the actionbar.
+# This proves useful as a way to ensure the punishment is correct before executing it.
+[actionbars.punishment_preparse]
+base = "<p>{actioning} <s>{target}</s> <b>|</b> Reason: <s>{reason}</s>{p_duration}{p_flags}" # This actionbar will show up to moderators typing a punish command | Placeholders: {actioning}, {p_duration}, {p_flags}, {reason}, {target}
+noPlayer = "<p>{actioning} <b>|</b> <s>Specify a player!</s>" # This actionbar will show when a player is not specified in a command, eg: when typing "/kick " | Placeholders: {actioning}
+p_duration = " <b>|</b> Duration: <s>{duration}</s>" # Extra placeholder to format duration, ie: "1d12hrs", only prsent if the punishment supports durations, otherwise blank | Placeholders: {duration}
+p_flags = " <b>|</b> Flags: <s>{flags}</s>" # Extra placeholder to format flags, ie: "silent", only present if one or more are present, otherwise blank | Placeholders: {flags}

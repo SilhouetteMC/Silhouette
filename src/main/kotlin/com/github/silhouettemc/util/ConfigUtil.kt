@@ -4,6 +4,7 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.util.text.CustomMiniMessage
 import com.github.silhouettemc.util.text.replacePlaceholders
 import com.moandjiezana.toml.Toml
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Bukkit
 import java.nio.file.Files
 
@@ -40,12 +41,27 @@ object ConfigUtil {
         Silhouette.mm = CustomMiniMessage().build()
     }
 
-    fun getMessage(key: String): String {
-        val msg = messages.getString("messages.$key") ?: return key
-        return msg.trimIndent()
+    fun getMessage(key: String, placeholders: Map<String, String>? = null)
+        = retrieveString(messages, "messages.$key", placeholders)
+
+    fun getActionBar(key: String, placeholders: Map<String, String>? = null, allowExtraPlaceholders: List<String>? = null)
+        = retrieveString(messages, "actionbars.$key", placeholders, allowExtraPlaceholders)
+
+    private fun retrieveString(config: Toml, key: String, placeholders: Map<String, String>? = null, allowExtraPlaceholders: List<String>? = null): String {
+        val baseKey = key.split(".").dropLast(1).joinToString(".")
+
+        val extraPlaceholders = mutableMapOf<String, String>()
+
+        for (pKey in messages.getTable(baseKey).entrySet().map { it.key }) {
+            if (!pKey.startsWith("p_")) continue
+            if (allowExtraPlaceholders != null && !allowExtraPlaceholders.contains(pKey.removePrefix("p_"))) extraPlaceholders[pKey] = ""
+            else extraPlaceholders[pKey] = config.getString("$baseKey.$pKey")
+        }
+
+        val replacedExtras = config.getString(key).replacePlaceholders(extraPlaceholders)
+
+        return if (placeholders != null) replacedExtras.replacePlaceholders(placeholders)
+        else replacedExtras
     }
 
-    fun getMessage(key: String, placeholders: Map<String, String>): String {
-        return getMessage(key).replacePlaceholders(placeholders)
-    }
 }
