@@ -67,7 +67,7 @@ data class Punishment(
         val player = Bukkit.getPlayer(player) ?: return
 
         val placeholders = mapOf(
-            "player" to player.toString(),
+            "target" to player.toString(),
             "punisher" to punisher.getReadableName(),
             "reason" to (reason ?: "No reason specified"),
             "action" to type.punishedName
@@ -82,7 +82,7 @@ data class Punishment(
 
     private fun broadcastPunishment(actor: Actor, type: PunishmentType) {
         val broadcast = ConfigUtil.getMessage("broadcast", mapOf(
-            "player" to player.toString(),
+            "target" to player.toString(),
             "action" to type.punishedName,
             "punisher" to actor.getReadableName()
         ))

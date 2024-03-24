@@ -24,7 +24,7 @@ object ClearChatCommand : BaseCommand() {
         val clearer = if (sender is Player) sender.name else "Console"
 
         val placeholders = mapOf(
-            "player" to clearer
+            "target" to clearer
         )
 
         val alertAll = ConfigUtil.getMessage("clearchat.alertAll", placeholders)

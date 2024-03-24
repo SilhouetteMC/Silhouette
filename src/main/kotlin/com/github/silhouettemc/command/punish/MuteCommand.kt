@@ -31,7 +31,7 @@ object MuteCommand : BaseCommand() {
     ) = plugin.launch(plugin.asyncDispatcher) {
 
         val placeholders = mapOf(
-            "player" to retriever.name
+            "target" to retriever.name
         )
 
         val player = retriever.fetchOfflinePlayerProfile()

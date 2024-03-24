@@ -29,7 +29,7 @@ object UnbanCommand : BaseCommand() {
     ) = plugin.launch(plugin.asyncDispatcher) {
 
         val placeholders = mutableMapOf(
-            "player" to retriever.name,
+            "target" to retriever.name,
             "existing-action" to PunishmentType.BAN.punishedName.lowercase()
         )
 
