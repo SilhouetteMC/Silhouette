@@ -3,7 +3,6 @@ package com.github.silhouettemc.util.parsing
 import TimeUnit
 import com.github.silhouettemc.util.plus
 import java.time.Duration
-import java.time.temporal.ChronoUnit
 
 object DurationParser {
 

@@ -2,10 +2,8 @@ package com.github.silhouettemc.command.punish
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
-import co.aikar.commands.annotation.Optional
 import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
 import com.github.shynixn.mccoroutine.bukkit.launch
-import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
@@ -13,11 +11,8 @@ import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.github.silhouettemc.util.text.send
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import org.bukkit.entity.Player
 import java.time.Instant
-import java.util.*
 
 @CommandAlias("ban")
 @Description("Bans a player")

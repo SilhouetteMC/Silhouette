@@ -1,7 +1,6 @@
 package com.github.silhouettemc.util
 
 import TimeUnit
-import java.time.temporal.ChronoUnit
 import java.time.Duration
 
 /**

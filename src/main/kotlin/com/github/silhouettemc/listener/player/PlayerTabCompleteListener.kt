@@ -4,13 +4,11 @@ import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.parsing.PunishArgumentParser
 import com.github.silhouettemc.util.parsing.TimeFormatter
-import com.github.silhouettemc.util.text.sendTranslated
 import com.github.silhouettemc.util.text.translate
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import java.util.concurrent.TimeUnit
 
 class PlayerTabCompleteListener: Listener {
 

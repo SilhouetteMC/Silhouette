@@ -13,8 +13,6 @@ import com.mongodb.client.model.Filters
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.bson.Document
 import org.bson.codecs.configuration.CodecRegistries.fromProviders
 import org.bson.codecs.configuration.CodecRegistries.fromRegistries
