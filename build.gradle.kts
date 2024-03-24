@@ -54,7 +54,7 @@ tasks.compileKotlin {
 }
 
 tasks.shadowJar {
-    relocate("org.bson", "com.github.silhouettemc.util.metrics")
+    relocate("org.bstats", "com.github.silhouettemc.util.metrics")
 }
 
 bukkit {
