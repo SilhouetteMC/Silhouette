@@ -24,6 +24,8 @@ dependencies {
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.15.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.15.0")
 
+    implementation("org.bstats:bstats-bukkit:3.0.2")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
     implementation("com.github.jershell:kbson:0.5.0")
@@ -49,6 +51,10 @@ tasks.runServer {
 
 tasks.compileKotlin {
     kotlinOptions.javaParameters = true
+}
+
+tasks.shadowJar {
+    relocate("org.bstats", "com.github.silhouettemc.util.metrics")
 }
 
 bukkit {
