@@ -40,10 +40,10 @@ object MuteCommand : BaseCommand() {
         val args = PunishArgumentParser(unparsed)
         val expiry = args.duration?.let { Instant.now().plus(it) }
 
-        Punishment(
-            player.id!!,
+        Punishment.withArgs(
+            player,
             Actor(sender.uniqueId),
-            args.reason,
+            args,
             PunishmentType.MUTE,
             expiry
         ).process(args)

@@ -28,10 +28,10 @@ object KickCommand : BaseCommand() {
     ) = plugin.launch(plugin.asyncDispatcher) {
         val args = PunishArgumentParser(unparsed)
 
-        Punishment(
-            player.uniqueId,
+        Punishment.withArgs(
+            player.playerProfile,
             Actor(sender.uniqueId),
-            args.reason,
+            args,
             PunishmentType.KICK,
         ).process(args)
     }
