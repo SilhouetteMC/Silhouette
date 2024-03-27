@@ -14,7 +14,7 @@ object ReloadCommand : BaseCommand() {
     @Default
     @Subcommand("info")
     fun info(sender: CommandSender) {
-        // todo: actual info, also maybe this should be configurable for colors..?
+        // todo: actual info
         sender.sendTranslated("""
             <p><s>Silhouette</s> info blah blah blah</p>
             <p>Type <s>/silhouette help</s> for help!

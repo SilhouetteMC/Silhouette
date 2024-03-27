@@ -89,7 +89,7 @@ data class Punishment(
 
     private fun broadcastPunishment(actor: Actor, type: PunishmentType) {
         val broadcast = ConfigUtil.getMessage("broadcast", mapOf(
-            "target" to player.toString(),
+            "target" to username,
             "action" to type.punishedName,
             "punisher" to actor.getReadableName()
         ))
