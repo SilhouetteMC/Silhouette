@@ -5,7 +5,7 @@ import com.github.silhouettemc.util.ConfigUtil
 import org.bukkit.command.CommandSender
 import java.util.*
 
-fun translate(input: String) = mm.deserialize(input)
+fun translate(input: String) = mm.deserialize(input.replace("\r", "")) // windows silly
 
 fun CommandSender.sendError(error: String) = this.send(error)
 fun CommandSender.sendTranslated(message: String) = this.sendMessage(translate(message))
