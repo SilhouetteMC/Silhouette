@@ -1,10 +1,9 @@
 package com.github.silhouettemc.util
 
 import com.github.silhouettemc.Silhouette
-import com.github.silhouettemc.util.text.CustomMiniMessage
+import com.github.silhouettemc.util.text.SilhouetteMiniMessage
 import com.github.silhouettemc.util.text.replacePlaceholders
 import com.moandjiezana.toml.Toml
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Bukkit
 import java.nio.file.Files
 
@@ -38,7 +37,7 @@ object ConfigUtil {
         }
 
         // Rebuilds MiniMessage to update it
-        Silhouette.mm = CustomMiniMessage().build()
+        Silhouette.mm = SilhouetteMiniMessage().build()
     }
 
     fun getMessage(key: String, placeholders: Map<String, String>? = null)

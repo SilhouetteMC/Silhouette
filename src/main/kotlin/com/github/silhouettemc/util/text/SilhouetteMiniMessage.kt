@@ -7,7 +7,7 @@ import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 
-class CustomMiniMessage {
+class SilhouetteMiniMessage {
 
     fun build(): MiniMessage {
         val format = mutableListOf<TagResolver>()

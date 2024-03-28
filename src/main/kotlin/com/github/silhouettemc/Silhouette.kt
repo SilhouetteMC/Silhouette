@@ -22,7 +22,7 @@ import com.github.silhouettemc.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.parsing.punish.PunishArgumentTabCompleter
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
-import com.github.silhouettemc.util.text.CustomMiniMessage
+import com.github.silhouettemc.util.text.SilhouetteMiniMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
 
@@ -42,7 +42,7 @@ class Silhouette : SuspendingJavaPlugin() {
 
         database.initialize(this)
 
-        mm = CustomMiniMessage().build()
+        mm = SilhouetteMiniMessage().build()
 
         registerCommands()
         registerListeners()
