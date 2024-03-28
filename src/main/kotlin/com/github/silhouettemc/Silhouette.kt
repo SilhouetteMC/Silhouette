@@ -18,8 +18,8 @@ import com.github.silhouettemc.listener.player.PlayerChatListener
 import com.github.silhouettemc.listener.player.PlayerLoginListener
 import com.github.silhouettemc.listener.player.PlayerTabCompleteListener
 import com.github.silhouettemc.util.ConfigUtil
-import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
-import com.github.silhouettemc.util.parsing.PunishArgumentTabCompleter
+import com.github.silhouettemc.parsing.PlayerProfileRetriever
+import com.github.silhouettemc.parsing.punish.PunishArgumentTabCompleter
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
 import com.github.silhouettemc.util.text.CustomMiniMessage

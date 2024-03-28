@@ -7,8 +7,8 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.PunishmentType
-import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
-import com.github.silhouettemc.util.parsing.PunishArgumentParser
+import com.github.silhouettemc.parsing.PlayerProfileRetriever
+import com.github.silhouettemc.parsing.punish.PunishArgumentParser
 import com.github.silhouettemc.util.text.send
 import org.bukkit.entity.Player
 

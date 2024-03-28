@@ -3,8 +3,8 @@ package com.github.silhouettemc.listener.player
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil.getActionBar
-import com.github.silhouettemc.util.parsing.PunishArgumentParser
-import com.github.silhouettemc.util.parsing.TimeFormatter
+import com.github.silhouettemc.parsing.punish.PunishArgumentParser
+import com.github.silhouettemc.parsing.duration.TimeFormatter
 import com.github.silhouettemc.util.text.sendBar
 import com.github.silhouettemc.util.text.translate
 import org.bukkit.Bukkit

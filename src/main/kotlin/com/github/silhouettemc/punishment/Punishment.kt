@@ -5,8 +5,8 @@ import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.util.ConfigUtil
-import com.github.silhouettemc.util.parsing.PunishArgumentParser
-import com.github.silhouettemc.util.parsing.PunishFlag
+import com.github.silhouettemc.parsing.punish.PunishArgumentParser
+import com.github.silhouettemc.parsing.punish.PunishFlag
 import com.github.silhouettemc.util.text.translate
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField

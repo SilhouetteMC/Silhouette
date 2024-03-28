@@ -1,5 +1,6 @@
-package com.github.silhouettemc.util.parsing
+package com.github.silhouettemc.parsing.punish
 
+import com.github.silhouettemc.parsing.duration.DurationParser
 import com.github.silhouettemc.util.ConfigUtil
 import java.time.Duration
 

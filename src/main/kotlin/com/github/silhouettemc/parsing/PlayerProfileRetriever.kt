@@ -1,4 +1,4 @@
-package com.github.silhouettemc.util.parsing
+package com.github.silhouettemc.parsing
 
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.github.silhouettemc.util.text.toUUID

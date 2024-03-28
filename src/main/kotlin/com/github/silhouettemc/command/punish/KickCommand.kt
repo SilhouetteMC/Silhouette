@@ -8,7 +8,7 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
-import com.github.silhouettemc.util.parsing.PunishArgumentParser
+import com.github.silhouettemc.parsing.punish.PunishArgumentParser
 import org.bukkit.entity.Player
 
 @CommandAlias("kick")

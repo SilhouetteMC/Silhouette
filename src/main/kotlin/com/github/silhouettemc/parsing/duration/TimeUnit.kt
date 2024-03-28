@@ -1,3 +1,5 @@
+package com.github.silhouettemc.parsing.duration
+
 import java.time.Duration
 
 /**
