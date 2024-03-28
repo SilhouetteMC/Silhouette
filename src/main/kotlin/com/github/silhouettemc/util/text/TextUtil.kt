@@ -89,3 +89,6 @@ fun getCenteredMessage(message: Component, width: Int = 154): Component {
     }
     return translate(sb.toString()).append(message)
 }
+
+fun getCenteredMessage(message: String, width: Int = 154)
+    = getCenteredMessage(translate(message), width)
