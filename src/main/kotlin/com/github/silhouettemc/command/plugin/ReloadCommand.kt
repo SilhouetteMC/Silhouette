@@ -15,10 +15,34 @@ object ReloadCommand : BaseCommand() {
     @Subcommand("info")
     fun info(sender: CommandSender) {
         // todo: actual info
+
         sender.sendTranslated("""
-            <p><s>Silhouette</s> info blah blah blah</p>
-            <p>Type <s>/silhouette help</s> for help!
-        """.trimIndent())
+            
+            | xxxxxxxxxxxxxxxxxxx
+            | xxxBBxxxxxxxxxBBxxx
+            | xxxBLBxxxxxxxBLBxxx
+            | xxxBPLBBBBBBBLPBxxx
+            | xxxBPLLDLDLDLLPBxxx
+            | xxxBLLLDLDLDLLLBxxx
+            | xxxBLLLLLDLLLLLLBxx
+            | xxBLLLLBLLLLLBLLBxx
+            | xBBDLLLBLLLLLBLDBBx
+            | xxBLLLLLLLLLLLLLBxx
+            | xBBDLLLLPPPLLLLDBBx
+            | xxBLLLLLLPLLLLLLBxx
+            | xxxBLLLLLLLLLLLBxxx
+            | xxxxBBLDLLLDLBBxxxx
+            | xxxxxxBBBBBBBxxxxxx
+            | xxxxxxxxxxxxxxxxxxx
+            
+        """
+            .trimMargin()
+            .replace("x", "<#cc8da7>█</#cc8da7>") // background
+            .replace("B", "<#323236>█</#323236>") // border
+            .replace("P", "<#fbced7>█</#fbced7>") // pink
+            .replace("L", "<#cfcfcf>█</#cfcfcf>") // light gray
+            .replace("D", "<#8d8d8d>█</#8d8d8d>") // dark gray
+        )
     }
 
     @Subcommand("reload")
