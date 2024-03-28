@@ -9,7 +9,7 @@ import com.github.silhouettemc.util.text.sendTranslated
 import org.bukkit.command.CommandSender
 
 @CommandAlias("silhouette")
-@Description("Reloads the Silhouette configuration")
+@Description("Displays info about Silhouette")
 object ReloadCommand : BaseCommand() {
 
     @Default
@@ -43,6 +43,7 @@ object ReloadCommand : BaseCommand() {
 
     @Subcommand("reload")
     @CommandPermission("silhouette.command.reload")
+    @Description("Reloads Silhouette's config")
     fun reload(sender: CommandSender) {
         ConfigUtil.load()
         sender.send("reloadConfig")
