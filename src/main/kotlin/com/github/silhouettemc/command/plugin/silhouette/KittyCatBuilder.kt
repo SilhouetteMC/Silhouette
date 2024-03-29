@@ -13,8 +13,8 @@ class KittyCatBuilder {
         |xxxBPLLDLDLDLLPBxxx
         |xxxBLLLDLDLDLLLBxxx
         |xxxBLLLLLDLLLLLLBxx
-        |xxBLLLLBLLLLLBLLBxx
-        |xBBDLLLBLLLLLBLDBBx
+        |xxBLLLLLBLLLBLLLBxx
+        |xBBDLLLLBLLLBLLDBBx
         |xxBLLLLLLLLLLLLLBxx
         |xBBDLLLLPPPLLLLDBBx
         |xxBLLLLLLPLLLLLLBxx
