@@ -14,13 +14,14 @@ class SilhouetteMiniMessage {
 
         val colors = ConfigUtil.messages.getTable("colors").toMap()
 
-        // Add default formatting
-        if(!colors.keys.contains("p")) {
-            format.add(createBasicColorResolver("p", "#ffd4e3"))
+        fun addDefaultColorCode(code: String, color: String) {
+            if (colors.contains(code)) return
+            format.add(createBasicColorResolver(code, color))
         }
-        if(!colors.keys.contains("s")) {
-            format.add(createBasicColorResolver("s", "#ffb5cf"))
-        }
+
+        addDefaultColorCode("p", "#ffd4e3")
+        addDefaultColorCode("s", "#ffb5cf")
+        addDefaultColorCode("t", "#6b5569")
 
         colors.keys.forEach {
            format.add(createBasicColorResolver(it, colors[it].toString()))
@@ -37,8 +38,7 @@ class SilhouetteMiniMessage {
         return builder.build()
     }
 
-    private fun createBasicColorResolver(name: String, color: String): TagResolver {
-        return TagResolver.resolver(name, Tag.styling(TextColor.fromHexString(color)!!))
-    }
+    private fun createBasicColorResolver(name: String, color: String) =
+        TagResolver.resolver(name, Tag.styling(TextColor.fromHexString(color)!!))
 
 }
