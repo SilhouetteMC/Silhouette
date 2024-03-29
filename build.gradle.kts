@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.github.silhouettemc"
-version = "1.0.0"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -63,7 +63,7 @@ tasks.shadowJar {
 bukkit {
     name = "Silhouette"
     version = "${project.version}"
-    authors = listOf("Aroze", "Eva")
+    authors = listOf("Aroze", "Astrid", "Eva")
     main = "com.github.silhouettemc.Silhouette"
     apiVersion = "1.20"
     libraries = listOf("com.h2database:h2:2.2.224")
