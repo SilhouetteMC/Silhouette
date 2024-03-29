@@ -61,9 +61,19 @@ tasks.shadowJar {
 }
 
 bukkit {
+    val color = "§x§f§f§c§4§d§8"
     name = "Silhouette"
     version = "${project.version}"
-    authors = listOf("Aroze", "Astrid", "Eva")
+    authors = listOf("${color}Aroze", "${color}Astrid", "${color}Eva\n ")
+    description = """
+        |${color}§o
+        |         Silhouette: an open sourced, feature packed yet
+        |                beautifully simple moderation system.
+        |                       
+        |                   /silhouette info for more info c:
+        | 
+    """.trimMargin()
+    website = "${color}https://github.com/SilhouetteMC/Silhouette"
     main = "com.github.silhouettemc.Silhouette"
     apiVersion = "1.20"
     libraries = listOf("com.h2database:h2:2.2.224")

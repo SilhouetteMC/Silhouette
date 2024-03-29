@@ -5,7 +5,7 @@ import co.aikar.commands.PaperCommandManager
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.silhouettemc.command.chat.ClearChatCommand
 import com.github.silhouettemc.command.chat.MuteChatCommand
-import com.github.silhouettemc.command.plugin.reload.ReloadCommand
+import com.github.silhouettemc.command.plugin.silhouette.SilhouetteCommand
 import com.github.silhouettemc.command.punish.BanCommand
 import com.github.silhouettemc.command.punish.KickCommand
 import com.github.silhouettemc.command.punish.MuteCommand
@@ -64,7 +64,7 @@ class Silhouette : SuspendingJavaPlugin() {
             BanCommand, KickCommand, MuteCommand,
             UnbanCommand, UnmuteCommand,
             ClearChatCommand, MuteChatCommand,
-            ReloadCommand
+            SilhouetteCommand
         )
     }
 

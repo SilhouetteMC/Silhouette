@@ -1,8 +1,7 @@
-package com.github.silhouettemc.command.plugin.reload
+package com.github.silhouettemc.command.plugin.silhouette
 
 import com.github.silhouettemc.util.text.translate
 import net.kyori.adventure.text.Component
-import java.util.*
 
 class KittyCatBuilder {
 

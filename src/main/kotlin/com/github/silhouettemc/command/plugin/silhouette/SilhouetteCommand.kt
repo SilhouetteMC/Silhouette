@@ -1,4 +1,4 @@
-package com.github.silhouettemc.command.plugin.reload
+package com.github.silhouettemc.command.plugin.silhouette
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
@@ -6,12 +6,11 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.getCenteredMessage
 import com.github.silhouettemc.util.text.send
-import com.github.silhouettemc.util.text.sendTranslated
 import org.bukkit.command.CommandSender
 
 @CommandAlias("silhouette")
 @Description("Displays info about Silhouette")
-object ReloadCommand : BaseCommand() {
+object SilhouetteCommand : BaseCommand() {
 
     @Default
     @Subcommand("info")
