@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+
 plugins {
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
@@ -8,7 +10,7 @@ plugins {
 }
 
 group = "com.github.silhouettemc"
-version = "1.0"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -55,6 +57,7 @@ tasks.compileKotlin {
 
 tasks.shadowJar {
     relocate("org.bstats", "com.github.silhouettemc.util.metrics")
+    archiveFileName.set("Silhouette.jar")
 }
 
 bukkit {

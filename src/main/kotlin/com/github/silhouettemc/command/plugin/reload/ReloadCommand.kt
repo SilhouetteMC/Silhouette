@@ -2,6 +2,7 @@ package com.github.silhouettemc.command.plugin.reload
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
+import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.text.getCenteredMessage
 import com.github.silhouettemc.util.text.send
@@ -31,7 +32,7 @@ object ReloadCommand : BaseCommand() {
 
             .setLine(10, getCenteredMessage("<p><b><u>Docs</u></b> <#6b5569>| <p><b><u>Discord</u></b>", 70))
 
-            .setLine(12, getCenteredMessage("<s>❤", 72))
+            .setLine(12, getCenteredMessage("<s>v${Silhouette.getInstance().pluginMeta.version} ❤", 72))
 
             .setLine(14, getCenteredMessage("<s><b>»</b><#6b5569><st>                           </st><s><b>«", 71))
             .build()
@@ -49,6 +50,6 @@ object ReloadCommand : BaseCommand() {
         sender.send("reloadConfig")
     }
 
-    // todo: subcommands: help, version, info
+    // todo: subcommands: help, version
 
 }
