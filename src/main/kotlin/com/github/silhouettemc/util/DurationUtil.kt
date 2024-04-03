@@ -1,6 +1,6 @@
 package com.github.silhouettemc.util
 
-import TimeUnit
+import com.github.silhouettemc.parsing.duration.TimeUnit
 import java.time.Duration
 
 /**

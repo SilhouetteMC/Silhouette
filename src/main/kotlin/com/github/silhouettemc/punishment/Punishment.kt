@@ -1,10 +1,12 @@
 package com.github.silhouettemc.punishment
 
+import com.destroystokyo.paper.profile.PlayerProfile
 import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.util.ConfigUtil
-import com.github.silhouettemc.util.parsing.PunishArgumentParser
+import com.github.silhouettemc.parsing.punish.PunishArgumentParser
+import com.github.silhouettemc.parsing.punish.PunishFlag
 import com.github.silhouettemc.util.text.translate
 import com.j256.ormlite.field.DataType
 import com.j256.ormlite.field.DatabaseField
@@ -18,8 +20,8 @@ import java.util.*
 
 @DatabaseTable(tableName = "punishments")
 data class Punishment(
-    @DatabaseField(canBeNull = false)
     val player: UUID,
+
     @DatabaseField(canBeNull = false, dataType = DataType.SERIALIZABLE)
     val punisher: Actor,
     @DatabaseField(canBeNull = true)
@@ -36,7 +38,12 @@ data class Punishment(
     val id: UUID = UUID.randomUUID(),
 
     @DatabaseField(canBeNull = false)
-    val punishedOn: Date = Date()
+    val punishedOn: Date = Date(),
+
+    @Transient
+    var flags: MutableSet<PunishFlag>? = null,
+    @Transient
+    val username: String,
 ) {
 
     suspend fun process(args: PunishArgumentParser) {
@@ -81,11 +88,12 @@ data class Punishment(
     }
 
     private fun broadcastPunishment(actor: Actor, type: PunishmentType) {
+        println("Broadcasting punishment for $player")
         val broadcast = ConfigUtil.getMessage("broadcast", mapOf(
-            "target" to player.toString(),
+            "target" to username,
             "action" to type.punishedName,
             "punisher" to actor.getReadableName()
-        ))
+        )).trimIndent()
         Bukkit.broadcast(translate(broadcast))
     }
 
@@ -94,5 +102,21 @@ data class Punishment(
     @get:BsonIgnore
     val isExpired
         get() = expiration?.isBefore(Instant.now()) ?: false
+
+    companion object {
+
+        fun withArgs(
+            player: PlayerProfile,
+            punisher: Actor,
+            args: PunishArgumentParser,
+            type: PunishmentType,
+            expiration: Instant? = null
+        ) = Punishment(
+            player.id!!, punisher, args.reason, type, expiration,
+            flags = args.specifiedFlags,
+            username = player.name!!
+        )
+
+    }
 
 }

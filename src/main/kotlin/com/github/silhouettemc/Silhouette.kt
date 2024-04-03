@@ -5,7 +5,7 @@ import co.aikar.commands.PaperCommandManager
 import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
 import com.github.silhouettemc.command.chat.ClearChatCommand
 import com.github.silhouettemc.command.chat.MuteChatCommand
-import com.github.silhouettemc.command.plugin.ReloadCommand
+import com.github.silhouettemc.command.plugin.silhouette.SilhouetteCommand
 import com.github.silhouettemc.command.punish.BanCommand
 import com.github.silhouettemc.command.punish.KickCommand
 import com.github.silhouettemc.command.punish.MuteCommand
@@ -18,11 +18,11 @@ import com.github.silhouettemc.listener.player.PlayerChatListener
 import com.github.silhouettemc.listener.player.PlayerLoginListener
 import com.github.silhouettemc.listener.player.PlayerTabCompleteListener
 import com.github.silhouettemc.util.ConfigUtil
-import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
-import com.github.silhouettemc.util.parsing.PunishArgumentTabCompleter
+import com.github.silhouettemc.parsing.PlayerProfileRetriever
+import com.github.silhouettemc.parsing.punish.PunishArgumentTabCompleter
 import com.github.silhouettemc.util.registerBaseCommands
 import com.github.silhouettemc.util.registerEvents
-import com.github.silhouettemc.util.text.CustomMiniMessage
+import com.github.silhouettemc.util.text.SilhouetteMiniMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
 
@@ -42,7 +42,7 @@ class Silhouette : SuspendingJavaPlugin() {
 
         database.initialize(this)
 
-        mm = CustomMiniMessage().build()
+        mm = SilhouetteMiniMessage().build()
 
         registerCommands()
         registerListeners()
@@ -64,7 +64,7 @@ class Silhouette : SuspendingJavaPlugin() {
             BanCommand, KickCommand, MuteCommand,
             UnbanCommand, UnmuteCommand,
             ClearChatCommand, MuteChatCommand,
-            ReloadCommand
+            SilhouetteCommand
         )
     }
 

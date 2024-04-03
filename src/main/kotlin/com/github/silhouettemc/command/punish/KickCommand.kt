@@ -8,7 +8,7 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
-import com.github.silhouettemc.util.parsing.PunishArgumentParser
+import com.github.silhouettemc.parsing.punish.PunishArgumentParser
 import org.bukkit.entity.Player
 
 @CommandAlias("kick")
@@ -28,10 +28,10 @@ object KickCommand : BaseCommand() {
     ) = plugin.launch(plugin.asyncDispatcher) {
         val args = PunishArgumentParser(unparsed)
 
-        Punishment(
-            player.uniqueId,
+        Punishment.withArgs(
+            player.playerProfile,
             Actor(sender.uniqueId),
-            args.reason,
+            args,
             PunishmentType.KICK,
         ).process(args)
     }

@@ -1,7 +1,16 @@
+# Here you can define custom minimessage color codes to use in any message/etc Usage: <color-code>Text text</color-code>
 [colors]
-p = "#ffd4e3"
-s = "#ffb5cf"
+# Primary, secondary and tertiary are mandatory color codes.
+# These are used in the plugin by default, you may change them for a quick color scheme switch, but you shouldn't remove
+# them, even if you aren't using them in any of the messages defined here. This is because they're used in
+# non-configurable messages (like /silhouette info). Again, you can change their color to your liking.
+p = "#ffd4e3" # Primary
+s = "#ffb5cf" # Secondary
+t = "#6b5569" # Tertiary
+# Define extra color codes here: eg:
+purpley = "#e0b8ff" # -> <purpley>Some message</purpley>
 
+# Similar to custom color codes, you can set custom placeholders to use in any message/etc. Usage "hi {placeholder}."
 [custom_placeholders]
 error = "<#ff6e6e>⚠<#ff7f6e>"
 

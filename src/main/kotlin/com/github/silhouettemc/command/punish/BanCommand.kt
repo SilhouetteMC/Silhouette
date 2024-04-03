@@ -8,8 +8,8 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
-import com.github.silhouettemc.util.parsing.PlayerProfileRetriever
-import com.github.silhouettemc.util.parsing.PunishArgumentParser
+import com.github.silhouettemc.parsing.PlayerProfileRetriever
+import com.github.silhouettemc.parsing.punish.PunishArgumentParser
 import com.github.silhouettemc.util.text.send
 import org.bukkit.entity.Player
 import java.time.Instant
@@ -40,10 +40,10 @@ object BanCommand : BaseCommand() {
         val args = PunishArgumentParser(unparsed)
         val expiry = args.duration?.let { Instant.now().plus(it) }
 
-        Punishment(
-            player.id!!,
+        Punishment.withArgs(
+            player,
             Actor(sender.uniqueId),
-            args.reason,
+            args,
             PunishmentType.BAN,
             expiry
         ).process(args)

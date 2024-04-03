@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+
 plugins {
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
@@ -8,7 +10,7 @@ plugins {
 }
 
 group = "com.github.silhouettemc"
-version = "1.0"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -55,12 +57,23 @@ tasks.compileKotlin {
 
 tasks.shadowJar {
     relocate("org.bstats", "com.github.silhouettemc.util.metrics")
+    archiveFileName.set("Silhouette.jar")
 }
 
 bukkit {
+    val color = "§x§f§f§c§4§d§8"
     name = "Silhouette"
     version = "${project.version}"
-    authors = listOf("Aroze", "Eva")
+    authors = listOf("${color}Aroze", "${color}Astrid", "${color}Eva\n ")
+    description = """
+        |${color}§o
+        |         Silhouette: an open sourced, feature packed yet
+        |                beautifully simple moderation system.
+        |                       
+        |                   /silhouette info for more info c:
+        | 
+    """.trimMargin()
+    website = "${color}https://github.com/SilhouetteMC/Silhouette"
     main = "com.github.silhouettemc.Silhouette"
     apiVersion = "1.20"
     libraries = listOf("com.h2database:h2:2.2.224")

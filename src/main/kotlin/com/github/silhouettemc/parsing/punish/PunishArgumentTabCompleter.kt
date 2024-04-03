@@ -1,6 +1,6 @@
-package com.github.silhouettemc.util.parsing
+package com.github.silhouettemc.parsing.punish
 
-import TimeUnit
+import com.github.silhouettemc.parsing.duration.TimeUnit
 import co.aikar.commands.BukkitCommandCompletionContext
 
 object PunishArgumentTabCompleter {

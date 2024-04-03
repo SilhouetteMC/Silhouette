@@ -2,10 +2,12 @@ package com.github.silhouettemc.util.text
 
 import com.github.silhouettemc.Silhouette.Companion.mm
 import com.github.silhouettemc.util.ConfigUtil
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.command.CommandSender
 import java.util.*
 
-fun translate(input: String) = mm.deserialize(input)
+fun translate(input: String) = mm.deserialize(input.replace("\r", "")) // windows silly
 
 fun CommandSender.sendError(error: String) = this.send(error)
 fun CommandSender.sendTranslated(message: String) = this.sendMessage(translate(message))
@@ -53,3 +55,40 @@ fun String.replacePlaceholders(map: Map<String, String>, parenthesis: String = "
     }
     return placeholded
 }
+
+fun getCenteredMessage(message: Component, width: Int = 154): Component {
+    val rawMessage = LegacyComponentSerializer.legacySection().serialize(message)
+
+    var messagePxSize = 0
+    var previousCode = false
+    var isBold = false
+    for (c in rawMessage.toCharArray()) {
+        if (c == '§') {
+            previousCode = true
+            continue
+        } else if (previousCode) {
+            previousCode = false
+            if (c == 'l' || c == 'L') {
+                isBold = true
+                continue
+            } else isBold = false
+        } else {
+            val dFI = DefaultFontInfo.getDefaultFontInfo(c)
+            messagePxSize += if (isBold) dFI.boldLength else dFI.length
+            messagePxSize++
+        }
+    }
+    val halvedMessageSize = messagePxSize / 2
+    val toCompensate: Int = width - halvedMessageSize
+    val spaceLength = DefaultFontInfo.SPACE.length + 1
+    var compensated = 0
+    val sb = StringBuilder()
+    while (compensated < toCompensate) {
+        sb.append(" ")
+        compensated += spaceLength
+    }
+    return translate(sb.toString()).append(message)
+}
+
+fun getCenteredMessage(message: String, width: Int = 154)
+    = getCenteredMessage(translate(message), width)

@@ -1,6 +1,5 @@
-package com.github.silhouettemc.util.parsing
+package com.github.silhouettemc.parsing.duration
 
-import TimeUnit
 import java.time.Duration
 
 class TimeFormatter(val duration: Duration) {
