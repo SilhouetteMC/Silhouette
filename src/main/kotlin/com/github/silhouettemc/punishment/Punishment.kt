@@ -88,11 +88,12 @@ data class Punishment(
     }
 
     private fun broadcastPunishment(actor: Actor, type: PunishmentType) {
+        println("Broadcasting punishment for $player")
         val broadcast = ConfigUtil.getMessage("broadcast", mapOf(
             "target" to username,
             "action" to type.punishedName,
             "punisher" to actor.getReadableName()
-        ))
+        )).trimIndent()
         Bukkit.broadcast(translate(broadcast))
     }
 
