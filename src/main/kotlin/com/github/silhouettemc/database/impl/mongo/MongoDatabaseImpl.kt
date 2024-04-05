@@ -75,7 +75,7 @@ class MongoDatabaseImpl(
     }
 
     override suspend fun listPunishments(player: UUID): List<Punishment> {
-        TODO("Not yet implemented")
+        return punishmentsCollection.find(Filters.eq("player", player)).toList()
     }
 
     override suspend fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment? {

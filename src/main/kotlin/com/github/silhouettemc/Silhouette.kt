@@ -7,6 +7,7 @@ import com.github.silhouettemc.command.chat.ClearChatCommand
 import com.github.silhouettemc.command.chat.MuteChatCommand
 import com.github.silhouettemc.command.plugin.silhouette.SilhouetteCommand
 import com.github.silhouettemc.command.punish.BanCommand
+import com.github.silhouettemc.command.punish.HistoryCommand
 import com.github.silhouettemc.command.punish.KickCommand
 import com.github.silhouettemc.command.punish.MuteCommand
 import com.github.silhouettemc.command.punish.revert.UnbanCommand
@@ -64,7 +65,8 @@ class Silhouette : SuspendingJavaPlugin() {
             BanCommand, KickCommand, MuteCommand,
             UnbanCommand, UnmuteCommand,
             ClearChatCommand, MuteChatCommand,
-            SilhouetteCommand
+            SilhouetteCommand,
+            HistoryCommand
         )
     }
 

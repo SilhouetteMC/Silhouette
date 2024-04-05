@@ -15,6 +15,7 @@ version = "0.1.0"
 repositories {
     mavenCentral()
 
+    maven("https://jitpack.io")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.aikar.co/content/groups/aikar/")
 }
@@ -27,6 +28,8 @@ dependencies {
     implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.15.0")
 
     implementation("org.bstats:bstats-bukkit:3.0.2")
+
+    implementation("com.github.honkling:pocket:641b2e6640")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")

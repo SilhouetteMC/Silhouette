@@ -57,7 +57,8 @@ object ConfigUtil {
             else extraPlaceholders[pKey] = config.getString("$baseKey.$pKey")
         }
 
-        val replacedExtras = config.getString(key).replacePlaceholders(extraPlaceholders)
+        val configString = config.getString(key) ?: return key
+        val replacedExtras = configString.replacePlaceholders(extraPlaceholders)
 
         return if (placeholders != null) replacedExtras.replacePlaceholders(placeholders)
         else replacedExtras

@@ -9,6 +9,17 @@ import java.util.*
 
 fun translate(input: String) = mm.deserialize(input.replace("\r", "")) // windows silly
 
+fun Component.toLegacy(section: Boolean = true): String {
+    val serializer =
+        if (section) LegacyComponentSerializer.legacySection()
+        else LegacyComponentSerializer.legacyAmpersand()
+    return serializer.serialize(this)
+}
+
+fun String.toLegacy(section: Boolean = true): String {
+    return translate(this).toLegacy(section)
+}
+
 fun CommandSender.sendError(error: String) = this.send(error)
 fun CommandSender.sendTranslated(message: String) = this.sendMessage(translate(message))
 
