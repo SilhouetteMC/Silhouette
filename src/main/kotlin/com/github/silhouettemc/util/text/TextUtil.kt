@@ -67,6 +67,12 @@ fun String.replacePlaceholders(map: Map<String, String>, parenthesis: String = "
     return placeholded
 }
 
+fun String.titleCase(): String {
+    return this.replaceFirstChar {
+        char -> if (char.isLowerCase()) char.titlecase(Locale.getDefault()) else char.toString()
+    }
+}
+
 fun getCenteredMessage(message: Component, width: Int = 154): Component {
     val rawMessage = LegacyComponentSerializer.legacySection().serialize(message)
 

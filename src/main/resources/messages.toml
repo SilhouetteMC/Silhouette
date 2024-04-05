@@ -67,6 +67,15 @@ itemLore = """
     <#baa5d4> • <#f0c9ff>Left Click: <#ac99c4>Edit {type} reason
     <#baa5d4> • <#f0c9ff>Shift Right Click: <#ac99c4>Remove {type}
 """
+typeLore = """
+    Manage different types of punishments.
+
+    <#baa5d4> • <#f0c9ff>All: <#ac99c4>View all punishments
+    <#baa5d4> • <#f0c9ff>Ban: <#ac99c4>View all bans
+    <#baa5d4> • <#f0c9ff>Kick: <#ac99c4>View all kicks
+    <#baa5d4> • <#f0c9ff>Mute: <#ac99c4>View all mutes
+    <#baa5d4> • <#f0c9ff>Warn: <#ac99c4>View all warns
+"""
 
 # As a punishment is being typed, eg: "/kick UwUAroze 7d KillAur-", the player, duration, reason, and flags will be pre-parsed and displayed in the actionbar.
 # This proves useful as a way to ensure the punishment is correct before executing it.

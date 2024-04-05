@@ -7,6 +7,8 @@ enum class PunishmentType(
     val displayName: String = actionName,
     val shouldDisconnect: Boolean = false
 ) {
+    ALL("All", "All", "All punishments"),
+
     BAN("Ban", "Banned", "Banning", shouldDisconnect = true),
     KICK("Kick", "Kicked", "Kicking", shouldDisconnect = true),
     MUTE("Mute", "Muted", "Muting"),
@@ -14,5 +16,4 @@ enum class PunishmentType(
 
     UNBAN("Unban", "Unbanned", "Unbanning"),
     UNMUTE("Unmute", "Unmuted", "Unmuting"),
-
 }

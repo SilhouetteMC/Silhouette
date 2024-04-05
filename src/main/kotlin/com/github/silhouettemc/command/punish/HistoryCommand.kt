@@ -2,6 +2,7 @@ package com.github.silhouettemc.command.punish
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
+import co.aikar.commands.annotation.Optional
 import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.silhouettemc.Silhouette
@@ -11,10 +12,11 @@ import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.gui.fillGlass
-import com.github.silhouettemc.util.gui.setDescription
+import com.github.silhouettemc.util.gui.setLoreFromConfig
 import com.github.silhouettemc.util.gui.setName
 import com.github.silhouettemc.util.sync
 import com.github.silhouettemc.util.text.send
+import com.github.silhouettemc.util.text.titleCase
 import com.github.silhouettemc.util.text.toLegacy
 import org.bukkit.entity.Player
 import java.util.function.BiConsumer
@@ -23,6 +25,16 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.time.Duration
 import java.time.Instant
+import java.util.*
+
+private data class HistoryData(
+    val punishments: List<Punishment>,
+    val punishType: PunishmentType,
+    val page: Int,
+    val totalPages: Int,
+    val target: String,
+    val basicPlaceholders: Map<String, String>
+)
 
 @CommandAlias("history")
 @Description("View the punishment history of a player")
@@ -68,57 +80,43 @@ object HistoryCommand : BaseCommand() {
         return time
     }
 
+    private fun generateTypeBook(type: PunishmentType): ItemStack {
+        val name = type.name.lowercase()
+        println("Generating type book for $name")
 
-    @Default
-    fun onCommand(
-        sender: Player,
-        @Flags("other") retriever: PlayerProfileRetriever,
-        @Optional type: String?,
-        @Optional pageNumber: Int?,
-    ) = plugin.launch(plugin.asyncDispatcher) {
-        val page = pageNumber ?: 1
+        val typeLore = ConfigUtil.getMessage("gui.history.typeLore", mapOf("type" to name))
 
-        val basicPlaceholders = mutableMapOf(
-            "target" to retriever.name,
-            "page" to page.toString(),
-        )
-
-        if(type != null && type != "all") {
-            val foundType = PunishmentType.entries.find { it.name.equals(type.uppercase(), true) }
-            if (foundType == null) return@launch sender.send("errors.noType", basicPlaceholders)
+        // hacky, but if a type is selected, the bullet point is replaced with an arrow to indicate it's selected
+        val newTypeLore = StringBuilder()
+        typeLore.lines().forEach {
+            var string = it
+            if(it.contains(name.titleCase())) {
+                string = it.replace("•", "➜")
+            }
+            newTypeLore.append("$string\n")
         }
 
-        val pageSize = 18
+        val typeBook = ItemStack(Material.ENCHANTED_BOOK).setName("Type")
+            .setLoreFromConfig(newTypeLore.toString())
+        return typeBook
+    }
 
-        if (page < 1) return@launch sender.send("errors.noHistory", basicPlaceholders)
+    private fun getNextType(type: PunishmentType): PunishmentType {
+        val index = PunishmentType.entries.indexOf(type)
 
-        val player = retriever.fetchOfflinePlayerProfile()
-            ?: return@launch sender.send("errors.noPlayerFound", basicPlaceholders)
-        val playerName = player.name
-            ?: return@launch sender.send("errors.noPlayerFound", basicPlaceholders)
+        var item = if(PunishmentType.entries.size == index + 1) PunishmentType.ALL
+            else PunishmentType.entries[index + 1]
 
-        val fullHistory = if(type != null && type != "all") {
-            Silhouette.getInstance().database.listPunishments(player.id!!, PunishmentType.valueOf(type.uppercase()))
-        } else {
-            Silhouette.getInstance().database.listPunishments(player.id!!)
-        }
+        // these are types that aren't in the gui (& are at the end), so we need to change them to the first type in the gui
+        if(item.actionName.contains("un", ignoreCase = true)) item = PunishmentType.ALL
 
-        if (fullHistory.isEmpty()) return@launch sender.send("errors.noHistory", basicPlaceholders)
+        return item
+    }
 
-        val historySize = fullHistory.size
-        val totalPages = historySize / pageSize
-        if (page < totalPages) return@launch sender.send("errors.noHistory", basicPlaceholders)
-        val start = (page - 1) * pageSize
-        if (start > historySize) return@launch sender.send("errors.noHistory", basicPlaceholders)
-        var end = start + pageSize
-        if (end > historySize) end = historySize
-        val history = fullHistory.subList(start, end)
+    private fun Player.getGUI(data: HistoryData): GUI {
+        val sender = this
 
-        basicPlaceholders["target"] = playerName
-        basicPlaceholders["page"] = page.toString()
-        basicPlaceholders["totalPages"] = totalPages.toString()
-
-        val guiTitle = ConfigUtil.getMessage("gui.history.title", basicPlaceholders)
+        val guiTitle = ConfigUtil.getMessage("gui.history.title", data.basicPlaceholders)
 
         val gui = GUI(
             plugin,
@@ -127,12 +125,12 @@ object HistoryCommand : BaseCommand() {
             xiiiiiiix
             xiiiiiiix
             xiiiiiiix
-            xxxxxxxxx
+            xxxxtxxxx
             """.trimIndent(),
             guiTitle.toLegacy(),
         ).fillGlass()
 
-        gui.loadItems(history) { punishment, index ->
+        gui.loadItems(data.punishments) { punishment, index ->
             val reason = punishment.reason ?: "No reason specified"
             val expiry = if(punishment.expiration == null) "Never" else {
                 prettyDate(punishment.expiration)
@@ -148,7 +146,7 @@ object HistoryCommand : BaseCommand() {
                 "expiry_date" to expiry
             )
 
-            placeholders.putAll(basicPlaceholders)
+            placeholders.putAll(data.basicPlaceholders)
 
             if(expiry.contains("Never")) placeholders["expiry_date"] = "Never"
             else if(expiry.contains("ago")) placeholders["expiry_tag"] = "Expired"
@@ -162,9 +160,7 @@ object HistoryCommand : BaseCommand() {
 
             val item = ItemStack(Material.PAPER)
             item.setName(ConfigUtil.getMessage("gui.history.itemName", placeholders))
-            item.setDescription(
-                *historyLore.trimIndent().split("\n").toTypedArray()
-            )
+            item.setLoreFromConfig(historyLore)
 
             gui.put(index, item) {
                 if(it.isRightClick && it.isShiftClick) {
@@ -175,14 +171,86 @@ object HistoryCommand : BaseCommand() {
             }
         }
 
+        gui.put('t', generateTypeBook(data.punishType)) {
+            val nextType = getNextType(data.punishType)
+            sender.performCommand("history ${data.target} $nextType")
+        }
+
         gui.put(36, ItemStack(Material.ARROW).setName("Previous Page")) {
-            val punishmentType = type ?: "all"
-            sender.performCommand("history $playerName $punishmentType ${page - 1}")
+            val punishmentType = data.punishType.name.lowercase()
+            sender.performCommand("history ${data.target} $punishmentType ${data.page - 1}")
         }
+
         gui.put(44, ItemStack(Material.ARROW).setName("Next Page")) {
-            val punishmentType = type ?: "all"
-            sender.performCommand("history $playerName $punishmentType ${page + 1}")
+            val punishmentType = data.punishType.name.lowercase()
+            sender.performCommand("history ${data.target} $punishmentType ${data.page  + 1}")
         }
+
+        return gui
+    }
+
+    @Default
+    fun onCommand(
+        sender: Player,
+        @Flags("other") retriever: PlayerProfileRetriever,
+        @Optional type: String?,
+        @Optional pageNumber: Int?,
+    ) = plugin.launch(plugin.asyncDispatcher) {
+        val page = pageNumber ?: 1
+
+        val basicPlaceholders = mutableMapOf(
+            "target" to retriever.name,
+            "page" to page.toString(),
+        )
+
+        lateinit var punishType: PunishmentType
+
+        if(type != null) {
+            val foundType = PunishmentType.entries.find { it.name.equals(type!!.uppercase(), true) }
+            if (foundType == null) return@launch sender.send("errors.noType", basicPlaceholders)
+            punishType = foundType
+        } else punishType = PunishmentType.ALL
+
+        val pageSize = 18
+
+        if (page < 1) return@launch sender.send("errors.noHistory", basicPlaceholders)
+
+        val player = retriever.fetchOfflinePlayerProfile()
+            ?: return@launch sender.send("errors.noPlayerFound", basicPlaceholders)
+        val playerName = player.name
+            ?: return@launch sender.send("errors.noPlayerFound", basicPlaceholders)
+
+        val fullHistory = if(punishType != PunishmentType.ALL) {
+            plugin.database.listPunishments(player.id!!, punishType)
+        } else {
+            plugin.database.listPunishments(player.id!!)
+        }
+
+        if (fullHistory.isEmpty()) {
+            val gui = sender.getGUI(HistoryData(listOf(), punishType, 1, 1, playerName, basicPlaceholders))
+            val item = ItemStack(Material.PAPER).setName("No history found")
+            gui.put(22, item)
+            sync {
+                gui.open(sender)
+            }
+            return@launch
+        }
+
+        val historySize = fullHistory.size
+        val totalPages = historySize / pageSize
+        if (page < totalPages) return@launch sender.send("errors.noHistory", basicPlaceholders)
+        val start = (page - 1) * pageSize
+        if (start > historySize) return@launch sender.send("errors.noHistory", basicPlaceholders)
+        var end = start + pageSize
+        if (end > historySize) end = historySize
+        val history = fullHistory.subList(start, end)
+
+        basicPlaceholders["target"] = playerName
+        basicPlaceholders["page"] = page.toString()
+        basicPlaceholders["totalPages"] = totalPages.toString()
+
+        val gui = sender.getGUI(HistoryData(history, punishType, page, totalPages, playerName, basicPlaceholders))
+
         sync {
             gui.open(sender)
         }
