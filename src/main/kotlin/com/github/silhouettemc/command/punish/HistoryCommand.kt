@@ -8,6 +8,7 @@ import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.parsing.duration.TimeFormatter
 import com.github.silhouettemc.punishment.Punishment
+import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.util.gui.fillGlass
 import com.github.silhouettemc.util.gui.setDescription
@@ -72,32 +73,43 @@ object HistoryCommand : BaseCommand() {
     fun onCommand(
         sender: Player,
         @Flags("other") retriever: PlayerProfileRetriever,
+        @Optional type: String?,
         @Optional pageNumber: Int?,
     ) = plugin.launch(plugin.asyncDispatcher) {
-        val basicPlaceholders = mutableMapOf(
-            "target" to retriever.name
-        )
-
         val page = pageNumber ?: 1
 
-        if (page < 1) return@launch sender.send("errors.noHistory1", basicPlaceholders)
+        val basicPlaceholders = mutableMapOf(
+            "target" to retriever.name,
+            "page" to page.toString(),
+        )
 
-        sender.sendMessage("Page: $page")
+        if(type != null && type != "all") {
+            val foundType = PunishmentType.entries.find { it.name.equals(type.uppercase(), true) }
+            if (foundType == null) return@launch sender.send("errors.noType", basicPlaceholders)
+        }
 
         val pageSize = 18
+
+        if (page < 1) return@launch sender.send("errors.noHistory", basicPlaceholders)
 
         val player = retriever.fetchOfflinePlayerProfile()
             ?: return@launch sender.send("errors.noPlayerFound", basicPlaceholders)
         val playerName = player.name
             ?: return@launch sender.send("errors.noPlayerFound", basicPlaceholders)
 
-        val fullHistory = Silhouette.getInstance().database.listPunishments(player.id!!)
-        if (fullHistory.isEmpty()) return@launch sender.send("errors.noHistory2", basicPlaceholders)
+        val fullHistory = if(type != null && type != "all") {
+            Silhouette.getInstance().database.listPunishments(player.id!!, PunishmentType.valueOf(type.uppercase()))
+        } else {
+            Silhouette.getInstance().database.listPunishments(player.id!!)
+        }
+
+        if (fullHistory.isEmpty()) return@launch sender.send("errors.noHistory", basicPlaceholders)
 
         val historySize = fullHistory.size
         val totalPages = historySize / pageSize
-        if (page < totalPages) return@launch sender.send("errors.noHistory3", basicPlaceholders)
+        if (page < totalPages) return@launch sender.send("errors.noHistory", basicPlaceholders)
         val start = (page - 1) * pageSize
+        if (start > historySize) return@launch sender.send("errors.noHistory", basicPlaceholders)
         var end = start + pageSize
         if (end > historySize) end = historySize
         val history = fullHistory.subList(start, end)
@@ -164,10 +176,12 @@ object HistoryCommand : BaseCommand() {
         }
 
         gui.put(36, ItemStack(Material.ARROW).setName("Previous Page")) {
-            sender.performCommand("history $playerName ${page - 1}")
+            val punishmentType = type ?: "all"
+            sender.performCommand("history $playerName $punishmentType ${page - 1}")
         }
         gui.put(44, ItemStack(Material.ARROW).setName("Next Page")) {
-            sender.performCommand("history $playerName ${page + 1}")
+            val punishmentType = type ?: "all"
+            sender.performCommand("history $playerName $punishmentType ${page + 1}")
         }
         sync {
             gui.open(sender)

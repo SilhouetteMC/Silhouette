@@ -78,6 +78,10 @@ class MongoDatabaseImpl(
         return punishmentsCollection.find(Filters.eq("player", player)).toList()
     }
 
+    override suspend fun listPunishments(player: UUID, type: PunishmentType): List<Punishment> {
+        return punishmentsCollection.find(Filters.and(Filters.eq("player", player), Filters.eq("type", type))).toList()
+    }
+
     override suspend fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment? {
         val doc = punishmentsCollection.find(
             Filters.and(

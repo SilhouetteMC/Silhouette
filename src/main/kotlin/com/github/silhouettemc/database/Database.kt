@@ -16,6 +16,7 @@ interface Database {
     suspend fun removePunishment(punishment: Punishment)
 
     suspend fun listPunishments(player: UUID): List<Punishment>
+    suspend fun listPunishments(player: UUID, type: PunishmentType): List<Punishment>
 
     suspend fun getLatestActivePunishment(player: UUID, type: PunishmentType): Punishment?
 
