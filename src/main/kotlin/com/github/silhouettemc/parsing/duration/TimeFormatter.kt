@@ -3,7 +3,6 @@ package com.github.silhouettemc.parsing.duration
 import java.time.Duration
 
 class TimeFormatter(val duration: Duration) {
-
     val parsableUnits = TimeUnit.entries.reversed()
 
     var secondsLeft: Long = duration.seconds
@@ -11,10 +10,12 @@ class TimeFormatter(val duration: Duration) {
 
     val sb = StringBuilder()
 
-    fun prettify(): String {
+    fun prettify(round: Boolean = false): String {
         if (secondsLeft == 0L) return "0 seconds"
 
-        for (unit in parsableUnits) {
+        val units = if (round) parsableUnits.filter { it.duration.seconds > 0 } else parsableUnits
+
+        for (unit in units) {
             val removedUnits = attemptToRemove(unit, secondsLeft)
             if (removedUnits == 1L) sb.append("$removedUnits ${unit.singular.lowercase()}, ")
             if (removedUnits > 1L) sb.append("$removedUnits ${unit.plural.lowercase()}, ")
