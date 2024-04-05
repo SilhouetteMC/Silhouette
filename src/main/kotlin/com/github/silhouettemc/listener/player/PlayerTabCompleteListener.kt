@@ -17,14 +17,18 @@ class PlayerTabCompleteListener: Listener {
     private val reasonAndDurationTypes = listOf(PunishmentType.BAN, PunishmentType.MUTE)
     private val reasonTypes = listOf(PunishmentType.KICK)
 
+    private val acceptedCommands = listOf("ban", "kick", "mute")
+
     @EventHandler
     fun AsyncTabCompleteEvent.onTabComplete() {
         if (sender !is Player) return
         val player = sender as Player
 
-
         val splits = buffer.split(" ")
-        val type = PunishmentType.valueOf(splits[0].removePrefix("/").uppercase())
+        val command = splits[0].removePrefix("/").uppercase()
+        if (!acceptedCommands.contains(command.lowercase())) return
+
+        val type = PunishmentType.valueOf(command)
 
         if (splits[1].isEmpty()) return player.sendBar("punishment_preparse.noPlayer", mapOf("action" to type.doingName))
 
