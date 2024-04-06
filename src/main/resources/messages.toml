@@ -57,12 +57,11 @@ unmutedAlertStaff = "<p>Chat has been <s>unmuted</s> by <s>{target}</s>"
 
 [messages.gui.history]
 title = "{target}s history"
-itemName = "<p>{happenedAt}"
+itemName = "<p>{type_2} for <s>{reason}"
 itemLore = """
-    <p>Moderator: <s>{punisher}</s>
-    <p>Reason: <s>{reason}</s>
-    <p>{expiry_tag} <s>{expiry_date}</s>
-    <p>Flags: <s>{flags}</s>
+    <p>Issued: <s>{happenedAt}</s>
+    <p>{expiry_tag}: <s>{expiry_date}</s>
+    <p>Punisher: <s>{punisher}</s>
 
     <#baa5d4> • <#f0c9ff>Left Click: <#ac99c4>Edit {type} reason
     <#baa5d4> • <#f0c9ff>Shift Right Click: <#ac99c4>Remove {type}

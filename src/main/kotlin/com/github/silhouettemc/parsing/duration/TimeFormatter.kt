@@ -13,7 +13,7 @@ class TimeFormatter(val duration: Duration) {
     fun prettify(round: Boolean = false): String {
         if (secondsLeft == 0L) return "0 seconds"
 
-        val units = if (round) parsableUnits.filter { it.duration.seconds > 0 } else parsableUnits
+        val units = if (round) parsableUnits.filter { it.duration.seconds > 1 } else parsableUnits
 
         for (unit in units) {
             val removedUnits = attemptToRemove(unit, secondsLeft)

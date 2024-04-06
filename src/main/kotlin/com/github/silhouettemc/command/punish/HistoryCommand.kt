@@ -2,12 +2,10 @@ package com.github.silhouettemc.command.punish
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
-import co.aikar.commands.annotation.Optional
 import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.parsing.PlayerProfileRetriever
-import com.github.silhouettemc.parsing.duration.TimeFormatter
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
@@ -18,15 +16,17 @@ import com.github.silhouettemc.util.sync
 import com.github.silhouettemc.util.text.send
 import com.github.silhouettemc.util.text.titleCase
 import com.github.silhouettemc.util.text.toLegacy
-import org.bukkit.entity.Player
-import java.util.function.BiConsumer
 import me.honkling.pocket.GUI
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import java.time.Duration
+import java.text.SimpleDateFormat
 import java.time.Instant
+import java.util.Date
+import java.util.function.BiConsumer
+
 
 private data class HistoryData(
     val punishments: List<Punishment>,
@@ -64,21 +64,11 @@ object HistoryCommand : BaseCommand() {
         }
     }
 
-    private fun prettyDate(date: Instant): String {
-        val now = Instant.now()
-        val isInPast = date.isBefore(now)
-
-        val duration = if (isInPast)
-            Duration.between(date, now)
-        else
-            Duration.between(now, date)
-
-        var time = TimeFormatter(duration).prettify(round = true)
-
-        if(isInPast) time += " ago"
-        else time = "in $time"
-
-        return time
+    private fun formatDate(date: Instant): String {
+        val dateFormat = ConfigUtil.config.getString("dateFormat") ?: "MM/dd/yyyy HH:mm:ss"
+        val formatter = SimpleDateFormat(dateFormat)
+        val formattedDate = formatter.format(Date.from(date))
+        return formattedDate
     }
 
     private fun generateTypeBook(currentType: PunishmentType): ItemStack {
@@ -148,15 +138,16 @@ object HistoryCommand : BaseCommand() {
         gui.loadItems(data.punishments) { punishment, index ->
             val reason = punishment.reason ?: "No reason specified"
             val expiry = if(punishment.expiration == null) "Never" else {
-                prettyDate(punishment.expiration)
+                formatDate(punishment.expiration)
             }
-            val happenedAt = prettyDate(punishment.punishedOn.toInstant())
+            val happenedAt = formatDate(punishment.punishedOn.toInstant())
 
             val placeholders = mutableMapOf(
                 "reason" to reason,
                 "happenedAt" to happenedAt,
                 "punisher" to punishment.punisher.getReadableName(),
                 "type" to punishment.type.actionName.lowercase(),
+                "type_2" to punishment.type.punishedName.titleCase(),
                 "expiry_tag" to "Expires",
                 "expiry_date" to expiry
             )
@@ -164,12 +155,7 @@ object HistoryCommand : BaseCommand() {
             placeholders.putAll(data.basicPlaceholders)
 
             if(expiry.contains("Never")) placeholders["expiry_date"] = "Never"
-            else if(expiry.contains("ago")) placeholders["expiry_tag"] = "Expired"
-
-            if(punishment.flags != null && punishment.flags!!.isNotEmpty()) {
-                val flags = punishment.flags!!.joinToString("<p>, <s>") { it.name.lowercase() }
-                placeholders["flags"] = flags
-            } else placeholders["flags"] = "None"
+            else if(punishment.expiration != null && punishment.expiration.isBefore(Instant.now())) placeholders["expiry_tag"] = "Expired"
 
             val historyLore = ConfigUtil.getMessage("gui.history.itemLore", placeholders)
 
@@ -179,7 +165,7 @@ object HistoryCommand : BaseCommand() {
 
             if(placeholders["expiry_tag"] == "Expires") {
                 val meta = item.itemMeta
-                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS)
                 meta.addEnchant(Enchantment.DAMAGE_ALL, 1, true)
                 item.itemMeta = meta
             }
