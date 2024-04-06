@@ -15,7 +15,6 @@ import com.github.silhouettemc.command.punish.revert.UnmuteCommand
 import com.github.silhouettemc.database.Database
 import com.github.silhouettemc.database.impl.h2.H2DatabaseImpl
 import com.github.silhouettemc.database.impl.mongo.MongoDatabaseImpl
-import com.github.silhouettemc.listener.player.AnvilListener
 import com.github.silhouettemc.listener.player.PlayerChatListener
 import com.github.silhouettemc.listener.player.PlayerLoginListener
 import com.github.silhouettemc.listener.player.PlayerTabCompleteListener
@@ -87,7 +86,6 @@ class Silhouette : SuspendingJavaPlugin() {
         server.pluginManager.registerEvents(this,
             PlayerChatListener(this),
             PlayerLoginListener(this),
-            AnvilListener(this),
             PlayerTabCompleteListener()
         )
     }

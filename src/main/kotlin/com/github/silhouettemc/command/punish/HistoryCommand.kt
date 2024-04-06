@@ -9,7 +9,7 @@ import com.github.silhouettemc.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
-import com.github.silhouettemc.util.gui.EditPunishmentGUI
+import com.github.silhouettemc.util.gui.Anvil
 import com.github.silhouettemc.util.gui.fillGlass
 import com.github.silhouettemc.util.gui.setLoreFromConfig
 import com.github.silhouettemc.util.gui.setName
@@ -17,6 +17,7 @@ import com.github.silhouettemc.util.sync
 import com.github.silhouettemc.util.text.send
 import com.github.silhouettemc.util.text.titleCase
 import com.github.silhouettemc.util.text.toLegacy
+import com.mongodb.client.model.Updates
 import me.honkling.pocket.GUI
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -119,6 +120,14 @@ object HistoryCommand : BaseCommand() {
         return item
     }
 
+    private fun editPunishmentReason(punishment: Punishment, newReason: String) {
+        plugin.launch(plugin.asyncDispatcher) {
+            plugin.database.updatePunishment(punishment,
+                Updates.set(Punishment::reason.name, newReason)
+            )
+        }
+    }
+
     private fun Player.getGUI(data: HistoryData): GUI {
         val sender = this
 
@@ -173,16 +182,17 @@ object HistoryCommand : BaseCommand() {
             }
 
             gui.put(index, item) {
-                // can only do db operations asynchronously
-                plugin.launch(plugin.asyncDispatcher) {
-                    if(!it.isLeftClick && !(it.isShiftClick && it.isRightClick)) return@launch
+                if(!it.isLeftClick && !(it.isShiftClick && it.isRightClick)) return@put Unit
 
-                    if(it.isLeftClick) {
-                        sync {
-                            EditPunishmentGUI.open(sender, punishment)
-                        }
-                        return@launch
+                val editAnvil = Anvil("editPunishment", ConfigUtil.getMessage("gui.editPunishmentReason.title"))
+                val isEditing = it.isLeftClick
+
+                if(isEditing) {
+                    editAnvil.open(sender) { newReason ->
+                        editPunishmentReason(punishment, newReason)
+                        sender.send("gui.editPunishmentReason.successfulEdit", mapOf("reason" to newReason))
                     }
+                    return@put Unit
                 }
             }
         }
