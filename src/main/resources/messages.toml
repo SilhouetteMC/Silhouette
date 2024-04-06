@@ -68,9 +68,9 @@ itemLore = """
     <#baa5d4> • <#f0c9ff>Shift Right Click: <#ac99c4>Remove {type}
 """
 typeLore = """
-    <p>Manage different types of punishments.
+<p>Manage different types of punishments.
 
-    {type_selector}
+{type_selector}
 """
 
 historyType = " <#baa5d4>• <#f0c9ff>{item}: <#ac99c4>{description}"

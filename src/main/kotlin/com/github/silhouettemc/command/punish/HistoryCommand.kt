@@ -22,6 +22,8 @@ import org.bukkit.entity.Player
 import java.util.function.BiConsumer
 import me.honkling.pocket.GUI
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import java.time.Duration
 import java.time.Instant
@@ -174,6 +176,13 @@ object HistoryCommand : BaseCommand() {
             val item = ItemStack(Material.PAPER)
             item.setName(ConfigUtil.getMessage("gui.history.itemName", placeholders))
             item.setLoreFromConfig(historyLore)
+
+            if(placeholders["expiry_tag"] == "Expires") {
+                val meta = item.itemMeta
+                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                meta.addEnchant(Enchantment.DAMAGE_ALL, 1, true)
+                item.itemMeta = meta
+            }
 
             gui.put(index, item) {
                 if(it.isRightClick && it.isShiftClick) {
