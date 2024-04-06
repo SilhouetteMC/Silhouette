@@ -9,6 +9,7 @@ import com.github.silhouettemc.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
+import com.github.silhouettemc.util.gui.EditPunishmentGUI
 import com.github.silhouettemc.util.gui.fillGlass
 import com.github.silhouettemc.util.gui.setLoreFromConfig
 import com.github.silhouettemc.util.gui.setName
@@ -176,13 +177,8 @@ object HistoryCommand : BaseCommand() {
                 plugin.launch(plugin.asyncDispatcher) {
                     if(!it.isLeftClick) return@launch
 
-                    sender.sendMessage("left click")
-
-                    val punishmentType = data.punishType.name.lowercase()
-
-                    // can only perform commands synchronously
                     sync {
-                        sender.performCommand("history ${data.target} $punishmentType ${data.page}")
+                        EditPunishmentGUI.open(sender, punishment)
                     }
                 }
             }

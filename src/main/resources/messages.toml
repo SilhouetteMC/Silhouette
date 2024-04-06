@@ -73,6 +73,9 @@ typeLore = """
 
 historyType = " <#baa5d4>• <#f0c9ff>{item}: <#ac99c4>{description}"
 selectedHistoryType = " <#baa5d4>➜ <#f0c9ff>{item}: <#ac99c4>{description}"
+[messages.gui.editPunishment]
+title = "Edit Punishment"
+successfulEdit = "<p>Updated punishment reason to <s>{reason}"
 
 # As a punishment is being typed, eg: "/kick UwUAroze 7d KillAur-", the player, duration, reason, and flags will be pre-parsed and displayed in the actionbar.
 # This proves useful as a way to ensure the punishment is correct before executing it.

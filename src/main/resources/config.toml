@@ -1,4 +1,4 @@
-dateFormat = "dd MM yyyy HH:mm:ss"
+dateFormat = "MM/dd/yyyy HH:mm:ss"
 
 [database]
 type = "mongo"
