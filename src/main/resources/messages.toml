@@ -64,6 +64,7 @@ itemLore = """
     <p>Punisher: <s>{punisher}</s>
 
     <#baa5d4> • <#f0c9ff>Left Click: <#ac99c4>Edit {type} reason
+    <#baa5d4> • <#f0c9ff>Shift + Right Click: <#ac99c4>Revert {type}
 """
 typeLore = """
 <p>Manage different types of punishments.
@@ -73,8 +74,8 @@ typeLore = """
 
 historyType = " <#baa5d4>• <#f0c9ff>{item}: <#ac99c4>{description}"
 selectedHistoryType = " <#baa5d4>➜ <#f0c9ff>{item}: <#ac99c4>{description}"
-[messages.gui.editPunishment]
-title = "Edit Punishment"
+[messages.gui.editPunishmentReason]
+title = "Enter new punishment reason"
 successfulEdit = "<p>Updated punishment reason to <s>{reason}"
 
 # As a punishment is being typed, eg: "/kick UwUAroze 7d KillAur-", the player, duration, reason, and flags will be pre-parsed and displayed in the actionbar.

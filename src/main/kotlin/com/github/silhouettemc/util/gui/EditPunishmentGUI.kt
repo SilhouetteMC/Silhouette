@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack
 import java.util.UUID
 
 object EditPunishmentGUI {
-    val TITLE = ConfigUtil.getMessage("gui.editPunishment.title").toLegacy()
+    val TITLE = ConfigUtil.getMessage("gui.editPunishmentReason.title").toLegacy()
     val editors = mutableMapOf<UUID, Punishment>()
 
     fun open(player: Player, punishment: Punishment) {

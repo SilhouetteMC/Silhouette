@@ -175,10 +175,13 @@ object HistoryCommand : BaseCommand() {
             gui.put(index, item) {
                 // can only do db operations asynchronously
                 plugin.launch(plugin.asyncDispatcher) {
-                    if(!it.isLeftClick) return@launch
+                    if(!it.isLeftClick && !(it.isShiftClick && it.isRightClick)) return@launch
 
-                    sync {
-                        EditPunishmentGUI.open(sender, punishment)
+                    if(it.isLeftClick) {
+                        sync {
+                            EditPunishmentGUI.open(sender, punishment)
+                        }
+                        return@launch
                     }
                 }
             }

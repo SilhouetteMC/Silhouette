@@ -58,7 +58,7 @@ class AnvilListener(
             )
         }
 
-        player.send("gui.editPunishment.successfulEdit", mapOf("reason" to newReason))
+        player.send("gui.editPunishmentReason.successfulEdit", mapOf("reason" to newReason))
         inventory.close()
     }
 
