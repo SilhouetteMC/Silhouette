@@ -25,7 +25,6 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.time.Duration
 import java.time.Instant
-import java.util.*
 
 private data class HistoryData(
     val punishments: List<Punishment>,
@@ -80,32 +79,46 @@ object HistoryCommand : BaseCommand() {
         return time
     }
 
-    private fun generateTypeBook(type: PunishmentType): ItemStack {
-        val name = type.name.lowercase()
-        println("Generating type book for $name")
+    private fun generateTypeBook(currentType: PunishmentType): ItemStack {
+        val name = currentType.name.lowercase()
 
-        val typeLore = ConfigUtil.getMessage("gui.history.typeLore", mapOf("type" to name))
+        val punishmentTypes = PunishmentType.entries.map { it.name.lowercase() }
+            .filterNot { it.contains("un", ignoreCase = true) }
 
         // hacky, but if a type is selected, the bullet point is replaced with an arrow to indicate it's selected
-        val newTypeLore = StringBuilder()
-        typeLore.lines().forEach {
-            var string = it
-            if(it.contains(name.titleCase())) {
-                string = it.replace("•", "➜")
+        val typeSelector = StringBuilder()
+
+        punishmentTypes.forEach {
+            val placeholders = mapOf(
+                "item" to it.titleCase(),
+                "description" to "View $it punishments"
+            )
+
+            val item = if(it == name) {
+                ConfigUtil.getMessage("gui.history.selectedHistoryType",placeholders)
+            } else {
+                ConfigUtil.getMessage("gui.history.historyType", placeholders)
             }
-            newTypeLore.append("$string\n")
+
+            typeSelector.append("$item\n")
         }
 
+        val typeLore = ConfigUtil.getMessage("gui.history.typeLore", mapOf(
+            "type" to name,
+            "type_selector" to typeSelector.toString()
+        ))
+
         val typeBook = ItemStack(Material.ENCHANTED_BOOK).setName("Type")
-            .setLoreFromConfig(newTypeLore.toString())
+            .setLoreFromConfig(typeLore)
         return typeBook
     }
 
-    private fun getNextType(type: PunishmentType): PunishmentType {
+    private fun getNextType(type: PunishmentType, down: Boolean = false): PunishmentType {
         val index = PunishmentType.entries.indexOf(type)
 
-        var item = if(PunishmentType.entries.size == index + 1) PunishmentType.ALL
-            else PunishmentType.entries[index + 1]
+        val newIndex = if(down) index + 1 else index - 1
+        var item = if(PunishmentType.entries.size == newIndex) PunishmentType.ALL
+            else PunishmentType.entries[newIndex]
 
         // these are types that aren't in the gui (& are at the end), so we need to change them to the first type in the gui
         if(item.actionName.contains("un", ignoreCase = true)) item = PunishmentType.ALL
@@ -172,7 +185,7 @@ object HistoryCommand : BaseCommand() {
         }
 
         gui.put('t', generateTypeBook(data.punishType)) {
-            val nextType = getNextType(data.punishType)
+            val nextType = getNextType(data.punishType, down = it.isLeftClick)
             sender.performCommand("history ${data.target} $nextType")
         }
 

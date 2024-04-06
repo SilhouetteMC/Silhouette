@@ -56,7 +56,7 @@ unmutedAlertSelf = "<p>You've <s>unmuted</s> the chat"
 unmutedAlertStaff = "<p>Chat has been <s>unmuted</s> by <s>{target}</s>"
 
 [messages.gui.history]
-title = "<s>{target}s history (Page {page}/{totalPages})"
+title = "{target}s history"
 itemName = "<p>{happenedAt}"
 itemLore = """
     <p>Moderator: <s>{punisher}</s>
@@ -68,14 +68,13 @@ itemLore = """
     <#baa5d4> • <#f0c9ff>Shift Right Click: <#ac99c4>Remove {type}
 """
 typeLore = """
-    Manage different types of punishments.
+    <p>Manage different types of punishments.
 
-    <#baa5d4> • <#f0c9ff>All: <#ac99c4>View all punishments
-    <#baa5d4> • <#f0c9ff>Ban: <#ac99c4>View all bans
-    <#baa5d4> • <#f0c9ff>Kick: <#ac99c4>View all kicks
-    <#baa5d4> • <#f0c9ff>Mute: <#ac99c4>View all mutes
-    <#baa5d4> • <#f0c9ff>Warn: <#ac99c4>View all warns
+    {type_selector}
 """
+
+historyType = " <#baa5d4>• <#f0c9ff>{item}: <#ac99c4>{description}"
+selectedHistoryType = " <#baa5d4>➜ <#f0c9ff>{item}: <#ac99c4>{description}"
 
 # As a punishment is being typed, eg: "/kick UwUAroze 7d KillAur-", the player, duration, reason, and flags will be pre-parsed and displayed in the actionbar.
 # This proves useful as a way to ensure the punishment is correct before executing it.

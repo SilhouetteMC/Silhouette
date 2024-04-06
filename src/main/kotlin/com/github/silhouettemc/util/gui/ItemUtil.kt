@@ -53,5 +53,5 @@ fun ItemStack.setDescription(vararg lore: String): ItemStack {
 * */
 fun ItemStack.setLoreFromConfig(msg: String): ItemStack {
     val lines = msg.trimIndent().split("\n")
-    return this.setDescription(*lines.toTypedArray())
+    return this.setDescription(lines)
 }
