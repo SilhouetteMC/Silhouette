@@ -149,7 +149,8 @@ object HistoryCommand : BaseCommand() {
                 "type" to punishment.type.actionName.lowercase(),
                 "type_2" to punishment.type.punishedName.titleCase(),
                 "expiry_tag" to "Expires",
-                "expiry_date" to expiry
+                "expiry_date" to expiry,
+                "id" to punishment.id.toString()
             )
 
             placeholders.putAll(data.basicPlaceholders)
@@ -171,10 +172,18 @@ object HistoryCommand : BaseCommand() {
             }
 
             gui.put(index, item) {
-                if(it.isRightClick && it.isShiftClick) {
-                    sender.sendMessage("right click shift")
-                } else if(it.isLeftClick) {
+                // can only do db operations asynchronously
+                plugin.launch(plugin.asyncDispatcher) {
+                    if(!it.isLeftClick) return@launch
+
                     sender.sendMessage("left click")
+
+                    val punishmentType = data.punishType.name.lowercase()
+
+                    // can only perform commands synchronously
+                    sync {
+                        sender.performCommand("history ${data.target} $punishmentType ${data.page}")
+                    }
                 }
             }
         }

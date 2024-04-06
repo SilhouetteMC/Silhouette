@@ -64,7 +64,6 @@ itemLore = """
     <p>Punisher: <s>{punisher}</s>
 
     <#baa5d4> • <#f0c9ff>Left Click: <#ac99c4>Edit {type} reason
-    <#baa5d4> • <#f0c9ff>Shift Right Click: <#ac99c4>Remove {type}
 """
 typeLore = """
 <p>Manage different types of punishments.
