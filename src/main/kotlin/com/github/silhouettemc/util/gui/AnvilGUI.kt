@@ -11,6 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryType
+import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.AnvilInventory
 import org.bukkit.inventory.ItemStack
 import java.util.UUID
@@ -22,13 +23,13 @@ private val serializer = PlainTextComponentSerializer.plainText()
 val openAnvils = mutableMapOf<UUID, Anvil>()
 
 class Anvil(val id: String, private val title: String? = null) {
-    fun open(executor: Player, onType: AnvilHandler = {}) {
+    fun open(executor: Player, itemName: String? = null, onType: AnvilHandler = {}) {
         sync {
             openAnvils[executor.uniqueId] = this
 
             val view = executor.openAnvil(null, true) ?: return@sync
             if (title != null) view.title = title
-            view.setItem(0,  ItemStack(Material.ANVIL))
+            view.setItem(0,  ItemStack(Material.ANVIL).setName(itemName ?: "Enter text"))
 
             val inv = view.topInventory as AnvilInventory
 
@@ -44,6 +45,19 @@ class Anvil(val id: String, private val title: String? = null) {
 
         pluginManager.registerEvents(object : Listener {
             val listener = this
+
+            @EventHandler
+            fun PrepareAnvilEvent.onRename() {
+                val nameComponent = inventory.result?.itemMeta?.displayName() ?: return
+
+                val item = ItemStack(Material.BOOK)
+                val meta = item.itemMeta
+
+                meta.displayName(nameComponent)
+                item.itemMeta = meta
+
+                inventory.result = item
+            }
 
             @EventHandler
             fun InventoryClickEvent.onClick() {
