@@ -57,8 +57,8 @@ unmutedAlertStaff = "<p>Chat has been <s>unmuted</s> by <s>{target}</s>"
 
 [messages.gui.history]
 title = "{target}s history"
-itemName = "<p>{type_2} for <s>{reason}"
-itemLore = """
+name = "<p>{type_2} for <s>{reason}"
+lore = """
     <p>Issued: <s>{happenedAt}</s>
     <p>{expiry_tag}: <s>{expiry_date}</s>
     <p>Punisher: <s>{punisher}</s>
@@ -66,6 +66,21 @@ itemLore = """
     <#baa5d4> • <#f0c9ff>Left Click: <#ac99c4>Edit {type} reason
     <#baa5d4> • <#f0c9ff>Shift + Right Click: <#ac99c4>Revert {type}
 """
+revertedLore = """
+    <p>Issued: <s>{happenedAt}</s>
+    <p>{expiry_tag}: <s>{expiry_date}</s>
+    <p>Punisher: <s>{punisher}</s>
+
+    <p>Reverted by <s>{reverter}
+    <p>Date: <s>{reversion_date}
+    <p>Reason: <s>{reversion_reason}
+"""
+historyLore = """
+<p>History for this punishment:
+
+{history}
+"""
+
 typeLore = """
 <p>Manage different types of punishments.
 
@@ -74,9 +89,13 @@ typeLore = """
 
 historyType = " <#baa5d4>• <#f0c9ff>{item}: <#ac99c4>{description}"
 selectedHistoryType = " <#baa5d4>➜ <#f0c9ff>{item}: <#ac99c4>{description}"
+addedReason = "<p>+ <s>{reason}"
+removedReason = "<p>- <s>{reason}"
+
 [messages.gui.editPunishmentReason]
-title = "Enter new punishment reason"
+title = "Enter reason"
 successfulEdit = "<p>Updated punishment reason to <s>{reason}"
+successfulRevert = "<p>Reverted punishment"
 
 # As a punishment is being typed, eg: "/kick UwUAroze 7d KillAur-", the player, duration, reason, and flags will be pre-parsed and displayed in the actionbar.
 # This proves useful as a way to ensure the punishment is correct before executing it.

@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.*
 import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.silhouettemc.Silhouette
+import com.github.silhouettemc.actor.Actor
 import com.github.silhouettemc.parsing.PlayerProfileRetriever
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
@@ -17,16 +18,18 @@ import com.github.silhouettemc.util.sync
 import com.github.silhouettemc.util.text.send
 import com.github.silhouettemc.util.text.titleCase
 import com.github.silhouettemc.util.text.toLegacy
-import com.mongodb.client.model.Updates
 import me.honkling.pocket.GUI
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.Date
+import java.util.UUID
 import java.util.function.BiConsumer
 
 
@@ -38,6 +41,8 @@ private data class HistoryData(
     val target: String,
     val basicPlaceholders: Map<String, String>
 )
+
+private val historyToggles = mutableMapOf<UUID, List<Int>>()
 
 @CommandAlias("history")
 @Description("View the punishment history of a player")
@@ -120,14 +125,6 @@ object HistoryCommand : BaseCommand() {
         return item
     }
 
-    private fun editPunishmentReason(punishment: Punishment, newReason: String) {
-        plugin.launch(plugin.asyncDispatcher) {
-            plugin.database.updatePunishment(punishment,
-                Updates.set(Punishment::reason.name, newReason)
-            )
-        }
-    }
-
     private fun Player.getGUI(data: HistoryData): GUI {
         val sender = this
 
@@ -168,32 +165,97 @@ object HistoryCommand : BaseCommand() {
             if(expiry.contains("Never")) placeholders["expiry_date"] = "Never"
             else if(punishment.expiration != null && punishment.expiration.isBefore(Instant.now())) placeholders["expiry_tag"] = "Expired"
 
-            val historyLore = ConfigUtil.getMessage("gui.history.itemLore", placeholders)
+            val isReverted = punishment.revoker != null
+            var itemLore = ConfigUtil.getMessage("gui.history.lore", placeholders)
+
+            if(isReverted) {
+                placeholders.putAll(mapOf(
+                    "reverter" to punishment.revoker!!.getReadableName(),
+                    "reversion_date" to formatDate(punishment.revokedAt!!.toInstant()),
+                    "reversion_reason" to (punishment.revokeReason ?: "No reason specified")
+                ))
+                itemLore = ConfigUtil.getMessage("gui.history.revertedLore", placeholders)
+            }
 
             val item = ItemStack(Material.PAPER)
-            item.setName(ConfigUtil.getMessage("gui.history.itemName", placeholders))
-            item.setLoreFromConfig(historyLore)
+            item.setName(ConfigUtil.getMessage("gui.history.name", placeholders))
+            item.setLoreFromConfig(itemLore)
 
-            if(placeholders["expiry_tag"] == "Expires") {
+            if(placeholders["expiry_tag"] == "Expires" && !isReverted) {
                 val meta = item.itemMeta
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS)
                 meta.addEnchant(Enchantment.DAMAGE_ALL, 1, true)
                 item.itemMeta = meta
             }
 
-            gui.put(index, item) {
-                if(!it.isLeftClick && !(it.isShiftClick && it.isRightClick)) return@put Unit
+            fun callback(ev: InventoryClickEvent) {
+                if(isReverted) return
 
-                val editAnvil = Anvil("editPunishment", ConfigUtil.getMessage("gui.editPunishmentReason.title"))
-                val isEditing = it.isLeftClick
+                val isEditing = ev.isLeftClick
+                val isReverting = ev.isShiftClick && ev.isRightClick
+                val isViewingHistory = ev.click == ClickType.MIDDLE
+
+                if(isViewingHistory) {
+                    val currentToggles = historyToggles[sender.uniqueId] ?: listOf()
+
+                    sender.sendMessage("Current history toggles: ${currentToggles.joinToString(", ")}")
+
+                    val isToggled = currentToggles.contains(index)
+                    val newToggles = if(isToggled) currentToggles.filterNot { i -> i == index } else currentToggles + index
+                    historyToggles[sender.uniqueId] = newToggles
+
+                    sender.sendMessage("New history toggles: ${newToggles.joinToString(", ")}")
+
+                    plugin.launch(plugin.asyncDispatcher) {
+                        if(!isToggled) {
+                            itemLore = ConfigUtil.getMessage("gui.history.historyLore", mapOf(
+                                "history" to generateHistory(punishment)
+                            ))
+                            item.setLoreFromConfig(itemLore)
+                            gui.put(index, item) {
+                                callback(it)
+                            }
+                        } else {
+                            itemLore = ConfigUtil.getMessage("gui.history.lore", placeholders)
+                            item.setLoreFromConfig(itemLore)
+                            gui.put(index, item) {
+                                callback(it)
+                            }
+                        }
+                    }
+
+                    gui.open(sender)
+
+                    return
+                }
+
+                if(!isEditing && !isReverting) return
+
+                val editTitle = ConfigUtil.getMessage("gui.editPunishmentReason.title")
 
                 if(isEditing) {
-                    editAnvil.open(sender) { newReason ->
-                        editPunishmentReason(punishment, newReason)
+                    val editAnvil = Anvil("editPunishment", editTitle)
+                    editAnvil.open(sender, itemName = punishment.reason) { newReason ->
+                        plugin.launch(plugin.asyncDispatcher) {
+                            punishment.updateReason(newReason)
+                        }
                         sender.send("gui.editPunishmentReason.successfulEdit", mapOf("reason" to newReason))
                     }
-                    return@put Unit
+                    return
                 }
+
+                val revertAnvil = Anvil("revertPunishment", editTitle)
+                revertAnvil.open(sender) { newReason ->
+                    plugin.launch(plugin.asyncDispatcher) {
+                        punishment.revert(Actor(sender.uniqueId), newReason)
+                    }
+                    sender.send("gui.editPunishmentReason.successfulRevert", mapOf("reason" to newReason))
+                }
+                return
+            }
+
+            gui.put(index, item) {
+                callback(it)
             }
         }
 
@@ -213,6 +275,26 @@ object HistoryCommand : BaseCommand() {
         }
 
         return gui
+    }
+
+    private suspend fun generateHistory(punishment: Punishment): String {
+        val historyStr = mutableListOf<String>()
+
+        val history = Silhouette.getInstance().database.getHistory(punishment.id)
+
+        if(history.isEmpty()) return "No history found"
+
+        for (h in history) {
+            if(h.reason?.current == null || h.reason.prior == null) continue
+
+            val added = ConfigUtil.getMessage("gui.history.addedReason", mapOf("reason" to h.reason.current))
+            val removed = ConfigUtil.getMessage("gui.history.removedReason", mapOf("reason" to h.reason.prior))
+
+            historyStr.add(added)
+            historyStr.add(removed)
+        }
+
+        return historyStr.joinToString("\n")
     }
 
     @Default
