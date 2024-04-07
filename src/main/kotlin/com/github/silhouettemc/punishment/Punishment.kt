@@ -4,6 +4,8 @@ import com.destroystokyo.paper.profile.PlayerProfile
 import com.github.shynixn.mccoroutine.bukkit.minecraftDispatcher
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.actor.Actor
+import com.github.silhouettemc.history.History
+import com.github.silhouettemc.history.Update
 import com.github.silhouettemc.util.ConfigUtil
 import com.github.silhouettemc.parsing.punish.PunishArgumentParser
 import com.github.silhouettemc.parsing.punish.PunishFlag
@@ -46,18 +48,11 @@ data class Punishment(
     val username: String,
 ) {
 
-    suspend fun process(args: PunishArgumentParser) {
-        Silhouette.getInstance().database.addPunishment(this)
-
-        if (type.shouldDisconnect) handleDisconnect()
-        if (!args.isSilent) broadcastPunishment()
-    }
-
-    suspend fun revert(revoker: Actor, args: PunishArgumentParser) {
+    suspend fun revert(revoker: Actor, reason: String?, silent: Boolean? = false) {
         Silhouette.getInstance().database.updatePunishment(
             this,
             Updates.set(Punishment::revoker.name, revoker),
-            Updates.set(Punishment::revokeReason.name, args.reason),
+            Updates.set(Punishment::revokeReason.name, reason),
             Updates.set(Punishment::revokedAt.name, Date())
         )
 
@@ -67,7 +62,32 @@ data class Punishment(
             else -> PunishmentType.UNBAN
         }
 
-        if (!args.isSilent) broadcastPunishment(revoker, type)
+        if (silent == true) broadcastPunishment(revoker, type)
+    }
+
+    suspend fun process(args: PunishArgumentParser) {
+        Silhouette.getInstance().database.addPunishment(this)
+
+        if (type.shouldDisconnect) handleDisconnect()
+        if (!args.isSilent) broadcastPunishment()
+    }
+
+    suspend fun revert(revoker: Actor, args: PunishArgumentParser) {
+        revert(revoker, args.reason, args.isSilent)
+    }
+
+    suspend fun updateReason(reason: String) {
+        val db = Silhouette.getInstance().database
+        db.updatePunishment(
+            this,
+            Updates.set(Punishment::reason.name, reason),
+        )
+        db.addHistory(
+            History(
+                punishmentId = this.id,
+                reason = Update(reason, this.reason),
+            )
+        )
     }
 
     private suspend fun handleDisconnect() {

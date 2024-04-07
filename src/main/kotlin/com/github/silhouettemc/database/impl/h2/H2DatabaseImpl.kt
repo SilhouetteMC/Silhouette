@@ -2,6 +2,7 @@ package com.github.silhouettemc.database.impl.h2
 
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.database.Database
+import com.github.silhouettemc.history.History
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.j256.ormlite.dao.DaoManager
@@ -35,6 +36,14 @@ class H2DatabaseImpl: Database {
 
     override suspend fun addPunishment(punishment: Punishment) {
         punishmentsTable.create(punishment)
+    }
+
+    override suspend fun addHistory(history: History) {
+        TODO("Not yet implemented")
+    }
+
+override suspend fun getHistory(punishmentId: UUID): List<History> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun updatePunishment(punishment: Punishment, vararg updates: Bson) {

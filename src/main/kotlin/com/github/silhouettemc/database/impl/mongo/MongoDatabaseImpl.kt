@@ -4,6 +4,7 @@ import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
 import com.github.shynixn.mccoroutine.bukkit.launch
 import com.github.silhouettemc.Silhouette
 import com.github.silhouettemc.database.Database
+import com.github.silhouettemc.history.History
 import com.github.silhouettemc.punishment.Punishment
 import com.github.silhouettemc.punishment.PunishmentType
 import com.github.silhouettemc.util.ConfigUtil
@@ -29,6 +30,8 @@ class MongoDatabaseImpl(
     private lateinit var database: MongoDatabase
     private lateinit var client: MongoClient
     private lateinit var punishmentsCollection: MongoCollection<Punishment>
+    private lateinit var historyCollection: MongoCollection<History>
+
     override suspend fun initialize(plugin: Silhouette) {
         plugin.launch(plugin.asyncDispatcher) {
             val databaseURI = ConfigUtil.config.getString("database.uri")
@@ -52,6 +55,7 @@ class MongoDatabaseImpl(
             database = client.getDatabase("Silhouette")
 
             punishmentsCollection = database.getCollection("Punishments")
+            historyCollection = database.getCollection("History")
         }
     }
 
@@ -59,6 +63,16 @@ class MongoDatabaseImpl(
         plugin.launch(plugin.asyncDispatcher) {
             punishmentsCollection.insertOne(punishment)
         }
+    }
+
+    override suspend fun addHistory(history: History) {
+        plugin.launch(plugin.asyncDispatcher) {
+            historyCollection.insertOne(history)
+        }
+    }
+
+    override suspend fun getHistory(punishmentId: UUID): List<History> {
+        return historyCollection.find(Filters.eq("punishmentId", punishmentId)).toList()
     }
 
     override suspend fun updatePunishment(punishment: Punishment, vararg updates: Bson) {
